@@ -45,7 +45,6 @@ export const AuthMutation = extendType({
                     console.log(`User with ${email} already exists`)
                     throw new Error("Email already in use.")
                 }
-
             },
         })
 

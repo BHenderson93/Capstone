@@ -11,6 +11,7 @@ import {
 } from "@apollo/client";
 
 // Pages and components
+import './App.css'
 import HomePage from '../HomePage/HomePage'
 import ProfilePage from "../ProfilePage/ProfilePage";
 import LoginPage from "../LoginPage/LoginPage";
@@ -47,13 +48,13 @@ export default function App() {
         {
           app.user ? (
             <Routes>
-              <Route path="/"
+              <Route path="/welcome"
                 element={<HomePage />} />
               <Route path="/profile"
                 element={<ProfilePage />} />
               <Route path="/interests" />
               <Route path="/*"
-                element={<Navigate to='/' />} />
+                element={<Navigate to='/welcome' />} />
             </Routes>
           ) : (
             <Routes>
