@@ -38,7 +38,7 @@ export default function LoginForm({ app, setApp }: LoginProps) {
         console.log("Got this data back after signup ", response.data)
         const token = response.data.login.token
         const user = response.data.login.user.name
-        window.localStorage.setItem('token', token)
+        localStorage.setItem('token', token)
         setApp({ ...app, user: user })
         return null
 

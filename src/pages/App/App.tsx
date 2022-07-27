@@ -33,13 +33,17 @@ export default function App() {
     cache: new InMemoryCache()
   });
 
-/*    React.useEffect(()=>{
-    const payload = checkAndGetTokenPayload()
-    if (!payload || app.user !== payload){
-        setApp({...app, user:''})
-
+  React.useEffect(()=>{
+    const token = localStorage.getItem('token')
+    if(token){
+      const payload = JSON.parse(window.atob(token.split('.')[1]))
+      console.log(payload)
+      if(payload.user.name !== app.user){
+        setApp({...app , user: payload.user.name})
       }
-    }, [app.user]) */
+    }
+  } , [app])
+
  
   return (
     <ApolloProvider client={client}>

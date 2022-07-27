@@ -70,8 +70,8 @@ export const AuthMutation = extendType({
                 if (!valid) {
                     throw new Error("Invalid password");
                 }
-
-                const token = jwt.sign({ username: user.name }, APP_SECRET);
+                const {password , ...noPass} = user
+                const token = jwt.sign({ user: noPass}, APP_SECRET);
                 
                 return {
                     token,

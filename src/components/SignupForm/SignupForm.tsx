@@ -16,8 +16,6 @@ interface SignupFormState{
     confirm:string
 }
 
-
-
 export default function SignupForm({setApp , app}: SignupFormProps) {
 
     const [state, setState] = React.useState<SignupFormState>({
@@ -60,7 +58,7 @@ export default function SignupForm({setApp , app}: SignupFormProps) {
             const token = response.data.signup.token
             const user = response.data.signup.user.name
 
-            window.localStorage.setItem('token' , token)
+            localStorage.setItem('token' , token)
             setApp({...app , user:user})
             return null
         }
