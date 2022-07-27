@@ -38,13 +38,14 @@ export default function App() {
 
     if(token){
       const payload = JSON.parse(window.atob(token.split('.')[1]))
-      console.log(payload)
+      //console.log(payload)
 
       if (payload.exp < Date.now() / 1000){
         console.log('Token expired.')
         localStorage.removeItem('token')
 
       }else if(payload.user.name !== app.user){
+        //console.log('App username doesnt match token... Hmmmm')
         setApp({...app , user: payload.user.name})
 
       }else{
@@ -63,7 +64,6 @@ export default function App() {
   return (
     <ApolloProvider client={client}>
       <Layout app={app} setApp={setApp}>
-
         {
           app.user ? (
             <Routes>

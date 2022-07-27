@@ -11,6 +11,7 @@ export default function LoginForm({ app, setApp }: LoginProps) {
     const [state, setState] = React.useState({
         email: '',
         password: '',
+        valid: true
     })
 
     const LOGIN = gql`
@@ -34,13 +35,18 @@ export default function LoginForm({ app, setApp }: LoginProps) {
 
     async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault()
-        const response = await login()
-        console.log("Got this data back after signup ", response.data)
-        const token = response.data.login.token
-        const user = response.data.login.user.name
-        localStorage.setItem('token', token)
-        setApp({ ...app, user: user })
-        return null
+        try{
+            const response = await login()
+            //console.log("Got this data back after signup ", response.data)
+            const token = response.data.login.token
+            const user = response.data.login.user.name
+            localStorage.setItem('token', token)
+            setApp({ ...app, user: user })
+            return null
+        }catch(error){
+            //console.log(error)
+            setState({...state , valid:false })
+        }
 
     }
 
@@ -60,7 +66,7 @@ export default function LoginForm({ app, setApp }: LoginProps) {
 
                 <label htmlFor="password">Password: </label>
                 <input type="password" name="password" key="password" onChange={handleChange} placeholder="Password" value={state.password} required />
-                <br />
+                {state.valid ? <br /> : <p className="error">Incorrect password! Try again...</p>}
 
                 <button type="submit" className={'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded'}>Submit!</button>
             </form>

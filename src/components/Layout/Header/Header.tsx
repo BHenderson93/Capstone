@@ -19,22 +19,23 @@ export default function Header({ app , setApp }: HeaderInt) {
     <header className="bg-sky-600">
       <nav className="flex flex-row justify-around">
         {app.user ? (
-          <>
+          <ul>
             <h1>{app.user}</h1>
             <Link to="/" >Home</Link>
             <Link to="/profile" >Profile</Link>
             <Link to="/interests" >Interests</Link>
-          </>
+            <button onClick={logout}>Log Out</button>
+          </ul>
         ) : (
-          <>
+          <ul>
             <Link to="/" >Home</Link>
             <Link to="/login" >Login</Link>
             <Link to="/signup" >Signup</Link>
-          </>
+          </ul>
         )
         }
       </nav>
-      <button onClick={logout}>Log Out</button>
+
     </header>
   )
 }
