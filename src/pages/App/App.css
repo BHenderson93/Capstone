@@ -1,0 +1,47 @@
+
+button{
+  width:100%;
+  margin-top: 1vh;
+}
+
+footer{
+  min-height: 10vh;
+}
+
+header{
+  min-height: 10vh;
+}
+
+input{
+  width: 100%;
+  border: 1px solid black;
+  border-radius:3%;
+  padding: .1vw .3vw;
+}
+
+main{
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh;
+}
+
+/* CLASSES BEGIN HERE */
+
+.container{
+  min-height: 40vh;
+  min-width: 40vh;
+  padding: 10vh;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid black;
+}
+
+.error{
+  font-style:italic;
+  color:red;
+  opacity: .9;
+}
