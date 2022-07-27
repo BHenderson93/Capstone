@@ -1,12 +1,19 @@
+import { setUncaughtExceptionCaptureCallback } from "process";
 import * as React from "react";
 import { Link } from 'react-router-dom';
 import { AppState } from '../../../pages/App/App'
 
 interface HeaderInt {
   app: AppState
+  setApp:React.Dispatch<React.SetStateAction<any>>
 }
 
-export default function Header({ app }: HeaderInt) {
+export default function Header({ app , setApp }: HeaderInt) {
+  const [state , setState ] = React.useState(false)
+  function logout(){
+    localStorage.removeItem('token')
+    setApp({...app , user:''})
+  }
   return (
 
     <header className="bg-sky-600">
@@ -27,6 +34,7 @@ export default function Header({ app }: HeaderInt) {
         )
         }
       </nav>
+      <button onClick={logout}>Log Out</button>
     </header>
   )
 }

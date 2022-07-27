@@ -6,12 +6,13 @@ import { AppState } from '../../pages/App/App'
 interface LayoutProps{
     children: React.ReactElement
     app: AppState
+    setApp: React.Dispatch<React.SetStateAction<any>>
 }
 
-export default function Layout({children , app}: LayoutProps) {
+export default function Layout({children , app , setApp}: LayoutProps) {
     return (
         <>
-        <Header app={app}/>
+        <Header app={app} setApp={setApp}/>
         <main>{children}</main>
         <Footer />
         </>

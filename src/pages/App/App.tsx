@@ -35,19 +35,34 @@ export default function App() {
 
   React.useEffect(()=>{
     const token = localStorage.getItem('token')
+
     if(token){
       const payload = JSON.parse(window.atob(token.split('.')[1]))
       console.log(payload)
-      if(payload.user.name !== app.user){
+
+      if (payload.exp < Date.now() / 1000){
+        console.log('Token expired.')
+        localStorage.removeItem('token')
+
+      }else if(payload.user.name !== app.user){
         setApp({...app , user: payload.user.name})
+
+      }else{
+        return
       }
+
+    }else if(app.user){
+      setApp({...app , user:''})
+
+    }else{
+      return
     }
   } , [app])
 
  
   return (
     <ApolloProvider client={client}>
-      <Layout app={app}>
+      <Layout app={app} setApp={setApp}>
 
         {
           app.user ? (
