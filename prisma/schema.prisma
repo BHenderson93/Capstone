@@ -16,3 +16,8 @@ model User {
   email     String   @unique
   password  String
 }
+
+model Api {
+  id    Int   @id @default(autoincrement())
+  data  String 
+}

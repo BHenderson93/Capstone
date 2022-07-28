@@ -16,6 +16,7 @@ import HomePage from '../HomePage/HomePage'
 import ProfilePage from "../ProfilePage/ProfilePage";
 import LoginPage from "../LoginPage/LoginPage";
 import SignupPage from "../SignupPage/SignupPage";
+import WelcomePage from "../WelcomePage/WelcomePage"
 import Layout from "../../components/Layout/Layout";
 
 export interface AppState {
@@ -68,7 +69,7 @@ export default function App() {
           app.user ? (
             <Routes>
               <Route path="/welcome"
-                element={<HomePage />} />
+                element={<WelcomePage />} />
               <Route path="/profile"
                 element={<ProfilePage />} />
               <Route path="/interests" />

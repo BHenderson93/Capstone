@@ -28,6 +28,9 @@ export interface NexusGenScalars {
 }
 
 export interface NexusGenObjects {
+  API: { // root type
+    data?: string | null; // String
+  }
   AuthPayload: { // root type
     token: string; // String!
     user: NexusGenRootTypes['User']; // User!
@@ -53,6 +56,9 @@ export type NexusGenRootTypes = NexusGenObjects
 export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars
 
 export interface NexusGenFieldTypes {
+  API: { // field return type
+    data: string | null; // String
+  }
   AuthPayload: { // field return type
     token: string; // String!
     user: NexusGenRootTypes['User']; // User!
@@ -62,6 +68,7 @@ export interface NexusGenFieldTypes {
     signup: NexusGenRootTypes['AuthPayload']; // AuthPayload!
   }
   Query: { // field return type
+    API_Call: NexusGenRootTypes['API']; // API!
     userslist: NexusGenRootTypes['User'][]; // [User!]!
   }
   User: { // field return type
@@ -73,6 +80,9 @@ export interface NexusGenFieldTypes {
 }
 
 export interface NexusGenFieldTypeNames {
+  API: { // field return type name
+    data: 'String'
+  }
   AuthPayload: { // field return type name
     token: 'String'
     user: 'User'
@@ -82,6 +92,7 @@ export interface NexusGenFieldTypeNames {
     signup: 'AuthPayload'
   }
   Query: { // field return type name
+    API_Call: 'API'
     userslist: 'User'
   }
   User: { // field return type name
@@ -102,6 +113,11 @@ export interface NexusGenArgTypes {
       email: string; // String!
       name: string; // String!
       password: string; // String!
+    }
+  }
+  Query: {
+    API_Call: { // args
+      query: string; // String!
     }
   }
 }
