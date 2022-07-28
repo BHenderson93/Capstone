@@ -17,6 +17,7 @@ import ProfilePage from "../ProfilePage/ProfilePage";
 import LoginPage from "../LoginPage/LoginPage";
 import SignupPage from "../SignupPage/SignupPage";
 import WelcomePage from "../WelcomePage/WelcomePage"
+import MoodsPage from "../MoodsPage/MoodsPage";
 import Layout from "../../components/Layout/Layout";
 
 export interface AppState {
@@ -72,7 +73,8 @@ export default function App() {
                 element={<WelcomePage />} />
               <Route path="/profile"
                 element={<ProfilePage />} />
-              <Route path="/interests" />
+              <Route path="/moods" 
+              element={<MoodsPage />}/>
               <Route path="/*"
                 element={<Navigate to='/welcome' />} />
             </Routes>

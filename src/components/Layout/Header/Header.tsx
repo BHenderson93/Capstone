@@ -23,7 +23,7 @@ export default function Header({ app , setApp }: HeaderInt) {
             <h1>{app.user}</h1>
             <Link to="/" >Home</Link>
             <Link to="/profile" >Profile</Link>
-            <Link to="/interests" >Interests</Link>
+            <Link to="/moods" >Food Moods</Link>
             <button onClick={logout}>Log Out</button>
           </ul>
         ) : (
