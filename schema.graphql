@@ -4,6 +4,7 @@
 
 type API {
   data: String
+  query: String!
 }
 
 type AuthPayload {
