@@ -12,12 +12,12 @@ type AuthPayload {
 }
 
 type Mutation {
+  API_Call(query: String!): API!
   login(email: String!, password: String!): AuthPayload!
   signup(email: String!, name: String!, password: String!): AuthPayload!
 }
 
 type Query {
-  API_Call(query: String!): API!
   userslist: [User!]!
 }
 

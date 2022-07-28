@@ -1,25 +1,27 @@
+import { GraphQLScalarType } from "graphql";
 import { QueryDocumentKeys } from "graphql/language/ast";
-import { objectType, extendType, nonNull, stringArg } from "nexus";
+import { objectType, interfaceType, extendType, nonNull, stringArg } from "nexus";
+import { traceDeprecation } from "process";
 
 export const API = objectType({
     name:"API",
     definition(t) {
         //t.nonNull.string("query")
-        t.string("data")
+        t.string('data')
     }
 })
 
 export const API_Call = extendType({
-    type:"Query",
+    type:"Mutation",
     definition(t) {
         t.nonNull.field("API_Call", {
             type: API,
             args: {
                 query: nonNull(stringArg()),
             },
-            
+            // @ts-ignore
             async resolve(parent, args, context) {
-                const URL = `https://api.yelp.com/v3/businesses/search?term=delis&latitude=37.786882&longitude=-122.399972`
+                const URL = `https://api.yelp.com/v3/businesses/search?term=delis&${args.query}&limit=2`
 
                 const HEADERS = {
                     method: "GET",
@@ -35,8 +37,6 @@ export const API_Call = extendType({
                 const data = await context.prisma.api.create({
                     data:{data : JSON.stringify(response)}
                 })
-                console.log('response, stored is ' , response.businesses)
-                console.log('made prisma record ' ,data)
                 return data
             }
         })

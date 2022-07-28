@@ -64,11 +64,11 @@ export interface NexusGenFieldTypes {
     user: NexusGenRootTypes['User']; // User!
   }
   Mutation: { // field return type
+    API_Call: NexusGenRootTypes['API']; // API!
     login: NexusGenRootTypes['AuthPayload']; // AuthPayload!
     signup: NexusGenRootTypes['AuthPayload']; // AuthPayload!
   }
   Query: { // field return type
-    API_Call: NexusGenRootTypes['API']; // API!
     userslist: NexusGenRootTypes['User'][]; // [User!]!
   }
   User: { // field return type
@@ -88,11 +88,11 @@ export interface NexusGenFieldTypeNames {
     user: 'User'
   }
   Mutation: { // field return type name
+    API_Call: 'API'
     login: 'AuthPayload'
     signup: 'AuthPayload'
   }
   Query: { // field return type name
-    API_Call: 'API'
     userslist: 'User'
   }
   User: { // field return type name
@@ -105,6 +105,9 @@ export interface NexusGenFieldTypeNames {
 
 export interface NexusGenArgTypes {
   Mutation: {
+    API_Call: { // args
+      query: string; // String!
+    }
     login: { // args
       email: string; // String!
       password: string; // String!
@@ -113,11 +116,6 @@ export interface NexusGenArgTypes {
       email: string; // String!
       name: string; // String!
       password: string; // String!
-    }
-  }
-  Query: {
-    API_Call: { // args
-      query: string; // String!
     }
   }
 }

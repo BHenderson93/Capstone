@@ -1,40 +1,38 @@
 import * as React from 'react'
-import { useLazyQuery, useQuery, gql } from '@apollo/client'
+import { useMutation, gql } from '@apollo/client'
 //require('dotenv').config()
 import axios from 'axios'
+import e from 'cors'
 
 export default function HomePage() {
     const [state,setState]=React.useState({
-        search:''
+        search:"latitude=37.786882&longitude=-122.399972",
+        response:''
     })
 
-    async function handleSubmit(){
-        const qURL = 'https://api.yelp.com/v3/graphql'
+    const API_CALL=gql`
+        mutation API_Call($query: String!) {
+            API_Call(query: $query) {
+                data
+            }
+        }
+    `
 
-        const API_KEY="DYEOtJwaWZrL76Z5F6k-SLsKBfac_5__UMt1wMBuNPZkkRTNLFxgK3BJi-9ZO6nr4-Pz6fBh_uqXULyBBPq-5JmERYqi9C4z2aRa1A5nA43CmU289V6qTFw_0zvfYnYx"
-        
-        const query = `
-        {
-            business(id: "garaje-san-francisco") {
-                name
-                id
-                alias
-                rating
-                url
-            }
-        }`
-        
-        const resp = await axios({
-            url:qURL,
-            method:"POST",
-            data:query,
-            headers: {
-                "Content-Type": "application/graphql",
-                "Authorization": `Bearer ${API_KEY}`,
-                'Accept-Language': 'en-US'
-            }
-        })
-        console.log(resp.data)
+    const [api, { data, loading, error }] = useMutation(API_CALL , {
+        variables:{
+            query:state.search
+        }
+    })
+
+    async function handleSubmit(e){
+       e.preventDefault()
+       try{
+        const response = await api()
+        const businesses = JSON.parse(response.data.API_Call.data)
+        console.log(businesses)
+       }catch(error){
+        console.log(error)
+       }
     }
     return (
         <main className="page">
