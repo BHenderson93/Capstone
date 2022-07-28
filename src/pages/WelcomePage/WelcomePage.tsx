@@ -4,10 +4,10 @@ import { useMutation, gql } from '@apollo/client'
 import axios from 'axios'
 import e from 'cors'
 
-export default function HomePage() {
+export default function WelcomePage() {
     const [state,setState]=React.useState({
         search:"latitude=37.786882&longitude=-122.399972",
-        response:''
+        restaurants:[]
     })
 
     const API_CALL=gql`
@@ -30,6 +30,8 @@ export default function HomePage() {
         const response = await api()
         const businesses = JSON.parse(response.data.API_Call.data)
         console.log(businesses)
+        setState({...state , restaurants:businesses.businesses})
+
        }catch(error){
         console.log(error)
        }
