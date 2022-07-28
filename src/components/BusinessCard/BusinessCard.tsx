@@ -6,7 +6,6 @@ export default function BusinessCard({business,index, setWelcomeState , welcomeS
     const [state,setState] = React.useState('')
 
     function goNext(dir){
-        //yes
         if(index < welcomeState.ratings.length - 1){
             setWelcomeState({
                 ...welcomeState,
