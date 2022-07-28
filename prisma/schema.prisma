@@ -11,13 +11,23 @@ datasource db {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  name      String
-  email     String   @unique
-  password  String
+  id       Int    @id @default(autoincrement())
+  name     String
+  email    String @unique
+  password String
+  Mood     Mood[]
 }
 
 model Api {
-  id    Int   @id @default(autoincrement())
-  data  String 
+  id   Int    @id @default(autoincrement())
+  data String
+}
+
+model Mood {
+  id          Int    @id @default(autoincrement())
+  name        String
+  categories  String
+  price       Int
+  createdBy   User   @relation(fields: [createdById], references: [id])
+  createdById Int
 }

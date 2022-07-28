@@ -36,6 +36,12 @@ export interface NexusGenObjects {
     token: string; // String!
     user: NexusGenRootTypes['User']; // User!
   }
+  Mood: { // root type
+    categories: string; // String!
+    id: number; // Int!
+    name: string; // String!
+    price: number; // Int!
+  }
   Mutation: {};
   Query: {};
   User: { // root type
@@ -65,8 +71,16 @@ export interface NexusGenFieldTypes {
     token: string; // String!
     user: NexusGenRootTypes['User']; // User!
   }
+  Mood: { // field return type
+    categories: string; // String!
+    createdBy: NexusGenRootTypes['User']; // User!
+    id: number; // Int!
+    name: string; // String!
+    price: number; // Int!
+  }
   Mutation: { // field return type
     API_Call: NexusGenRootTypes['API']; // API!
+    create: NexusGenRootTypes['Mood']; // Mood!
     login: NexusGenRootTypes['AuthPayload']; // AuthPayload!
     signup: NexusGenRootTypes['AuthPayload']; // AuthPayload!
   }
@@ -90,8 +104,16 @@ export interface NexusGenFieldTypeNames {
     token: 'String'
     user: 'User'
   }
+  Mood: { // field return type name
+    categories: 'String'
+    createdBy: 'User'
+    id: 'Int'
+    name: 'String'
+    price: 'Int'
+  }
   Mutation: { // field return type name
     API_Call: 'API'
+    create: 'Mood'
     login: 'AuthPayload'
     signup: 'AuthPayload'
   }
@@ -110,6 +132,12 @@ export interface NexusGenArgTypes {
   Mutation: {
     API_Call: { // args
       query: string; // String!
+    }
+    create: { // args
+      categories: string; // String!
+      name: string; // String!
+      price: number; // Int!
+      token: string; // String!
     }
     login: { // args
       email: string; // String!

@@ -12,8 +12,17 @@ type AuthPayload {
   user: User!
 }
 
+type Mood {
+  categories: String!
+  createdBy: User!
+  id: Int!
+  name: String!
+  price: Int!
+}
+
 type Mutation {
   API_Call(query: String!): API!
+  create(categories: String!, name: String!, price: Int!, token: String!): Mood!
   login(email: String!, password: String!): AuthPayload!
   signup(email: String!, name: String!, password: String!): AuthPayload!
 }

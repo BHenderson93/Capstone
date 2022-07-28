@@ -4,20 +4,41 @@ import { extendType, nonNull, objectType, stringArg, intArg } from "nexus";
 export const Mood = objectType({
     name: "Mood",
     definition(t) {
+        t.nonNull.int('id')
+        t.nonNull.string('name')
+        t.nonNull.string('categories')
+        t.nonNull.int('price')
         t.nonNull.field('createdBy', {
             type: 'User',
-            args: {
-                token: nonNull(stringArg())
-            },
             resolve(parent, args, context) {
-                jwt.verify(args.token, String(process.env.APP_SECRET), (err, decoded) => {
-                    const payload = JSON.parse(window.atob(decoded.split('.')[1]))
-                    if (err || payload.exp < Date.now() / 1000) {
-                        throw new Error("Invalid token.")
+                return context.prisma.mood.findUnique({
+                    where: { id: parent.id }
+                }).createdBy()
+            }
+        })
+
+    }
+})
+
+export const MoodMutation = extendType({
+    type: "Mutation",
+    definition(t) {
+        t.nonNull.field('create', {
+            type: "Mood",
+            args: {
+                name: nonNull(stringArg()),
+                categories: nonNull(stringArg()),
+                price: nonNull(intArg()),
+            },
+            resolve(parent, args, context, info) {
+
+                return context.prisma.mood.create({
+                    data: {
+                        name: args.name,
+                        categories: args.categories,
+                        price: args.price,
+                        createdBy: { connect: { id: user.id } }
                     }
-                    return context.prisma.link.findUnique({
-                        where: { email: payload.email }
-                    })
                 })
             }
         })
