@@ -6,7 +6,7 @@ export default function BusinessCard({business,index, setWelcomeState , welcomeS
     const [state,setState] = React.useState('')
 
     function goNext(dir){
-        if(index < welcomeState.ratings.length - 1){
+        if((dir > 0 && index < welcomeState.ratings.length - 1) || (dir < 0 && index > 0) ){
             setWelcomeState({
                 ...welcomeState,
                 index:(index+dir)
@@ -36,6 +36,7 @@ export default function BusinessCard({business,index, setWelcomeState , welcomeS
                     <button type="submit">Rate!</button>
                 </form>
                 <button onClick={()=>{goNext(1)}} >Next!</button>
+                <button onClick={()=>{goNext(-1)}} >Prev!</button>
                 
         </div>
     )
