@@ -41,17 +41,17 @@ export default function App() {
     moods:[]
   })
 
-  const MOODQUERY = gql`
+/*   const MOODQUERY = gql`
   query usermoods( $token:String!){
       usermoods(token:$token){
-          data
+        usermoods
         }            
   }`
   const [moodquery , { data,loading,error}] = useLazyQuery(MOODQUERY,{
     variables:{
       token:localStorage.getItem('token')
     }
-  })
+  }) */
 
   React.useEffect(()=>{
     const token = localStorage.getItem('token')
@@ -71,10 +71,10 @@ export default function App() {
       }else{
 /*         const moodList = moodquery()
         console.log("Returned moodlist is " , moodList)
-
+ */
         setApp({
           ...app
-        }) */
+        })
         return
       }
 

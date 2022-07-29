@@ -1,13 +1,13 @@
 import * as React from 'react'
 import MoodCard from '../MoodCard/MoodCard'
 
-export default function MoodList({moods}){
-    console.log("Moods list moods " , moods)
+export default function MoodList({moods , moodsPage , setMoodsPage}){
+    //console.log("Moods list moods " , moods)
     return (
-        <div className="container flex flex-row overflow-scroll">
+        <ul className="overflow-scroll">
         {moods.map((mood,idx)=>
-            <MoodCard key={idx}mood={mood}/>
+            <MoodCard key={idx}mood={mood} moodsPage={moodsPage} setMoodsPage={setMoodsPage}/>
         )}
-        </div>
+        </ul>
     )
 }

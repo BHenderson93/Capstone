@@ -12,10 +12,12 @@ import {
 } from "@apollo/client";
 const container = document.getElementById('root')
 const root = RDC.createRoot(container!)
+
 const client = new ApolloClient({
   uri: `http://localhost:3000`,
   cache: new InMemoryCache()
 });
+
 root.render(
   <React.StrictMode>
     <ApolloProvider client={client}>

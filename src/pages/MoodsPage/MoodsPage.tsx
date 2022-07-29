@@ -2,12 +2,14 @@ import * as React from 'react'
 import { useMutation, gql } from '@apollo/client'
 import { AppState } from '../App/App'
 import MoodList from '../../components/MoodList/MoodList'
+import './MoodsPage.css'
 
 export interface MoodsPageState{
-    isLoading: boolean,
-    name: string,
-    categories: string,
+    isLoading: boolean
+    name: string
+    categories: string
     price: number
+    id: number | null
 }
 
 export interface MoodsPageProps{
@@ -16,19 +18,7 @@ export interface MoodsPageProps{
 }
 
 
-const NEW_MOOD = gql`
-mutation Create($name: String!, $categories: String!, $price: Int!, $token: String!) {
-  create(name: $name, categories: $categories, price: $price, token: $token) {
-    id
-    name
-    categories
-    price
-    createdBy{
-        name
-    }
-  }
-}
-`
+
 
 export default function MoodsPage({ app , setApp}:MoodsPageProps){
     
@@ -36,17 +26,11 @@ export default function MoodsPage({ app , setApp}:MoodsPageProps){
         isLoading: false,
         name:'',
         categories:'',
-        price:0
+        price:0,
+        id: null
     })
 
-    const [newMood , {data, loading, error}] = useMutation(NEW_MOOD , {
-        variables:{
-            name:state.name,
-            categories:state.categories,
-            price:state.price,
-            token:localStorage.getItem('token')
-        }
-    })
+
 
     function changeName(e){
         if(e.target.value.length < 50){
@@ -65,25 +49,80 @@ export default function MoodsPage({ app , setApp}:MoodsPageProps){
             setState({...state , price:Number(e.target.value)})
          }
     }
+    const NEW_MOOD = gql`
+    mutation Create($name: String!, $categories: String!, $price: Int!, $token: String!) {
+      create(name: $name, categories: $categories, price: $price, token: $token) {
+        id
+        name
+        categories
+        price
+        createdBy{
+            name
+        }
+      }
+    }
+    `
+    const [newMood , {data:newMoodData}] = useMutation(NEW_MOOD , {
+        variables:{
+            name:state.name,
+            categories:state.categories,
+            price:state.price,
+            token:localStorage.getItem('token')
+        }
+    })
+
+    const UPDATE_MOOD = gql`
+        mutation Update($categories: String!, $id: Int!, $name: String!, $price: Int!, $token: String!){
+            update(categories:$categories , id:$id , name:$name , price:$price , token:$token){
+                id
+                name
+            }            
+        }
+    `
+
+    const [updateMood , {data:updateMoodData}] = useMutation(UPDATE_MOOD , {
+        variables:{
+            categories:state.categories,
+            id: state.id,
+            name: state.name,
+            price: state.price,
+            token:localStorage.getItem('token')
+        }
+    })
 
     async function handleSubmit(e){
         e.preventDefault()
-        if( state.name && state.categories && state.price && localStorage.getItem('token')){
-            console.log('Entering try block2 with ' , [state.name,state.categories,typeof state.price,localStorage.getItem('token')])
-
-            newMood().then((res)=>{
+        if(state.id && state.name && state.categories && state.price && localStorage.getItem('token')){
+            updateMood().then((res)=>{
                 console.log(res)
             }).catch((err)=>{
                 console.log(err)
             })
         }
+        if( state.name && state.categories && state.price && localStorage.getItem('token')){
+
+            newMood().then((res)=>{
+                console.log(res)
+                setState({
+                    isLoading: false,
+                    name:'',
+                    categories:'',
+                    price:0,
+                    id: null
+                })
+            }).catch((err)=>{
+                console.log(err)
+            })
+
+
+        }
     }
-    console.log("Moods page moods " , app.moods)
+    //console.log("Moods page moods " , app.moods)
     return(
     <main>
         <h1>Moods</h1>
         <div className="container">
-        <MoodList moods={app.moods}/>
+        <MoodList moods={app.moods} moodsPage={state} setMoodsPage={setState}/>
 
         { state.isLoading? 
             <h1>Loading...</h1>
