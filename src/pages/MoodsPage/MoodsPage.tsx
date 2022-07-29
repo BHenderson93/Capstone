@@ -3,6 +3,7 @@ import { useMutation, gql } from '@apollo/client'
 import { AppState } from '../App/App'
 import MoodList from '../../components/MoodList/MoodList'
 import './MoodsPage.css'
+import {Mood} from '../App/App'
 
 export interface MoodsPageState{
     isLoading: boolean
@@ -15,9 +16,10 @@ export interface MoodsPageState{
 export interface MoodsPageProps{
     app: AppState,
     setApp: React.Dispatch<React.SetStateAction<any>>
+    moods: Mood[]
 }
 
-export default function MoodsPage({ app , setApp}:MoodsPageProps){
+export default function MoodsPage({ app , setApp , moods}:MoodsPageProps){
     
     const [state,setState]=React.useState<MoodsPageState>({
         isLoading: false,

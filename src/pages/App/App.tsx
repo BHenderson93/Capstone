@@ -87,7 +87,7 @@ export default function App() {
             <Route path="/profile"
               element={<ProfilePage />} />
             <Route path="/moods"
-              element={<MoodsPage app={app} setApp={setApp} />} />
+              element={<MoodsPage app={app} setApp={setApp} moods={app.moods}/>} />
             <Route path="/*"
               element={<Navigate to='/welcome' />} />
           </Routes>

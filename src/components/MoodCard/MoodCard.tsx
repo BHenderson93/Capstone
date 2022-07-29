@@ -20,10 +20,10 @@ export default function MoodCard({mood , moodsPage , setMoodsPage , app , setApp
     async function handleDelete(){
         console.log('Someone clicked delete')
         const deleted = await deleteMood()
-        let newMoods = app.moods.splice(app.moods.filter(m => m.id !== deleted.data.delete.id ))
+                    
         setApp({
             ...app,
-            moods: newMoods
+            moods: app.moods.filter(x=> x.id !== deleted.data.delete.id)
         })
         console.log(deleted)
     }
