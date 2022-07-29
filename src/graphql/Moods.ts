@@ -1,4 +1,4 @@
-import { extendType, nonNull, objectType, stringArg, intArg } from "nexus";
+import { extendType, nonNull, objectType, stringArg, intArg, idArg } from "nexus";
 import * as jwt from "jsonwebtoken";
 import { decode } from "punycode";
 export const Mood = objectType({
@@ -19,12 +19,12 @@ export const Mood = objectType({
     }
 })
 
-export interface Payload{
+interface Payload{
     user: UserInfo,
     iat: number
 }
 
-export interface UserInfo{
+interface UserInfo{
     id: number,
     name: string,
     email: string
@@ -33,7 +33,7 @@ export interface UserInfo{
 export const MoodMutation = extendType({
     type: "Mutation",
     definition(t) {
-        t.nonNull.field('create', {
+        t.nonNull.field("create", {
             type: "Mood",
             args: {
                 name: nonNull(stringArg()),
@@ -59,6 +59,32 @@ export const MoodMutation = extendType({
                     throw new Error ('Please submit valid token with this request. Unable to verify user.')
                 }
 
+            }
+        }),
+        t.nonNull.field("update" , {
+            type:"Mood",
+            args:{
+                id:nonNull(intArg()),
+                name: nonNull(stringArg()),
+                categories: nonNull(stringArg()),
+                price: nonNull(intArg()),
+                token: nonNull(stringArg())
+            },
+            async resolve(parent, args, context , info){
+                const {user} = jwt.verify(args.token, String(process.env.APP_SECRET)) as Payload
+                if(user){
+                    const mood = await context.prisma.mood.update({
+                        where: { id: args.id },
+                        data:{
+                            name:args.name,
+                            categories:args.categories,
+                            price:args.price
+                        }
+                    })
+                    return mood
+                }else{
+                    throw new Error("Invalid JWT for update.")
+                }
             }
         })
     }

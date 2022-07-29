@@ -83,9 +83,10 @@ export interface NexusGenFieldTypes {
     create: NexusGenRootTypes['Mood']; // Mood!
     login: NexusGenRootTypes['AuthPayload']; // AuthPayload!
     signup: NexusGenRootTypes['AuthPayload']; // AuthPayload!
+    update: NexusGenRootTypes['Mood']; // Mood!
   }
   Query: { // field return type
-    userslist: NexusGenRootTypes['User'][]; // [User!]!
+    usermoods: NexusGenRootTypes['Mood'][]; // [Mood!]!
   }
   User: { // field return type
     email: string; // String!
@@ -117,9 +118,10 @@ export interface NexusGenFieldTypeNames {
     create: 'Mood'
     login: 'AuthPayload'
     signup: 'AuthPayload'
+    update: 'Mood'
   }
   Query: { // field return type name
-    userslist: 'User'
+    usermoods: 'Mood'
   }
   User: { // field return type name
     email: 'String'
@@ -149,6 +151,18 @@ export interface NexusGenArgTypes {
       email: string; // String!
       name: string; // String!
       password: string; // String!
+    }
+    update: { // args
+      categories: string; // String!
+      id: number; // Int!
+      name: string; // String!
+      price: number; // Int!
+      token: string; // String!
+    }
+  }
+  Query: {
+    usermoods: { // args
+      token: string; // String!
     }
   }
 }

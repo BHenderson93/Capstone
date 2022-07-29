@@ -14,6 +14,8 @@ export default function LoginForm({ app, setApp }: LoginProps) {
         valid: true
     })
 
+
+
     const LOGIN = gql`
         mutation login( $email:String!, $password:String!){
             login(email:$email , password:$password){
@@ -21,6 +23,12 @@ export default function LoginForm({ app, setApp }: LoginProps) {
                 user{
                     email,
                     name,
+                    moods{
+                        id
+                        name
+                        categories
+                        price
+                    }
                 }
             }            
         }
@@ -37,17 +45,17 @@ export default function LoginForm({ app, setApp }: LoginProps) {
         e.preventDefault()
         try{
             const response = await login()
-            //console.log("Got this data back after signup ", response.data)
+            console.log("Got this data back after signup ", response.data)
             const token = response.data.login.token
             const user = response.data.login.user.name
+            const moods = response.data.login.user.moods
             localStorage.setItem('token', token)
-            setApp({ ...app, user: user })
+            setApp({ ...app, user: user , moods:moods})
             return null
         }catch(error){
             //console.log(error)
             setState({...state , valid:false })
         }
-
     }
 
     function handleChange(e: React.ChangeEvent<HTMLInputElement>) {

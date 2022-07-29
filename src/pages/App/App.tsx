@@ -7,7 +7,8 @@ import {
   InMemoryCache,
   ApolloProvider,
   useQuery,
-  gql
+  gql,
+  useMutation
 } from "@apollo/client";
 
 // Pages and components
@@ -23,11 +24,13 @@ import Layout from "../../components/Layout/Layout";
 export interface AppState {
   user: string
   mount: boolean
+  moods: []
 }
 export default function App() {
   const [app, setApp] = React.useState<AppState>({
     user: '',
-    mount: true
+    mount: true,
+    moods:[]
   })
 
   const client = new ApolloClient({
@@ -60,7 +63,7 @@ export default function App() {
     }else{
       return
     }
-  } , [app])
+  } , [app.user])
 
  
   return (

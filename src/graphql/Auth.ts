@@ -72,7 +72,9 @@ export const AuthMutation = extendType({
                 }
                 const {password , ...noPass} = user
                 const token = jwt.sign({ user: noPass}, APP_SECRET);
-                
+/*                 const moods = context.prisma.mood.findMany({
+                    where: { createdById:user.id }
+                }) */
                 return {
                     token,
                     user,

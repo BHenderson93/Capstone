@@ -25,10 +25,11 @@ type Mutation {
   create(categories: String!, name: String!, price: Int!, token: String!): Mood!
   login(email: String!, password: String!): AuthPayload!
   signup(email: String!, name: String!, password: String!): AuthPayload!
+  update(categories: String!, id: Int!, name: String!, price: Int!, token: String!): Mood!
 }
 
 type Query {
-  userslist: [User!]!
+  usermoods(token: String!): [Mood!]!
 }
 
 type User {
