@@ -47,7 +47,7 @@ export default function LoginForm({ app, setApp }: LoginProps) {
             const user = response.data.login.user.name
             const moods = response.data.login.user.moods
             localStorage.setItem('token', token)
-            setApp({ ...app, user: user , moods:moods})
+            setApp({ ...app, user: user })
             return null
         }catch(error){
             //console.log(error)

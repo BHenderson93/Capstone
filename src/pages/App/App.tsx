@@ -1,7 +1,7 @@
 //React
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { Routes, Route, useNavigate , Navigate} from 'react-router-dom'
+import { Routes, Route, useNavigate, Navigate } from 'react-router-dom'
 import {
   ApolloClient,
   InMemoryCache,
@@ -24,21 +24,21 @@ import Layout from "../../components/Layout/Layout";
 
 export interface AppState {
   user: string
-  mount: boolean
+  reload: boolean
   moods: Mood[]
 }
-export interface Mood{
-  id?:number
-  name?:string
-  categories?:string
-  price?:number
+export interface Mood {
+  id?: number
+  name?: string
+  categories?: string
+  price?: number
 }
 
 export default function App() {
   const [app, setApp] = React.useState<AppState>({
     user: '',
-    mount: true,
-    moods:[]
+    reload: false,
+    moods: []
   })
 
   const MOODQUERY = gql`
@@ -50,83 +50,61 @@ export default function App() {
           categories
           }            
     }`
-  const [moodquery , { data,loading,error}] = useLazyQuery(MOODQUERY,{
-    variables:{
-      token:localStorage.getItem('token')
+  const [moodquery, { data, loading, error }] = useLazyQuery(MOODQUERY, {
+    variables: {
+      token: localStorage.getItem('token')
     }
   })
   const nav = useNavigate()
-  React.useEffect(()=>{
+  React.useEffect(() => {
     const token = localStorage.getItem('token')
-
-    if(token){
+    if (token) {
       const payload = JSON.parse(window.atob(token.split('.')[1]))
-      //console.log(payload)
-
-      if (payload.exp < Date.now() / 1000){
-        console.log('Token expired.')
-        localStorage.removeItem('token')
-        setApp({
-          user: '',
-          mount: true,
-          moods:[]
-        })
-      }else if(payload.user.name !== app.user){
-        //console.log('App username doesnt match token... Hmmmm')
-        localStorage.removeItem('token')
-        setApp({...app , user: ''})
-        nav('/')
-      }else{
-        const moodList = async () =>{
-          console.log('Updating mood list...')
-          moodquery().then((res)=>{
-            console.log("res is" ,res)
+        const moodList = async () => {
+          //console.log('Updating mood list...')
+          moodquery().then((res) => {
+            //console.log("res is" ,res)
             setApp({
               ...app,
-              moods:res.data.usermoods
+              moods: res.data.usermoods,
+              user:payload.user.name
             })
-            return res.data.usermoods
           })
         }
         moodList()
+        console.log('should have just updated mood list')
       }
+  }, [app.user])
 
-    }else if(app.user || app.moods){
-      setApp({...app , user:'' ,mount: true, moods:[]})
-      nav('/')
-    }
-  } , [app.user])
-
- 
   return (
 
-      <Layout app={app} setApp={setApp}>
-        {
-          app.user ? (
-            <Routes>
-              <Route path="/welcome"
-                element={<WelcomePage />} />
-              <Route path="/profile"
-                element={<ProfilePage />} />
-              <Route path="/moods" 
-              element={<MoodsPage app={app} setApp={setApp}/>}/>
-              <Route path="/*"
-                element={<Navigate to='/welcome' />} />
-            </Routes>
-          ) : (
-            <Routes>
-              <Route path="/"
-                element={<HomePage />} />
-              <Route path="/login"
-                element={<LoginPage setApp={setApp}  app={app}/>} />
-              <Route path="/signup"
-                element={<SignupPage setApp={setApp} app={app}/>}
-                 />
-              <Route path="/*"
-                element={<Navigate to='/' />} />
-            </Routes>
-          )
-        }
-      </Layout >
+    <Layout app={app} setApp={setApp}>
+      {
+        app.user ? (
+          <Routes>
+            <Route path="/welcome"
+              element={<WelcomePage />} />
+            <Route path="/profile"
+              element={<ProfilePage />} />
+            <Route path="/moods"
+              element={<MoodsPage app={app} setApp={setApp} />} />
+            <Route path="/*"
+              element={<Navigate to='/welcome' />} />
+          </Routes>
+        ) : (
+          <Routes>
+            <Route path="/"
+              element={<HomePage />} />
+            <Route path="/login"
+              element={<LoginPage setApp={setApp} app={app} />} />
+            <Route path="/signup"
+              element={<SignupPage setApp={setApp} app={app} />}
+            />
+            <Route path="/*"
+              element={<Navigate to='/' />} />
+          </Routes>
+        )
+      }
+    </Layout >
   )
 }

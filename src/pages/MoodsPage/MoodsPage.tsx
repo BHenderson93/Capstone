@@ -109,8 +109,9 @@ export default function MoodsPage({ app , setApp}:MoodsPageProps){
                 })
                 setApp({
                     ...app,
-                    user:''
+                    moods:[]
                 })
+                console.log('messed with app user.')
             }).catch((err)=>{
                 console.log(err)
             })
@@ -123,7 +124,7 @@ export default function MoodsPage({ app , setApp}:MoodsPageProps){
     <main>
         <h1>Moods</h1>
         <div className="container">
-        <MoodList moods={app.moods} moodsPage={state} setMoodsPage={setState}/>
+        <MoodList moods={app.moods} moodsPage={state} setMoodsPage={setState} app={app} setApp={setApp}/>
         {/* Below should be modularized to a mood card. */}
         { state.isLoading? 
             <h1>Loading...</h1>

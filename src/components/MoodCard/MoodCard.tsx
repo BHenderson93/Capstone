@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { gql , useMutation } from '@apollo/client'
 
-export default function MoodCard({mood , moodsPage , setMoodsPage}){
+export default function MoodCard({mood , moodsPage , setMoodsPage , app , setApp}){
     //console.log(mood)
     const DELETE_MOOD=gql`
     mutation Delete($id: Int!, $token: String!){
@@ -20,6 +20,11 @@ export default function MoodCard({mood , moodsPage , setMoodsPage}){
     async function handleDelete(){
         console.log('Someone clicked delete')
         const deleted = await deleteMood()
+        let newMoods = app.moods.splice(app.moods.filter(m => m.id !== deleted.data.delete.id ))
+        setApp({
+            ...app,
+            moods: newMoods
+        })
         console.log(deleted)
     }
     function handleEdit(){
