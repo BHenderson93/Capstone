@@ -30,11 +30,13 @@ export default function MoodCard({mood , moodsPage , setMoodsPage , app , setApp
     function handleEdit(){
         const { name, id, categories, price } = mood
         setMoodsPage({
-            isLoading: false,
-            name,
-            id,
-            categories,
-            price
+            ...moodsPage,
+            initialState:{
+                name:name,
+                id:id,
+                categories:categories,
+                price:price
+            }
         })
     }
     return (

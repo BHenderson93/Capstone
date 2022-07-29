@@ -1,15 +1,10 @@
 import * as React from 'react'
 import {gql, useMutation} from '@apollo/client'
-
-export default function MoodForm({app, setApp, initialState}){
+import {InitialState} from '../../pages/MoodsPage/MoodsPage'
+export default function MoodForm({app, handleNewMood, initialState}){
     const {name, categories, price, id} = initialState
 
-    const [state, setState]=React.useState({
-        name,
-        categories,
-        price,
-        id
-    })       
+    const [state, setState]=React.useState<InitialState>(initialState)       
 
     function changeName(e){
         if(e.target.value.length < 50){
@@ -81,30 +76,14 @@ export default function MoodForm({app, setApp, initialState}){
         if( state.name && state.categories && state.price && localStorage.getItem('token')){
 
             newMood().then((res)=>{
-                console.log("new mood res is " , res)
-
-                setState({
-                    name:'',
-                    categories:'',
-                    price:0,
-                    id: null
-                })
                 const {id, name, categories, price} = res.data.create
-                let newMoods = [...app.moods]
-                console.log('Newmoods pre addition is ' , newMoods)
                 const addMood = {
                     id:id,
                     name:name,
                     categories:categories,
                     price:price
                 }
-                newMoods.push(addMood)
-                console.log('Newmoods post addition is ' , newMoods)
-                setApp({
-                    ...app,
-                    moods: newMoods
-                })
-                console.log('messed with app user.')
+                handleNewMood(addMood)
             }).catch((err)=>{
                 console.log(err)
             })

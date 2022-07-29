@@ -8,7 +8,14 @@ import {Mood} from '../App/App'
 
 export interface MoodsPageState{
     isLoading: boolean
-    initialState:{}
+    initialState:InitialState
+}
+
+export interface InitialState{
+    id:number | null
+    name:string
+    categories:string
+    price:number
 }
 
 export interface MoodsPageProps{
@@ -22,9 +29,30 @@ export default function MoodsPage({ app , setApp , moods}:MoodsPageProps){
     const [state,setState]=React.useState<MoodsPageState>({
         isLoading: false,
         initialState:{
-
+            id: null,
+            name:'',
+            categories:'',
+            price:2
         }
     })
+
+    function handleNewMood(newMood){
+        console.log('handling new mood' , newMood)
+        setApp({
+            ...app,
+            moods: [...app.moods , newMood]
+        })
+
+        setState({
+            ...state,
+            initialState:{
+                name:'',
+                categories:'',
+                price:2,
+                id: null
+            }
+        })
+    }
 
     //console.log("Moods page moods " , app.moods)
     return(
@@ -36,7 +64,7 @@ export default function MoodsPage({ app , setApp , moods}:MoodsPageProps){
         { state.isLoading? 
             <h1>Loading...</h1>
             :
-            <MoodForm app={app} setApp={setApp} initialState={state.initialState}/>
+            <MoodForm app={app} handleNewMood={handleNewMood} initialState={state.initialState}/>
         }   
         </div>
     </main>
