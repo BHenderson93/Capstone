@@ -1,22 +1,38 @@
 import * as React from 'react'
 import { useMutation, gql } from '@apollo/client'
 
+interface Props{
+    isLoading: boolean,
+    name: string,
+    categories: string,
+    price: number
+}
+
 export default function MoodsPage(){
-    const [state,setState]=React.useState({
+    const [state,setState]=React.useState<Props>({
         isLoading: false,
         name:'',
         categories:'',
         price:0
     })
 
-    const NEWMOOD = gql`
-    mutation create($query: String!) {
-        API_Call(query: $query) {
-            data
-        }
-    }
+    const NEW_MOOD = gql`
+mutation Create($name: String!, $categories: String!, $price: Int!, $token: String!) {
+  create(name: $name, categories: $categories, price: $price, token: $token) {
+    id
+    name
+  }
+}
 `
 
+    const [newMood , {data, loading, error}] = useMutation(NEW_MOOD , {
+        variables:{
+            name:state.name,
+            categories:state.categories,
+            price:state.price,
+            token:localStorage.getItem('token')
+        }
+    })
     function changeName(e){
         if(e.target.value.length < 50){
             setState({...state, name:e.target.value})
@@ -30,13 +46,21 @@ export default function MoodsPage(){
 
     function changePrice(e){
         if(e.target.value < 6 && e.target.value > 0){
-            setState({...state , price:e.target.value})
+            setState({...state , price:Number(e.target.value)})
          }
     }
 
-    function handleSubmit(e){
+    async function handleSubmit(e){
         e.preventDefault()
-        
+        if( state.name && state.categories && state.price && localStorage.getItem('token')){
+            console.log('Entering try block2 with ' , [state.name,state.categories,typeof state.price,localStorage.getItem('token')])
+
+            newMood().then((res)=>{
+                console.log(res)
+            }).catch((err)=>{
+                console.log(err)
+            })
+        }
     }
 
     return(

@@ -38,7 +38,6 @@ export interface NexusGenObjects {
   }
   Mood: { // root type
     categories: string; // String!
-    createdById?: number | null; // Int
     id: number; // Int!
     name: string; // String!
     price: number; // Int!
@@ -74,7 +73,7 @@ export interface NexusGenFieldTypes {
   }
   Mood: { // field return type
     categories: string; // String!
-    createdById: number | null; // Int
+    createdBy: NexusGenRootTypes['User'] | null; // User
     id: number; // Int!
     name: string; // String!
     price: number; // Int!
@@ -107,7 +106,7 @@ export interface NexusGenFieldTypeNames {
   }
   Mood: { // field return type name
     categories: 'String'
-    createdById: 'Int'
+    createdBy: 'User'
     id: 'Int'
     name: 'String'
     price: 'Int'
@@ -138,6 +137,7 @@ export interface NexusGenArgTypes {
       categories: string; // String!
       name: string; // String!
       price: number; // Int!
+      token: string; // String!
     }
     login: { // args
       email: string; // String!

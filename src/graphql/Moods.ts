@@ -1,5 +1,6 @@
 import { extendType, nonNull, objectType, stringArg, intArg } from "nexus";
-
+import * as jwt from "jsonwebtoken";
+import { decode } from "punycode";
 export const Mood = objectType({
     name: "Mood",
     definition(t) {
@@ -18,6 +19,17 @@ export const Mood = objectType({
     }
 })
 
+export interface Payload{
+    user: UserInfo,
+    iat: number
+}
+
+export interface UserInfo{
+    id: number,
+    name: string,
+    email: string
+}
+
 export const MoodMutation = extendType({
     type: "Mutation",
     definition(t) {
@@ -27,17 +39,19 @@ export const MoodMutation = extendType({
                 name: nonNull(stringArg()),
                 categories: nonNull(stringArg()),
                 price: nonNull(intArg()),
+                token: nonNull(stringArg())
             },
             async resolve(parent, args, context, info) {
-
+                const {user} = jwt.verify(args.token, String(process.env.APP_SECRET)) as Payload
+                console.log('Attempting create for ' , user)
                 const { name , categories, price } = args
-                if(context.user){
+                if(user){
                     const newMood = context.prisma.mood.create({
                         data: {
                             name,
                             categories,
                             price,
-                            createdBy: { connect: { id: context.user.id}}
+                            createdBy: { connect: { id: user.id}}
                         }
                     })
                     return newMood
