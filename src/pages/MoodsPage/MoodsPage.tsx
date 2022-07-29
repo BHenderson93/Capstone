@@ -17,9 +17,6 @@ export interface MoodsPageProps{
     setApp: React.Dispatch<React.SetStateAction<any>>
 }
 
-
-
-
 export default function MoodsPage({ app , setApp}:MoodsPageProps){
     
     const [state,setState]=React.useState<MoodsPageState>({
