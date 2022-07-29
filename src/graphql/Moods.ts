@@ -7,10 +7,10 @@ export const Mood = objectType({
         t.nonNull.string('name')
         t.nonNull.string('categories')
         t.nonNull.int('price')
-        t.nonNull.field("createdBy" , {
+        t.field("createdBy" , {
             type: "User",
             resolve(parent , args, context){
-                return context.prisma.mood.findUnique({
+                return context.prisma.mood.findFirst({
                     where: { id: parent.id }
                 }).createdBy()
             }
