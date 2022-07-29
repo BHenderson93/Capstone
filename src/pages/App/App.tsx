@@ -41,17 +41,20 @@ export default function App() {
     moods:[]
   })
 
-/*   const MOODQUERY = gql`
-  query usermoods( $token:String!){
-      usermoods(token:$token){
-        usermoods
-        }            
-  }`
+  const MOODQUERY = gql`
+    query Usermoods( $token:String!){
+        usermoods(token:$token){
+          id
+          name
+          price
+          categories
+          }            
+    }`
   const [moodquery , { data,loading,error}] = useLazyQuery(MOODQUERY,{
     variables:{
       token:localStorage.getItem('token')
     }
-  }) */
+  })
 
   React.useEffect(()=>{
     const token = localStorage.getItem('token')
@@ -69,13 +72,18 @@ export default function App() {
         setApp({...app , user: payload.user.name})
 
       }else{
-/*         const moodList = moodquery()
-        console.log("Returned moodlist is " , moodList)
- */
-        setApp({
-          ...app
-        })
-        return
+        const moodList = async () =>{
+          console.log('Updating mood list...')
+          moodquery().then((res)=>{
+            console.log("res is" ,res)
+            setApp({
+              ...app,
+              moods:res.data.usermoods
+            })
+            return res.data.usermoods
+          })
+        }
+        moodList()
       }
 
     }else if(app.user){
@@ -84,7 +92,7 @@ export default function App() {
     }else{
       return
     }
-  } , [app.user])
+  } , [app.user ])
 
  
   return (

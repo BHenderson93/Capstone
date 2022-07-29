@@ -30,7 +30,6 @@ export const MoodQuery = extendType({
                 const moodList = context.prisma.mood.findMany({
                     where: { createdById: context.user?.id }
                 })
-                console.log("moods list is ", moodList)
                 return moodList
             }
         })
@@ -98,7 +97,7 @@ export const MoodMutation = extendType({
                                 ]
                             }
                         })
-                        if (moodRecord.createdById) {
+                        if (moodRecord) {
                             return await context.prisma.mood.update({
                                 where: { id: args.id },
                                 data: {
@@ -123,6 +122,7 @@ export const MoodMutation = extendType({
                 token: nonNull(stringArg())
             },
             async resolve(parent, args, context, info) {
+                console.log('In delete resolver')
                 const { user } = context
                 if (user) {
                     const record = await context.prisma.mood.findMany({

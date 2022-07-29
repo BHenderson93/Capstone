@@ -18,6 +18,7 @@ export default function MoodCard({mood , moodsPage , setMoodsPage}){
         }
     })
     async function handleDelete(){
+        console.log('Someone clicked delete')
         const deleted = await deleteMood()
         console.log(deleted)
     }
