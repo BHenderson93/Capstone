@@ -34,6 +34,7 @@ type Query {
 type User {
   email: String!
   id: Int!
+  moods: [Mood!]!
   name: String!
   password: String!
 }

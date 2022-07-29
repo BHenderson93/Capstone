@@ -21,6 +21,11 @@ mutation Create($name: String!, $categories: String!, $price: Int!, $token: Stri
   create(name: $name, categories: $categories, price: $price, token: $token) {
     id
     name
+    categories
+    price
+    createdBy{
+        name
+    }
   }
 }
 `

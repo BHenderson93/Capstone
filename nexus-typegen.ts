@@ -90,6 +90,7 @@ export interface NexusGenFieldTypes {
   User: { // field return type
     email: string; // String!
     id: number; // Int!
+    moods: NexusGenRootTypes['Mood'][]; // [Mood!]!
     name: string; // String!
     password: string; // String!
   }
@@ -123,6 +124,7 @@ export interface NexusGenFieldTypeNames {
   User: { // field return type name
     email: 'String'
     id: 'Int'
+    moods: 'Mood'
     name: 'String'
     password: 'String'
   }
