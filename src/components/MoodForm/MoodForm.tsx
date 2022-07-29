@@ -2,7 +2,7 @@ import * as React from 'react'
 import {gql, useMutation} from '@apollo/client'
 import {InitialState} from '../../pages/MoodsPage/MoodsPage'
 
-export default function MoodForm({handleNewMood, initialState, refresh}){
+export default function MoodForm({handleNewMood, initialState, handleUpdateMood, refresh}){
     const {id, name, categories, price} = initialState
 
     const [state, setState]=React.useState<InitialState>({
@@ -67,6 +67,8 @@ export default function MoodForm({handleNewMood, initialState, refresh}){
             update(categories:$categories , id:$id , name:$name , price:$price , token:$token){
                 id
                 name
+                categories
+                price
             }            
         }
     `
@@ -83,14 +85,14 @@ export default function MoodForm({handleNewMood, initialState, refresh}){
 
     async function handleSubmit(e){
         e.preventDefault()
-        if(state.id && state.name && state.categories && state.price && localStorage.getItem('token')){
+        if(state.id){
             updateMood().then((res)=>{
                 console.log(res)
+                handleUpdateMood(res.data.update)
             }).catch((err)=>{
                 console.log(err)
             })
-        }
-        if( state.name && state.categories && state.price && localStorage.getItem('token')){
+        }else{
 
             newMood().then((res)=>{
                 const {id, name, categories, price} = res.data.create

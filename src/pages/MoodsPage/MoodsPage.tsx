@@ -69,7 +69,24 @@ export default function MoodsPage({ app , setApp , moods}:MoodsPageProps){
     }
 
     function handleUpdateMood(updatedMood){
-
+        console.log('Update mood is ' ,updatedMood)
+        let newMoods = [...moods].filter(x=>x.id!==updatedMood.id)
+        newMoods.push(updatedMood)
+        console.log('newMoods is ', newMoods)
+        setApp({
+            ...app,
+            moods:newMoods
+        })
+        setState({
+            ...state,
+            initialState:{
+                id: null,
+                name:'',
+                categories:'',
+                price:2
+            },
+            refresh:!state.refresh
+        })
     }
     //console.log("Moods page moods " , app.moods)
     return(
@@ -77,7 +94,7 @@ export default function MoodsPage({ app , setApp , moods}:MoodsPageProps){
         <h1>Moods</h1>
         <div className="container">
         <MoodList moods={moods} handleMoodEdit={handleMoodEdit} app={app} setApp={setApp}/>
-        <MoodForm handleNewMood={handleNewMood} initialState={state.initialState} refresh={state.refresh}/>  
+        <MoodForm handleNewMood={handleNewMood} handleUpdateMood={handleUpdateMood}initialState={state.initialState} refresh={state.refresh}/>  
         </div>
     </main>
     )
