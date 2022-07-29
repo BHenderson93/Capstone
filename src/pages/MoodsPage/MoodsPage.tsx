@@ -1,5 +1,5 @@
-import e from 'cors'
 import * as React from 'react'
+import { useMutation, gql } from '@apollo/client'
 
 export default function MoodsPage(){
     const [state,setState]=React.useState({
@@ -8,6 +8,14 @@ export default function MoodsPage(){
         categories:'',
         price:0
     })
+
+    const NEWMOOD = gql`
+    mutation create($query: String!) {
+        API_Call(query: $query) {
+            data
+        }
+    }
+`
 
     function changeName(e){
         if(e.target.value.length < 50){
