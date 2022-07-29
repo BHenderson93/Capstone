@@ -7,9 +7,9 @@ export const Mood = objectType({
         t.nonNull.string('name')
         t.nonNull.string('categories')
         t.nonNull.int('price')
-        t.field("createdBy" , {
+        t.field("createdBy", {
             type: "User",
-            resolve(parent , args, context){
+            resolve(parent, args, context) {
                 return context.prisma.mood.findFirst({
                     where: { id: parent.id }
                 }).createdBy()
@@ -18,12 +18,31 @@ export const Mood = objectType({
     }
 })
 
-interface Payload{
+export const MoodQuery = extendType({
+    type:"Query",
+    definition(t){
+        t.nonNull.list.nonNull.field("usermoods" , {
+            type:"Mood",
+            args:{
+                token: nonNull(stringArg())
+            },
+            resolve(parent, args, context){
+                const moodList = context.prisma.mood.findMany({
+                    where:{createdById:context.user?.id}
+                })
+                console.log("moods list is " , moodList)
+                return moodList
+            }
+        })
+    }
+})
+
+interface Payload {
     user: UserInfo,
     iat: number
 }
 
-interface UserInfo{
+interface UserInfo {
     id: number,
     name: string,
     email: string
@@ -42,90 +61,89 @@ export const MoodMutation = extendType({
             },
             async resolve(parent, args, context, info) {
                 const { user } = context
-                console.log('Attempting create for ' , user)
-                const { name , categories, price } = args
-                if(user){
+                console.log('Attempting create for ', user)
+                const { name, categories, price } = args
+                if (user) {
                     const newMood = context.prisma.mood.create({
                         data: {
                             name,
                             categories,
                             price,
-                            createdBy: { connect: { id: user.id}}
+                            createdBy: { connect: { id: user.id } }
                         }
                     })
                     return newMood
-                }else{
-                    throw new Error ('Please submit valid token with this request. Unable to verify user.')
+                } else {
+                    throw new Error('Please submit valid token with this request. Unable to verify user.')
                 }
-
             }
         }),
-        t.nonNull.field("update" , {
-            type:"Mood",
-            args:{
-                id:nonNull(intArg()),
-                name: nonNull(stringArg()),
-                categories: nonNull(stringArg()),
-                price: nonNull(intArg()),
-                token: nonNull(stringArg())
-            },
-            async resolve(parent, args, context , info){
-                const { user } = context
-                if(user){
-                    const moodRecord = await context.prisma.mood.findFirstOrThrow({
-                        where:{
-                            AND:[
-                                {id:args.id},
-                                {createdById:user.id}
-                            ]
-                        }
-                    })
-                    if(moodRecord.createdById){
-                        return await context.prisma.mood.update({
-                            where: { id: args.id },
-                            data:{
-                                name:args.name,
-                                categories:args.categories,
-                                price:args.price
+            t.nonNull.field("update", {
+                type: "Mood",
+                args: {
+                    id: nonNull(intArg()),
+                    name: nonNull(stringArg()),
+                    categories: nonNull(stringArg()),
+                    price: nonNull(intArg()),
+                    token: nonNull(stringArg())
+                },
+                async resolve(parent, args, context, info) {
+                    const { user } = context
+                    if (user) {
+                        const moodRecord = await context.prisma.mood.findFirstOrThrow({
+                            where: {
+                                AND: [
+                                    { id: args.id },
+                                    { createdById: user.id }
+                                ]
                             }
                         })
-                    }else{
-                        throw new Error("Cannot verify user as owner of that mood.")
-                    }
+                        if (moodRecord.createdById) {
+                            return await context.prisma.mood.update({
+                                where: { id: args.id },
+                                data: {
+                                    name: args.name,
+                                    categories: args.categories,
+                                    price: args.price
+                                }
+                            })
+                        } else {
+                            throw new Error("Cannot verify user as owner of that mood.")
+                        }
 
-                }else{
-                    throw new Error("Invalid JWT for update.")
+                    } else {
+                        throw new Error("Invalid JWT for update.")
+                    }
                 }
-            }
-        })
-        t.field("delete" , {
-            type:"Mood",
-            args:{
-                id:nonNull(intArg()),
-                token:nonNull(stringArg())
+            })
+        t.field("delete", {
+            type: "Mood",
+            args: {
+                id: nonNull(intArg()),
+                token: nonNull(stringArg())
             },
-            async resolve(parent, args, context, info){
-                const {user} = context
-                if(user){
-                    const moodRecord = await context.prisma.mood.findFirst({
-                        where:{
+            async resolve(parent, args, context, info) {
+                const { user } = context
+                if (user) {
+                    const moodRecord = await context.prisma.mood.deleteMany({
+                        where: {
                             AND:[
                                 {id:args.id},
-                                {createdById:user.id}
+                                {createdById: user.id}
                             ]
                         }
-                    })
-                    if(moodRecord){
-                        return context.prisma.mood.delete({
-                            where: {id:args.id}
-                        })
-                    }else{
-                        throw new Error("Cannot verify user as owner of mood.")
-                    }
-                }else{
-                    throw new Error("Cannot verify user status.")
-                }
-            }
+            })
+        if (moodRecord) {
+            return context.prisma.mood.delete({
+                where: { id: args.id }
+            })
+        } else {
+            throw new Error("Cannot verify user as owner of mood.")
+        }
+    }else{
+        throw new Error("Cannot verify user status.")
+    }
+}
         })
     }
 })

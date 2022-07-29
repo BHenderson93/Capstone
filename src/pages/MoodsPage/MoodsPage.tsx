@@ -1,22 +1,22 @@
 import * as React from 'react'
 import { useMutation, gql } from '@apollo/client'
+import { AppState } from '../App/App'
+import MoodList from '../../components/MoodList/MoodList'
 
-interface Props{
+export interface MoodsPageState{
     isLoading: boolean,
     name: string,
     categories: string,
     price: number
 }
 
-export default function MoodsPage(){
-    const [state,setState]=React.useState<Props>({
-        isLoading: false,
-        name:'',
-        categories:'',
-        price:0
-    })
+export interface MoodsPageProps{
+    app: AppState,
+    setApp: React.Dispatch<React.SetStateAction<any>>
+}
 
-    const NEW_MOOD = gql`
+
+const NEW_MOOD = gql`
 mutation Create($name: String!, $categories: String!, $price: Int!, $token: String!) {
   create(name: $name, categories: $categories, price: $price, token: $token) {
     id
@@ -30,6 +30,15 @@ mutation Create($name: String!, $categories: String!, $price: Int!, $token: Stri
 }
 `
 
+export default function MoodsPage({ app , setApp}:MoodsPageProps){
+    
+    const [state,setState]=React.useState<MoodsPageState>({
+        isLoading: false,
+        name:'',
+        categories:'',
+        price:0
+    })
+
     const [newMood , {data, loading, error}] = useMutation(NEW_MOOD , {
         variables:{
             name:state.name,
@@ -38,11 +47,13 @@ mutation Create($name: String!, $categories: String!, $price: Int!, $token: Stri
             token:localStorage.getItem('token')
         }
     })
+
     function changeName(e){
         if(e.target.value.length < 50){
             setState({...state, name:e.target.value})
         }
     }
+
     function changeCategories(e){
         if(e.target.value.length < 50){
             setState({...state, categories:e.target.value})
@@ -67,11 +78,13 @@ mutation Create($name: String!, $categories: String!, $price: Int!, $token: Stri
             })
         }
     }
-
+    console.log("Moods page moods " , app.moods)
     return(
     <main>
-        <div className="container">
         <h1>Moods</h1>
+        <div className="container">
+        <MoodList moods={app.moods}/>
+
         { state.isLoading? 
             <h1>Loading...</h1>
             :

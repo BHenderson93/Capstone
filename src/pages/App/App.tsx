@@ -7,6 +7,7 @@ import {
   InMemoryCache,
   ApolloProvider,
   useQuery,
+  useLazyQuery,
   gql,
   useMutation
 } from "@apollo/client";
@@ -24,8 +25,15 @@ import Layout from "../../components/Layout/Layout";
 export interface AppState {
   user: string
   mount: boolean
-  moods: []
+  moods: Mood[]
 }
+export interface Mood{
+  id?:number
+  name?:string
+  categories?:string
+  price?:number
+}
+
 export default function App() {
   const [app, setApp] = React.useState<AppState>({
     user: '',
@@ -33,10 +41,17 @@ export default function App() {
     moods:[]
   })
 
-  const client = new ApolloClient({
-    uri: `http://localhost:3000`,
-    cache: new InMemoryCache()
-  });
+  const MOODQUERY = gql`
+  query usermoods( $token:String!){
+      usermoods(token:$token){
+          data
+        }            
+  }`
+  const [moodquery , { data,loading,error}] = useLazyQuery(MOODQUERY,{
+    variables:{
+      token:localStorage.getItem('token')
+    }
+  })
 
   React.useEffect(()=>{
     const token = localStorage.getItem('token')
@@ -54,11 +69,17 @@ export default function App() {
         setApp({...app , user: payload.user.name})
 
       }else{
+/*         const moodList = moodquery()
+        console.log("Returned moodlist is " , moodList)
+
+        setApp({
+          ...app
+        }) */
         return
       }
 
     }else if(app.user){
-      setApp({...app , user:''})
+      setApp({...app , user:'' , moods:[]})
 
     }else{
       return
@@ -67,7 +88,7 @@ export default function App() {
 
  
   return (
-    <ApolloProvider client={client}>
+
       <Layout app={app} setApp={setApp}>
         {
           app.user ? (
@@ -77,7 +98,7 @@ export default function App() {
               <Route path="/profile"
                 element={<ProfilePage />} />
               <Route path="/moods" 
-              element={<MoodsPage />}/>
+              element={<MoodsPage app={app} setApp={setApp}/>}/>
               <Route path="/*"
                 element={<Navigate to='/welcome' />} />
             </Routes>
@@ -96,6 +117,5 @@ export default function App() {
           )
         }
       </Layout >
-    </ApolloProvider>
   )
 }

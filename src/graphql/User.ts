@@ -29,22 +29,3 @@ interface UserInfo {
     name: string,
     email: string
 }
-
-export const UserQuery = extendType({
-    type: "Query",
-    definition(t) {
-        t.nonNull.list.nonNull.field("usermoods", {
-            type:"Mood",
-            args: {
-                token: nonNull(stringArg())
-            },
-            async resolve(parent, args, context, info) {
-                const { user } = jwt.verify(args.token, String(process.env.APP_SECRET)) as Payload
-                const moods = await context.prisma.mood.findMany({
-                    where: { createdById: user.id }
-                })
-                return moods
-            }
-        });
-    },
-});
