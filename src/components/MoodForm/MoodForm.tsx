@@ -1,19 +1,34 @@
 import * as React from 'react'
 import {gql, useMutation} from '@apollo/client'
 import {InitialState} from '../../pages/MoodsPage/MoodsPage'
-export default function MoodForm({app, handleNewMood, initialState}){
-    const {name, categories, price, id} = initialState
 
-    const [state, setState]=React.useState<InitialState>(initialState)       
+export default function MoodForm({handleNewMood, initialState, refresh}){
+    const {id, name, categories, price} = initialState
+
+    const [state, setState]=React.useState<InitialState>({
+        id:id,
+        name:name,
+        categories:categories,
+        price:price
+    })
+
+    React.useEffect(()=>{
+        setState({
+            id:id,
+            name:name,
+            categories:categories,
+            price:price,
+        })
+    }, [refresh])
 
     function changeName(e){
-        if(e.target.value.length < 50){
+        if(e.target.value.length < 25){
             setState({...state, name:e.target.value})
         }
     }
 
     function changeCategories(e){
-        if(e.target.value.length < 50){
+        if(e.target.value.length < 25){
             setState({...state, categories:e.target.value})
         }
     }
@@ -23,6 +38,7 @@ export default function MoodForm({app, handleNewMood, initialState}){
             setState({...state , price:Number(e.target.value)})
          }
     }
+
     const NEW_MOOD = gql`
     mutation Create($name: String!, $categories: String!, $price: Int!, $token: String!) {
       create(name: $name, categories: $categories, price: $price, token: $token) {
@@ -36,6 +52,7 @@ export default function MoodForm({app, handleNewMood, initialState}){
       }
     }
     `
+
     const [newMood , {data:newMoodData}] = useMutation(NEW_MOOD , {
         variables:{
             name:state.name,
@@ -100,5 +117,4 @@ export default function MoodForm({app, handleNewMood, initialState}){
         <button type="submit" className="btn" >Submit!</button>
     </form>
     )
-
 }

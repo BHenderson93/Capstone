@@ -7,8 +7,8 @@ import './MoodsPage.css'
 import {Mood} from '../App/App'
 
 export interface MoodsPageState{
-    isLoading: boolean
     initialState:InitialState
+    refresh:boolean
 }
 
 export interface InitialState{
@@ -27,13 +27,13 @@ export interface MoodsPageProps{
 export default function MoodsPage({ app , setApp , moods}:MoodsPageProps){
     
     const [state,setState]=React.useState<MoodsPageState>({
-        isLoading: false,
         initialState:{
             id: null,
             name:'',
             categories:'',
             price:2
-        }
+        },
+        refresh:false
     })
 
     function handleNewMood(newMood){
@@ -54,18 +54,30 @@ export default function MoodsPage({ app , setApp , moods}:MoodsPageProps){
         })
     }
 
+    function handleMoodEdit(moodToEdit){
+        const {id, name, categories, price} = moodToEdit
+        setState({
+            ...state,
+            initialState:{
+                id,
+                name,
+                categories,
+                price
+            },
+            refresh:!state.refresh
+        })
+    }
+
+    function handleUpdateMood(updatedMood){
+
+    }
     //console.log("Moods page moods " , app.moods)
     return(
     <main>
         <h1>Moods</h1>
         <div className="container">
-        <MoodList moods={moods} moodsPage={state} setMoodsPage={setState} app={app} setApp={setApp}/>
-        {/* Below should be modularized to a mood card. */}
-        { state.isLoading? 
-            <h1>Loading...</h1>
-            :
-            <MoodForm app={app} handleNewMood={handleNewMood} initialState={state.initialState}/>
-        }   
+        <MoodList moods={moods} handleMoodEdit={handleMoodEdit} app={app} setApp={setApp}/>
+        <MoodForm handleNewMood={handleNewMood} initialState={state.initialState} refresh={state.refresh}/>  
         </div>
     </main>
     )
