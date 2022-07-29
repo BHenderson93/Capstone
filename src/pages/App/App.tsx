@@ -1,7 +1,7 @@
 //React
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { Routes, Route, Navigate } from 'react-router-dom'
+import { Routes, Route, useNavigate , Navigate} from 'react-router-dom'
 import {
   ApolloClient,
   InMemoryCache,
@@ -55,7 +55,7 @@ export default function App() {
       token:localStorage.getItem('token')
     }
   })
-
+  const nav = useNavigate()
   React.useEffect(()=>{
     const token = localStorage.getItem('token')
 
@@ -66,11 +66,16 @@ export default function App() {
       if (payload.exp < Date.now() / 1000){
         console.log('Token expired.')
         localStorage.removeItem('token')
-
+        setApp({
+          user: '',
+          mount: true,
+          moods:[]
+        })
       }else if(payload.user.name !== app.user){
         //console.log('App username doesnt match token... Hmmmm')
-        setApp({...app , user: payload.user.name})
-
+        localStorage.removeItem('token')
+        setApp({...app , user: ''})
+        nav('/')
       }else{
         const moodList = async () =>{
           console.log('Updating mood list...')
@@ -86,13 +91,11 @@ export default function App() {
         moodList()
       }
 
-    }else if(app.user){
-      setApp({...app , user:'' , moods:[]})
-
-    }else{
-      return
+    }else if(app.user || app.moods){
+      setApp({...app , user:'' ,mount: true, moods:[]})
+      nav('/')
     }
-  } , [app.user ])
+  } , [app.user])
 
  
   return (
