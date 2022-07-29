@@ -15,7 +15,7 @@ import {
 // Pages and components
 import './App.css'
 import HomePage from '../HomePage/HomePage'
-import ProfilePage from "../ProfilePage/ProfilePage";
+import SavedPage from "../SavedPage/SavedPage";
 import LoginPage from "../LoginPage/LoginPage";
 import SignupPage from "../SignupPage/SignupPage";
 import WelcomePage from "../WelcomePage/WelcomePage"
@@ -63,10 +63,11 @@ export default function App() {
         const moodList = async () => {
           //console.log('Updating mood list...')
           moodquery().then((res) => {
-            //console.log("res is" ,res)
+            console.log("res is" ,res)
+            const userMoods = res.data.usermoods
             setApp({
               ...app,
-              moods: res.data.usermoods,
+              moods: userMoods,
               user:payload.user.name
             })
           })
@@ -84,8 +85,8 @@ export default function App() {
           <Routes>
             <Route path="/welcome"
               element={<WelcomePage />} />
-            <Route path="/profile"
-              element={<ProfilePage />} />
+            <Route path="/favorites"
+              element={<SavedPage />} />
             <Route path="/moods"
               element={<MoodsPage app={app} setApp={setApp} moods={app.moods}/>} />
             <Route path="/*"

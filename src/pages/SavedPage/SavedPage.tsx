@@ -1,9 +1,9 @@
 import * as React from 'react'
 
-export default class ProfilePage extends React.Component<{}>{
+export default class SavedPage extends React.Component<{}>{
     render(){ return(
     <div className="page">
-        <h1>Profile Page</h1>
+        <h1>Saved Page</h1>
     </div>
     )}
 }

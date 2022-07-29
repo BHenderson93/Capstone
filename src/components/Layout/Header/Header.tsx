@@ -21,8 +21,8 @@ export default function Header({ app , setApp }: HeaderInt) {
           <h1 className="">Hi, {app.user}!</h1>
           <nav className="flex flex-row justify-around">
               <Link to="/" >Home</Link>
-              <Link to="/profile" >Profile</Link>
-              <Link to="/moods" >Food Moods</Link>
+              <Link to="/favorites" >Favorites</Link>
+              <Link to="/moods" >Edit Moods</Link>
           </nav>
           <button onClick={logout}>Log Out</button>
         </header>
