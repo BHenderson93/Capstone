@@ -1,5 +1,4 @@
-import { extendType, nonNull, objectType, stringArg, intArg, idArg } from "nexus"
-
+import { extendType, nonNull, objectType, stringArg, intArg, idArg, arg } from "nexus"
 
 export const Mood = objectType({
     name: "Mood",
@@ -8,7 +7,7 @@ export const Mood = objectType({
         t.nonNull.string('name')
         t.nonNull.string('categories')
         t.nonNull.int('price')
-        t.field("createdBy" , {
+        t.nonNull.field("createdBy" , {
             type: "User",
             resolve(parent , args, context){
                 return context.prisma.mood.findUnique({
@@ -73,29 +72,54 @@ export const MoodMutation = extendType({
             async resolve(parent, args, context , info){
                 const { user } = context
                 if(user){
-                    const mood = await context.prisma.mood.update({
-                        where: { id: args.id },
-                        data:{
-                            name:args.name,
-                            categories:args.categories,
-                            price:args.price
+                    const moodRecord = await context.prisma.mood.findFirstOrThrow({
+                        where:{
+                            AND:[
+                                {id:args.id},
+                                {createdById:user.id}
+                            ]
                         }
                     })
-                    return mood
+                    if(moodRecord.createdById){
+                        return await context.prisma.mood.update({
+                            where: { id: args.id },
+                            data:{
+                                name:args.name,
+                                categories:args.categories,
+                                price:args.price
+                            }
+                        })
+                    }else{
+                        throw new Error("Cannot verify user as owner of that mood.")
+                    }
+
                 }else{
                     throw new Error("Invalid JWT for update.")
                 }
             }
         })
-/*         t.nonNull.field("delete" , {
+        t.field("delete" , {
             type:"Mood",
             args:{
                 id:nonNull(intArg()),
                 token:nonNull(stringArg())
             },
             async resolve(parent, args, context, info){
-
+                const {user} = context
+                if(user){
+                    const mood = context.prisma.mood.findFirst({
+                        where:{
+                            AND:[
+                                {id:args.id},
+                                {createdById:user.id}
+                            ]
+                        }
+                    })
+                    return mood
+                }else{
+                    throw new Error("Cannot verify user status.")
+                }
             }
-        }) */
+        })
     }
 })

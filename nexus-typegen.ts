@@ -81,6 +81,7 @@ export interface NexusGenFieldTypes {
   Mutation: { // field return type
     API_Call: NexusGenRootTypes['API']; // API!
     create: NexusGenRootTypes['Mood']; // Mood!
+    delete: NexusGenRootTypes['Mood'] | null; // Mood
     login: NexusGenRootTypes['AuthPayload']; // AuthPayload!
     signup: NexusGenRootTypes['AuthPayload']; // AuthPayload!
     update: NexusGenRootTypes['Mood']; // Mood!
@@ -116,6 +117,7 @@ export interface NexusGenFieldTypeNames {
   Mutation: { // field return type name
     API_Call: 'API'
     create: 'Mood'
+    delete: 'Mood'
     login: 'AuthPayload'
     signup: 'AuthPayload'
     update: 'Mood'
@@ -141,6 +143,10 @@ export interface NexusGenArgTypes {
       categories: string; // String!
       name: string; // String!
       price: number; // Int!
+      token: string; // String!
+    }
+    delete: { // args
+      id: number; // Int!
       token: string; // String!
     }
     login: { // args
