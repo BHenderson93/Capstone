@@ -107,7 +107,7 @@ export const MoodMutation = extendType({
             async resolve(parent, args, context, info){
                 const {user} = context
                 if(user){
-                    const mood = context.prisma.mood.findFirst({
+                    const moodRecord = await context.prisma.mood.findFirst({
                         where:{
                             AND:[
                                 {id:args.id},
@@ -115,7 +115,13 @@ export const MoodMutation = extendType({
                             ]
                         }
                     })
-                    return mood
+                    if(moodRecord){
+                        return context.prisma.mood.delete({
+                            where: {id:args.id}
+                        })
+                    }else{
+                        throw new Error("Cannot verify user as owner of mood.")
+                    }
                 }else{
                     throw new Error("Cannot verify user status.")
                 }
