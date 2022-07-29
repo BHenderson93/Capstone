@@ -1,4 +1,3 @@
-import { linkSync } from "fs";
 import { extendType, nonNull, objectType, stringArg, intArg } from "nexus";
 import * as jwt from 'jsonwebtoken'
 

@@ -26,21 +26,24 @@ export const AuthMutation = extendType({
                 name: nonNull(stringArg()),
             },
             async resolve(parent, args, context) {
+                const { email, name } = args
 
-                const { email, name } = args;
-                const password = await bcrypt.hash(args.password, 10);
+                const password = await bcrypt.hash(args.password, 10)
                 const checkUser = await context.prisma.user.findUnique({
                     where:{email:args.email}
                 })
                 if (!checkUser){
+
                     const user = await context.prisma.user.create({
                         data: { email, name, password },
-                    });
-                    const token = jwt.sign({ userId: user.id }, APP_SECRET);
+                    })
+                    const token = jwt.sign({ userId: user.id }, APP_SECRET)
+
                     return {
                         token,
                         user,
-                    };
+                    }
+                    
                 }else{
                     console.log(`User with ${email} already exists`)
                     throw new Error("Email already in use.")
@@ -55,10 +58,9 @@ export const AuthMutation = extendType({
                 password: nonNull(stringArg()),
             },
             async resolve(parent, args, context) {
-
                 const user = await context.prisma.user.findUnique({
                     where: { email: args.email },
-                });
+                })
                 if (!user) {
                     throw new Error("No such user found");
                 }
@@ -66,21 +68,18 @@ export const AuthMutation = extendType({
                 const valid = await bcrypt.compare(
                     args.password,
                     user.password,
-                );
+                )
                 if (!valid) {
                     throw new Error("Invalid password");
                 }
+
                 const {password , ...noPass} = user
                 const token = jwt.sign({ user: noPass}, APP_SECRET);
-/*                 const moods = context.prisma.mood.findMany({
-                    where: { createdById:user.id }
-                }) */
                 return {
                     token,
                     user,
-                };
+                }
             },
-        });
-        ;
+        })
     },
-});
+})
