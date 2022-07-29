@@ -14,8 +14,6 @@ export default function LoginForm({ app, setApp }: LoginProps) {
         valid: true
     })
 
-
-
     const LOGIN = gql`
         mutation login( $email:String!, $password:String!){
             login(email:$email , password:$password){
@@ -31,8 +29,7 @@ export default function LoginForm({ app, setApp }: LoginProps) {
                     }
                 }
             }            
-        }
-    `
+        }`
 
     const [login, { data, loading, error }] = useMutation(LOGIN , {
         variables:{
@@ -62,7 +59,6 @@ export default function LoginForm({ app, setApp }: LoginProps) {
         e.preventDefault()
         setState({ ...state, [e.target.name]: e.currentTarget.value })
     }
-
 
     return (
         <div className="container">

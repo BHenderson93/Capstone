@@ -1,17 +1,23 @@
 import * as jwt from "jsonwebtoken";
 require('dotenv').config()
 
-export interface AuthTokenPayload {
+interface AuthTokenPayload {
     name: string;
     id: number;
     email: string;
 }
 
-export function decodeAuthHeader(authHeader: String): AuthTokenPayload {
-    const token = authHeader.replace("Bearer ", "");
-    
-    if (!token) {
-        throw new Error("No token found");
+interface token{
+    user:AuthTokenPayload,
+    iat: number
+}
+
+export function decodeTokenPayload(token:string): AuthTokenPayload | null{
+    const checkToken = jwt.verify(token, String(process.env.APP_SECRET)) as token
+    if (checkToken){
+        const {name , id , email } = checkToken.user
+        return { name ,id ,email }
+    }else{
+        return null
     }
-    return jwt.verify(token, String(process.env.APP_SECRET)) as AuthTokenPayload;
 }

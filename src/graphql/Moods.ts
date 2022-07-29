@@ -42,7 +42,7 @@ export const MoodMutation = extendType({
                 token: nonNull(stringArg())
             },
             async resolve(parent, args, context, info) {
-                const {user} = jwt.verify(args.token, String(process.env.APP_SECRET)) as Payload
+                const { user } = context
                 console.log('Attempting create for ' , user)
                 const { name , categories, price } = args
                 if(user){
@@ -71,7 +71,7 @@ export const MoodMutation = extendType({
                 token: nonNull(stringArg())
             },
             async resolve(parent, args, context , info){
-                const {user} = jwt.verify(args.token, String(process.env.APP_SECRET)) as Payload
+                const { user } = context
                 if(user){
                     const mood = await context.prisma.mood.update({
                         where: { id: args.id },
@@ -87,5 +87,15 @@ export const MoodMutation = extendType({
                 }
             }
         })
+/*         t.nonNull.field("delete" , {
+            type:"Mood",
+            args:{
+                id:nonNull(intArg()),
+                token:nonNull(stringArg())
+            },
+            async resolve(parent, args, context, info){
+
+            }
+        }) */
     }
 })

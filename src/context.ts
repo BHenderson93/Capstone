@@ -1,23 +1,24 @@
 import { PrismaClient } from "@prisma/client";
-import { decodeAuthHeader } from "./utilities/authentication";
-import { Request } from "express"; 
+import { decodeTokenPayload } from "./utilities/authentication";
+import { Request } from "express";
+
 export const prisma = new PrismaClient();
 
-export interface Context {
+interface Context {
     prisma: PrismaClient;
     user?: User
 }
 
-export interface User{
+interface User{
     name: string
     id: number
     email: string
 }
 
 export const context = ({ req }: { req: Request }): Context => {
-    const token = req && req.headers.authorization? decodeAuthHeader(req.headers.authorization)
-    : null 
-
+    console.log(req.body)
+    const token = req.body.variables.token? decodeTokenPayload(req.body.variables.token) : null
+    console.log("token is " , token)
     if(token){
         return{
             prisma,
@@ -25,5 +26,4 @@ export const context = ({ req }: { req: Request }): Context => {
         }
     }
     return{prisma}
-    
 };
