@@ -4,7 +4,7 @@ import {AppState , Mood} from '../../pages/App/App'
 
 export interface MoodListProps{
     moods: Mood[]
-    handleMoodEdit: ()=>void
+    handleMoodEdit: (any)=>any
     setApp: React.Dispatch<React.SetStateAction<any>>
     app: AppState
 }

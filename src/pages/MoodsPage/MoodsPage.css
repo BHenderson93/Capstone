@@ -3,7 +3,7 @@ ul{
 }
 
 .filter-scroll{
-    height:50vh;
+    height:100%;
     width:30vw;
     display:flex;
     flex-flow:column nowrap;

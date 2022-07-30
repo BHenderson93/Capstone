@@ -2,7 +2,7 @@ import * as React from 'react'
 import { gql, useMutation } from '@apollo/client'
 import { InitialState } from '../../pages/MoodsPage/MoodsPage'
 import { FilterScroll } from '../FilterScoll/FilterScroll'
-
+import { YelpCat } from '../../components/YelpCat/YelpCat'
 const NEW_MOOD = gql`
 mutation Create($name: String!, $categories: String!, $price: Int!, $token: String!) {
   create(name: $name, categories: $categories, price: $price, token: $token) {
@@ -38,7 +38,7 @@ export interface MoodFormProps {
 export interface MoodFormState {
     id: number
     name: string
-    categories: string
+    categories: string[]
     price: number
 }
 
@@ -124,18 +124,45 @@ export default function MoodForm({ handleNewMood, initialState, handleUpdateMood
         }
     }
 
+    function handleAddCategory(cat):void{
+
+        if(state.categories.length < 10){
+            setState({
+                ...state,
+                categories:[...state.categories , cat]
+            })
+        }else{
+            console.log('Too many cats!')
+        }
+    }
+
+    function handleRemoveFromCategories(cat):void{
+        const newCats = state.categories.filter(x=>x===cat)
+        setState({
+            ...state,
+            categories:newCats
+        })
+    }
+
     return (
         <div className="container">
+            <div className="container flex flex-col nowrap">
             <form action="" onSubmit={handleSubmit}>
                 <label htmlFor="name">What is this mood called? </label>
                 <input type="text" name="name" placeholder="i.e. Mama Mia! Pasta, baby, pasta!" onChange={changeName} value={state.name} />
-                <label htmlFor="categories">What style of food fits this mood?</label>
-                <input type="text" name="categories" id="" placeholder="i.e. Italian " onChange={changeCategories} value={state.categories} />
                 <label htmlFor="price">How ritzy? (1-5 in dollar signs)</label>
                 <input type="number" name="price" id="" placeholder="Ex: 3" onChange={changePrice} value={state.price} />
                 <button type="submit" className="btn" >Submit!</button>
             </form>
-            <FilterScroll />
+            <ul>
+                {state.categories.length === 10 ? <p className="error">Max categories reached!</p> : null}
+                {state.categories.map(cat=><YelpCat cat={cat} handleRemoveFromCategories={handleRemoveFromCategories}/>)
+
+                }
+            </ul>
+            </div>
+
+            <FilterScroll handleAddCategory={handleAddCategory} picked={state.categories}/>
         </div>
     )
 }

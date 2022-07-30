@@ -313,8 +313,8 @@ function YelpCategories(){
     Yugoslav (yugoslav, [BE, AU, IT, PT, SE, FR])`
     
     const splitCats = cats.split('\n')
-    console.log('split cats are' , splitCats)
-    const filterCats = splitCats.filter(x=>x.includes('US') || x.includes('All'))
+    //console.log('split cats are' , splitCats)
+    //const filterCats = splitCats.filter(x=>x.includes('US') || x.includes('All'))
     
     let newArr = []
     splitCats.forEach((x)=>{

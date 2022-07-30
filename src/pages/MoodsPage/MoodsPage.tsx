@@ -14,7 +14,7 @@ export interface MoodsPageState{
 export interface InitialState{
     id:number | null
     name:string
-    categories:string
+    categories:string[]
     price:number
 }
 
@@ -30,7 +30,7 @@ export default function MoodsPage({ app , setApp , moods}:MoodsPageProps){
         initialState:{
             id: null,
             name:'',
-            categories:'',
+            categories:[],
             price:2
         },
         refresh:false
@@ -47,14 +47,14 @@ export default function MoodsPage({ app , setApp , moods}:MoodsPageProps){
             ...state,
             initialState:{
                 name:'',
-                categories:'',
+                categories:[],
                 price:2,
                 id: null
             }
         })
     }
 
-    function handleMoodEdit(moodToEdit){
+    function handleMoodEdit(moodToEdit:any):any{
         const {id, name, categories, price} = moodToEdit
         setState({
             ...state,
@@ -82,7 +82,7 @@ export default function MoodsPage({ app , setApp , moods}:MoodsPageProps){
             initialState:{
                 id: null,
                 name:'',
-                categories:'',
+                categories:[],
                 price:2
             },
             refresh:!state.refresh
