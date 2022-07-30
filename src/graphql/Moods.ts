@@ -89,16 +89,13 @@ export const MoodMutation = extendType({
                             }
                         })
                         if (moodRecord) {
-                            const oldRecord = context.prisma.mood.delete({
-                                where:{id:args.id}
-                            })
-
-                            return context.prisma.mood.create({
+                            return context.prisma.mood.update({
+                                where:{id:args.id},
                                 data: {
                                     name,
                                     price,
-                                    categories,
-                                    createdBy: { connect: { id: user.id } }}
+                                    categories
+                                }
                             })
                         } else {
                             throw new Error("Cannot verify user as owner of that mood.")

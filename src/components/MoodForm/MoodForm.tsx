@@ -105,7 +105,7 @@ export default function MoodForm({ handleNewMood, initialState, handleUpdateMood
         if (state.id) {
             updateMood().then((res) => {
                 console.log(res)
-                handleUpdateMood(res.data.update)
+                handleUpdateMood(res.data.updateMood)
             }).catch((err) => {
                 console.log(err)
             })

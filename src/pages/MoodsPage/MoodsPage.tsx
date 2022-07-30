@@ -61,7 +61,7 @@ export default function MoodsPage({ app , setApp , moods}:MoodsPageProps){
             initialState:{
                 id,
                 name,
-                categories,
+                categories:categories.split('*'),
                 price
             },
             refresh:!state.refresh
@@ -94,7 +94,7 @@ export default function MoodsPage({ app , setApp , moods}:MoodsPageProps){
         <h1>Moods</h1>
         <div className="container">
         <MoodList moods={moods} handleMoodEdit={handleMoodEdit} app={app} setApp={setApp}/>
-        <MoodForm handleNewMood={handleNewMood} handleUpdateMood={handleUpdateMood}initialState={state.initialState} refresh={state.refresh}/>  
+        <MoodForm handleNewMood={handleNewMood} handleUpdateMood={handleUpdateMood} initialState={state.initialState} refresh={state.refresh}/>  
         </div>
     </main>
     )
