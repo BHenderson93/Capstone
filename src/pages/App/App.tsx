@@ -15,7 +15,7 @@ import {
 // Pages and components
 import './App.css'
 import HomePage from '../HomePage/HomePage'
-import SavedPage from "../SavedPage/SavedPage";
+import SavedPage from "../SavedPage/SavedPage"
 import LoginPage from "../LoginPage/LoginPage";
 import SignupPage from "../SignupPage/SignupPage";
 import WelcomePage from "../WelcomePage/WelcomePage"
