@@ -20,7 +20,6 @@ export default function BusinessCard({business,index, setWelcomeState , welcomeS
         }else{
             console.log('End of list')
         }
-
     }
 
     function handleSubmit(e){
