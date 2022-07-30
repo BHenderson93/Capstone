@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { gql , useMutation } from '@apollo/client'
-
+import { AppState } from '../../pages/App/App'
 const DELETE_MOOD=gql`
 mutation DeleteMood($id: Int!, $token: String!){
     deleteMood(id:$id , token:$token){
@@ -8,6 +8,7 @@ mutation DeleteMood($id: Int!, $token: String!){
     }
 }
 `
+
 
 export default function MoodCard({mood, handleMoodEdit , app , setApp}){
     //console.log(mood)

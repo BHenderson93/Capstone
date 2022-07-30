@@ -1,12 +1,10 @@
 import * as React from 'react'
 import { useMutation, gql } from '@apollo/client'
 import BusinessCard from '../../components/BusinessCard/BusinessCard'
-
+import { appendFile } from 'fs'
+import { AppState } from '../App/App'
 export interface WelcomePageProps{
-    search: string
-    restaurants:business[]
-    ratings:number[]
-    index:number
+    moods: string[]
 }
 
 export interface business{
@@ -29,15 +27,27 @@ export interface business{
 }
 
 export interface WelcomePageState{
-    
+    search: string
+    restaurants:business[]
+    ratings:number[]
+    index:number
+    step:number
+    apiQuery:{}
 }
 
-export default function WelcomePage() {
-    const [state, setState] = React.useState<WelcomePageProps>({
-        search: "latitude=37.786882&longitude=-122.399972",
+//latitude=37.786882&longitude=-122.399972"
+export default function WelcomePage({moods}) {
+    const [state, setState] = React.useState<WelcomePageState>({
+        search: "",
         restaurants: [],
         ratings:[],
-        index:0
+        index:0,
+        step:1,
+        apiQuery:{
+            searchNotLatlong:true,
+            location:'seattle, wa',
+            mood:{},
+        }
     })
 
     const API_CALL = gql`
@@ -67,9 +77,46 @@ export default function WelcomePage() {
             console.log(error)
         }
     }
+
+    function handleSelectMood(e){
+        e.preventDefault()
+
+    }
+
+    function handleLocationSubmit(e){
+        setState({
+            ...state,
+            apiQuery:{...state.apiQuery, searchNotLatLong: true, location:state.search },
+            step:state.step+1
+        })
+    }
     return (
         <main className="page">
-            {state.restaurants.length ? 
+            {state.step === 1?(
+            <>
+                <h1>Welcome! Let's find you somewhere to eat...</h1>
+                <form action="" onSubmit={handleLocationSubmit}>
+                <input type="search" value={state.search} onChange={(e)=>setState({...state , search:e.target.value})} placeholder="Where are you? (ex: seattle, wa)"/> <button type="submit" className="btn">Submit Search!</button>
+                </form>
+            </>
+            ): state.step === 2? (
+                <>
+                    <h1>Which mood are you in today? Or click "Edit Moods" up top to make or change a mood.</h1>
+                    <ul>
+                        {moods.map(mood=><li>{mood.name}</li>)}
+                    </ul>
+                </>
+            ):(
+                <>
+                </>
+            )
+            }
+        </main>
+    )
+}
+
+
+/*             {state.restaurants.length ? 
                 (
                 <>
                 <h1>Populating</h1>
@@ -80,11 +127,8 @@ export default function WelcomePage() {
                 (
                 <>
                     <h1>WELCOME!</h1>
-                    <input type="search" value={state.search} onChange={(e)=>setState({...state , search:e.target.value})} placeholder="Search for anything!"
+                    <input type="search" value={state.search} onChange={(e)=>setState({...state , search:e.target.value})} placeholder="What city are you in?"
                     /> <button type="submit" onClick={handleSubmit} className="btn">Submit Search!</button>
                 </>
                 )
-            }
-        </main>
-    )
-}
+            } */

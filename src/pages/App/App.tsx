@@ -98,7 +98,7 @@ export default function App() {
         app.user ? (
           <Routes>
             <Route path="/welcome"
-              element={<WelcomePage />} />
+              element={<WelcomePage moods={app.moods} />} />
             <Route path="/favorites"
               element={<SavedPage />} />
             <Route path="/moods"

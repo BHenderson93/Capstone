@@ -18,7 +18,7 @@ export default function MoodList({moods, handleMoodEdit, app , setApp}:MoodListP
     return (
         <ul className="overflow-scroll">
         {moods.map((mood,idx)=>
-            <MoodCard key={idx}mood={mood} handleMoodEdit={handleMoodEdit} app={app} setApp={setApp}/>
+            <MoodCard key={idx} mood={mood} handleMoodEdit={handleMoodEdit} app={app} setApp={setApp}/>
         )}
         </ul>
     )
