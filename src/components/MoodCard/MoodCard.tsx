@@ -2,8 +2,8 @@ import * as React from 'react'
 import { gql , useMutation } from '@apollo/client'
 
 const DELETE_MOOD=gql`
-mutation Delete($id: Int!, $token: String!){
-    delete(id:$id , token:$token){
+mutation DeleteMood($id: Int!, $token: String!){
+    deleteMood(id:$id , token:$token){
         id
     }
 }
@@ -25,7 +25,7 @@ export default function MoodCard({mood, handleMoodEdit , app , setApp}){
         
         setApp({
             ...app,
-            moods: app.moods.filter(x=> x.id !== deleted.data.delete.id)
+            moods: app.moods.filter(x=> x.id !== deleted.data.deleteMood.id)
         })
         console.log(deleted)
     }

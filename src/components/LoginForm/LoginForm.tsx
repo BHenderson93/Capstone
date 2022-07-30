@@ -44,7 +44,7 @@ export default function LoginForm({ app, setApp }: LoginProps) {
             setApp({ ...app, user: user })
             return null
         }catch(error){
-            //console.log(error)
+            console.log(error)
             setState({...state , valid:false })
         }
     }

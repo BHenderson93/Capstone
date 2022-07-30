@@ -58,9 +58,13 @@ export const AuthMutation = extendType({
                 password: nonNull(stringArg()),
             },
             async resolve(parent, args, context) {
-                const user = await context.prisma.user.findUnique({
+                console.log('Finding user for ' , args.email)
+
+                const user = await context.prisma.user.findFirst({
                     where: { email: args.email },
                 })
+                const checking = await context.prisma.user.findMany()
+                console.log(checking)
                 if (!user) {
                     throw new Error("No such user found");
                 }

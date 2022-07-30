@@ -53,16 +53,15 @@ export const MoodMutation = extendType({
                 const { user } = context
                 console.log('Attempting create for ', user)
                 const { name, categories, price } = args
+                console.log('args are' , args)
                 if (user) {
-
-                    const newMood = context.prisma.mood.create({
+                    return context.prisma.mood.create({
                         data: {
                             name,
                             price,
                             categories,
                             createdBy: { connect: { id: user.id } }}
                     })
-                    return newMood
                 } else {
                     throw new Error('Please submit valid token with this request. Unable to verify user.')
                 }

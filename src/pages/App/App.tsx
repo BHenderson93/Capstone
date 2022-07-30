@@ -43,6 +43,7 @@ query Usermoods( $token:String!){
       id
       name
       price
+      categories
       createdBy{
         name
         id
@@ -75,10 +76,11 @@ export default function App() {
           moodquery().then((res) => {
             console.log("res is" ,res)
             const userMoods = res.data.usermoods
+            console.log('usermoods are ' , userMoods)
             setApp({
               ...app,
               moods: userMoods,
-              user:userMoods.createdBy.name
+              user:userMoods[0]?.createdBy.name
             })
           }).catch((err)=>{
             console.log('Error fetching moods' , err)

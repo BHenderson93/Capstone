@@ -6,7 +6,7 @@ import { YelpCat } from '../../components/YelpCat/YelpCat'
 
 
 const NEW_MOOD = gql`
-mutation Createmood($name: String!, $categories: String!, $price: Int!, $token: String!) {
+mutation CreateMood($name: String!, $categories: String!, $price: Int!, $token: String!) {
   createMood(name: $name, categories: $categories, price: $price, token: $token) {
     id
     name
@@ -84,7 +84,7 @@ export default function MoodForm({ handleNewMood, initialState, handleUpdateMood
     const [newMood, { data: newMoodData }] = useMutation(NEW_MOOD, {
         variables: {
             name: state.name,
-            categories: state.categories,
+            categories: state.categories.join('*'),
             price: state.price,
             token: localStorage.getItem('token')
         }
@@ -92,7 +92,7 @@ export default function MoodForm({ handleNewMood, initialState, handleUpdateMood
 
     const [updateMood, { data: updateMoodData }] = useMutation(UPDATE_MOOD, {
         variables: {
-            categories: state.categories,
+            categories: state.categories.join('*'),
             id: state.id,
             name: state.name,
             price: state.price,
@@ -110,9 +110,14 @@ export default function MoodForm({ handleNewMood, initialState, handleUpdateMood
                 console.log(err)
             })
         } else {
-
+            console.log('Attempting mood add sendind ' , {
+                name: state.name,
+                categories: state.categories.join('*'),
+                price: state.price,
+                token: localStorage.getItem('token')
+            })
             newMood().then((res) => {
-                const { id, name, categories, price } = res.data.create
+                const { id, name, categories, price } = res.data.createMood
                 const addMood = {
                     id: id,
                     name: name,
