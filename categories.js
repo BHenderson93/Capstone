@@ -1,4 +1,4 @@
-const YelpCats = () =>{
+function YelpCategories(){
     const cats = `Afghan (afghani, [AR, AT, AU, BE, BR, CA, CH, CL, CZ, DE, DK, ES, FI, FR, GB, HK, IE, IT, JP, MY, NL, NO, NZ, PH, PL, PT, SE, SG, TW, US])
     African (african, [AR, AT, AU, BE, BR, CA, CH, CL, CZ, DE, DK, ES, FI, FR, GB, HK, IE, IT, JP, MX, MY, NL, NO, NZ, PH, PL, PT, SE, SG, TW, US])
     Senegalese (senegalese, [BE, CA, IT, US, FR])
@@ -314,15 +314,16 @@ const YelpCats = () =>{
     
     const splitCats = cats.split('\n')
     console.log('split cats are' , splitCats)
-    
+    const filterCats = splitCats.filter(x=>x.includes('US') || x.includes('All'))
     
     let newArr = []
     splitCats.forEach((x)=>{
-        newArr.push(x.split('(')[0].trim())
+        let temp = x.split('(')[0].trim()
+        newArr.push(temp)
     })
-    return newArr
+    for (let i = 90 ; i < newArr.length ; i+=90){
+        console.log(newArr.slice(i-90,i))
+    }
 }
 
-
-
-module.exports = {YelpCats}
+YelpCategories()
