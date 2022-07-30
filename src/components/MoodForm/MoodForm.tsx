@@ -29,7 +29,21 @@ mutation Update($categories: String!, $id: Int!, $name: String!, $price: Int!, $
 }
 `
 
-export default function MoodForm({handleNewMood, initialState, handleUpdateMood, refresh}){
+export interface MoodFormProps{
+    handleNewMood: ({})=>void
+    initialState: InitialState
+    handleUpdateMood:({})=>void
+    refresh:boolean
+}
+
+export interface MoodFormState{
+    id:number
+    name:string
+    categories:string
+    price:number
+}
+
+export default function MoodForm({handleNewMood, initialState, handleUpdateMood, refresh}:MoodFormProps){
     const {id, name, categories, price} = initialState
 
     const [state, setState]=React.useState<InitialState>({

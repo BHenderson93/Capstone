@@ -1,15 +1,16 @@
 import * as React from 'react'
 import { gql , useMutation } from '@apollo/client'
 
+const DELETE_MOOD=gql`
+mutation Delete($id: Int!, $token: String!){
+    delete(id:$id , token:$token){
+        id
+    }
+}
+`
+
 export default function MoodCard({mood, handleMoodEdit , app , setApp}){
     //console.log(mood)
-    const DELETE_MOOD=gql`
-    mutation Delete($id: Int!, $token: String!){
-        delete(id:$id , token:$token){
-            id
-        }
-    }
-    `
 
     const [deleteMood , {data:deletedMoodData}] = useMutation(DELETE_MOOD, {
         variables:{

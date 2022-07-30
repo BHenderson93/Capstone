@@ -1,11 +1,17 @@
 import * as React from 'react'
 
+export interface BusinessCardProps{
 
+}
+
+export interface BusinessCardState{
+
+}
 
 export default function BusinessCard({business,index, setWelcomeState , welcomeState}){
     const [state,setState] = React.useState('')
 
-    function goNext(dir){
+    function goNext(dir):void{
         if((dir > 0 && index < welcomeState.ratings.length - 1) || (dir < 0 && index > 0) ){
             setWelcomeState({
                 ...welcomeState,

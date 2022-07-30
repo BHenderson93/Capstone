@@ -3,12 +3,13 @@ import * as React from "react";
 import { Link } from 'react-router-dom';
 import { AppState } from '../../../pages/App/App'
 import './Header.css'
-interface HeaderInt {
+
+interface HeaderProps {
   app: AppState
   setApp:React.Dispatch<React.SetStateAction<any>>
 }
 
-export default function Header({ app , setApp }: HeaderInt) {
+export default function Header({ app , setApp }: HeaderProps) {
   const [state , setState ] = React.useState(false)
 
   function logout(){
