@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { useLazyQuery, useQuery, gql } from '@apollo/client'
-import {HomePageProps} from '../../interfaces/HomePage'
+import {HomePageProps} from '../../interfaces/pages/HomePage'
 
 export default class HomePage extends React.Component<{}> {
     constructor(props: HomePageProps){

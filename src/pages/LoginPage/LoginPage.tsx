@@ -1,20 +1,18 @@
 import * as React from 'react'
 import LoginForm from '../../components/LoginForm/LoginForm'
-import { AppState } from '../App/App'
+import { LoginPageProps , LoginPageState} from '../../interfaces/pages/LoginPage'
 
+export default class LoginPage extends React.Component<LoginPageProps, LoginPageState>{
+    state: LoginPageState = {
+        }
 
-interface LoginProps{
-    setApp: React.Dispatch<React.SetStateAction<any>>,
-    app: AppState
-}
-
-export default function LoginPage({setApp , app}: LoginProps) {
-
+render(){
     return (
     <main>
         <h1>LoginPage</h1>
-        <LoginForm setApp={setApp} app={app} />
+        <LoginForm setApp={this.props.setApp} app={this.props.app} />
     </main>
 
     )
+}
 }
