@@ -30,10 +30,10 @@ export interface AppState {
 }
 
 export interface Mood {
-  id?: number
-  name?: string
-  categories?: string
-  price?: number
+  id: number
+  name: string
+  categories: string
+  price: number
 }
 
 

@@ -2,7 +2,8 @@ import * as React from 'react'
 import { useMutation, gql } from '@apollo/client'
 import BusinessCard from '../../components/BusinessCard/BusinessCard'
 import { appendFile } from 'fs'
-import { AppState } from '../App/App'
+import { AppState, Mood } from '../App/App'
+
 export interface WelcomePageProps{
     moods: string[]
 }
@@ -28,11 +29,15 @@ export interface business{
 
 export interface WelcomePageState{
     search: string
-    restaurants:business[]
+    restaurants:any
     ratings:number[]
     index:number
     step:number
-    apiQuery:{}
+    apiQuery:{
+        searchNotLatlong:boolean
+        location:string
+        mood:Mood
+    }
 }
 
 //latitude=37.786882&longitude=-122.399972"
@@ -46,7 +51,7 @@ export default function WelcomePage({moods}) {
         apiQuery:{
             searchNotLatlong:true,
             location:'seattle, wa',
-            mood:{},
+            mood:moods[0],
         }
     })
 
@@ -78,18 +83,43 @@ export default function WelcomePage({moods}) {
         }
     }
 
-    function handleSelectMood(e){
-        e.preventDefault()
-
+    async function fetchRestaurants(query){
+        console.log('sending out this query ' ,query)
+        return api()
     }
 
-    function handleLocationSubmit(e){
+    async function handleSelectMood(MOOD){
         setState({
             ...state,
-            apiQuery:{...state.apiQuery, searchNotLatLong: true, location:state.search },
+            apiQuery:{
+                ...state.apiQuery,
+                mood:MOOD
+            },
+            step:state.step+1
+        })
+
+        const {searchNotLatlong, location, mood} = state.apiQuery
+        const queryLocation = searchNotLatlong? `&location=${location}` : '123'
+        const queryCategories = `&categories=${mood.categories[0]}`
+
+        const restaurants = await fetchRestaurants(queryLocation+queryCategories)
+
+            console.log(restaurants)
+            setState({
+                ...state,
+                restaurants,
+                step:state.step+1
+            })
+    }
+
+    function handleLocationSubmit(){
+        setState({
+            ...state,
+            apiQuery:{...state.apiQuery, searchNotLatlong: true, location:state.search },
             step:state.step+1
         })
     }
+
     return (
         <main className="page">
             {state.step === 1?(
@@ -103,32 +133,17 @@ export default function WelcomePage({moods}) {
                 <>
                     <h1>Which mood are you in today? Or click "Edit Moods" up top to make or change a mood.</h1>
                     <ul>
-                        {moods.map(mood=><li>{mood.name}</li>)}
+                        {moods.map(mood=><li><button onClick={()=>{handleSelectMood(mood)}}>{mood.name}</button> </li>)}
                     </ul>
                 </>
-            ):(
+            ):state.step === 3 ? (
                 <>
+                <h1>Loading...</h1>
                 </>
+            ):(
+                <h1>results!</h1>
             )
             }
         </main>
     )
 }
-
-
-/*             {state.restaurants.length ? 
-                (
-                <>
-                <h1>Populating</h1>
-                <BusinessCard key={state.index} index={state.index} setWelcomeState={setState} welcomeState={state} business={state.restaurants[state.index]}/>
-                </>
-                    )
-                :
-                (
-                <>
-                    <h1>WELCOME!</h1>
-                    <input type="search" value={state.search} onChange={(e)=>setState({...state , search:e.target.value})} placeholder="What city are you in?"
-                    /> <button type="submit" onClick={handleSubmit} className="btn">Submit Search!</button>
-                </>
-                )
-            } */

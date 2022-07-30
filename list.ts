@@ -1,4 +1,4 @@
-export const YELPCATEGORIES = [
+[
     'Afghan',             'African',      'Senegalese',
     'South African',      'American',     'American',
     'Arabic',             'Argentine',    'Armenian',
@@ -51,4 +51,4 @@ export const YELPCATEGORIES = [
     'Sushi Bars',      'Syrian',              'Taiwanese',
     'Tapas Bars',      'Tapas/Small Plates',  'Tex-Mex',
     'Thai',            'Turkish'
-  ].sort()
+  ]

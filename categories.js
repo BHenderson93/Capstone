@@ -313,17 +313,16 @@ function YelpCategories(){
     Yugoslav (yugoslav, [BE, AU, IT, PT, SE, FR])`
     
     const splitCats = cats.split('\n')
-    //console.log('split cats are' , splitCats)
-    //const filterCats = splitCats.filter(x=>x.includes('US') || x.includes('All'))
-    
-    let newArr = []
-    splitCats.forEach((x)=>{
-        let temp = x.split('(')[0].trim()
-        newArr.push(temp)
-    })
-    for (let i = 90 ; i < newArr.length ; i+=90){
-        console.log(newArr.slice(i-90,i))
+    const inUS = splitCats.filter(x=>(x.includes('US') || x.includes('All')))
+    let newCats = []
+    for (let i = 0 ; i <inUS.length ; i++){
+        newCats.push(inUS[i].slice(0,inUS[i].indexOf('(') -1).trim())
     }
+
+    for(let i = 50 ; i < newCats.length ; i+=50){
+        console.log(newCats.slice(i-50 , i))
+    }
+
 }
 
 YelpCategories()
