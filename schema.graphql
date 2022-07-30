@@ -13,7 +13,7 @@ type AuthPayload {
 }
 
 type Mood {
-  category: [String]
+  categories: String!
   createdBy: User
   id: Int!
   name: String!
@@ -22,15 +22,15 @@ type Mood {
 
 type Mutation {
   API_Call(query: String!): API!
-  createMood(categories: [String!]!, name: String!, price: Int!, token: String!): Mood!
+  createMood(categories: String!, name: String!, price: Int!, token: String!): Mood!
   deleteMood(id: Int!, token: String!): Mood
   login(email: String!, password: String!): AuthPayload!
   signup(email: String!, name: String!, password: String!): AuthPayload!
-  updateMood(categories: [String!]!, id: Int!, name: String!, price: Int!, token: String!): Mood
+  updateMood(categories: String!, id: Int!, name: String!, price: Int!, token: String!): Mood
 }
 
 type Query {
-  usermoods(token: String!): [Mood!]!
+  usermoods(token: String!): [Mood]
 }
 
 type User {

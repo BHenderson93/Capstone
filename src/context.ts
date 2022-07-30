@@ -17,9 +17,11 @@ interface User{
 
 export const context = ({ req }: { req: Request }): Context => {
     //console.log(req.body)
+    
     const token = req.body.variables.token? decodeTokenPayload(req.body.variables.token) : null
     // console.log("token is " , token)
     if(token){
+        console.log('context user is ' , token)
         return{
             prisma,
             user:{name: token.name , email:token.email , id:token.id}

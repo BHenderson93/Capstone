@@ -3,9 +3,11 @@ import { gql, useMutation } from '@apollo/client'
 import { InitialState } from '../../pages/MoodsPage/MoodsPage'
 import { FilterScroll } from '../FilterScoll/FilterScroll'
 import { YelpCat } from '../../components/YelpCat/YelpCat'
+
+
 const NEW_MOOD = gql`
-mutation Create($name: String!, $categories: String!, $price: Int!, $token: String!) {
-  create(name: $name, categories: $categories, price: $price, token: $token) {
+mutation Createmood($name: String!, $categories: String!, $price: Int!, $token: String!) {
+  createMood(name: $name, categories: $categories, price: $price, token: $token) {
     id
     name
     categories
@@ -18,8 +20,8 @@ mutation Create($name: String!, $categories: String!, $price: Int!, $token: Stri
 `
 
 const UPDATE_MOOD = gql`
-mutation Update($categories: String!, $id: Int!, $name: String!, $price: Int!, $token: String!){
-    update(categories:$categories , id:$id , name:$name , price:$price , token:$token){
+mutation Updatemood($categories: String!, $id: Int!, $name: String!, $price: Int!, $token: String!){
+    updateMood(categories:$categories , id:$id , name:$name , price:$price , token:$token){
         id
         name
         categories
@@ -156,7 +158,7 @@ export default function MoodForm({ handleNewMood, initialState, handleUpdateMood
             </form>
             <ul>
                 {state.categories.length === 10 ? <p className="error">Max categories reached!</p> : null}
-                {state.categories.map(cat=><YelpCat cat={cat} handleRemoveFromCategories={handleRemoveFromCategories}/>)
+                {state.categories.map((cat,idx)=><YelpCat cat={cat} key={idx}handleRemoveFromCategories={handleRemoveFromCategories}/>)
 
                 }
             </ul>

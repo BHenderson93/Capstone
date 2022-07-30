@@ -37,7 +37,7 @@ export interface NexusGenObjects {
     user: NexusGenRootTypes['User']; // User!
   }
   Mood: { // root type
-    category?: Array<string | null> | null; // [String]
+    categories: string; // String!
     id: number; // Int!
     name: string; // String!
     price: number; // Int!
@@ -72,7 +72,7 @@ export interface NexusGenFieldTypes {
     user: NexusGenRootTypes['User']; // User!
   }
   Mood: { // field return type
-    category: Array<string | null> | null; // [String]
+    categories: string; // String!
     createdBy: NexusGenRootTypes['User'] | null; // User
     id: number; // Int!
     name: string; // String!
@@ -87,7 +87,7 @@ export interface NexusGenFieldTypes {
     updateMood: NexusGenRootTypes['Mood'] | null; // Mood
   }
   Query: { // field return type
-    usermoods: NexusGenRootTypes['Mood'][]; // [Mood!]!
+    usermoods: Array<NexusGenRootTypes['Mood'] | null> | null; // [Mood]
   }
   User: { // field return type
     email: string; // String!
@@ -108,7 +108,7 @@ export interface NexusGenFieldTypeNames {
     user: 'User'
   }
   Mood: { // field return type name
-    category: 'String'
+    categories: 'String'
     createdBy: 'User'
     id: 'Int'
     name: 'String'
@@ -140,7 +140,7 @@ export interface NexusGenArgTypes {
       query: string; // String!
     }
     createMood: { // args
-      categories: string[]; // [String!]!
+      categories: string; // String!
       name: string; // String!
       price: number; // Int!
       token: string; // String!
@@ -159,7 +159,7 @@ export interface NexusGenArgTypes {
       password: string; // String!
     }
     updateMood: { // args
-      categories: string[]; // [String!]!
+      categories: string; // String!
       id: number; // Int!
       name: string; // String!
       price: number; // Int!

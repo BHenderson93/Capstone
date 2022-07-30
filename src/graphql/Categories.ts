@@ -6,3 +6,8 @@ export const User = objectType({
         t.nonNull.int("id")
         t.nonNull.string('name')
     }})
+
+/* export const makeCategories = extendType({
+    type:"Mutation",
+
+}) */

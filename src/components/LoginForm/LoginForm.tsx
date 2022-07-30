@@ -14,12 +14,6 @@ mutation login( $email:String!, $password:String!){
         user{
             email,
             name,
-            moods{
-                id
-                name
-                categories
-                price
-            }
         }
     }            
 }`

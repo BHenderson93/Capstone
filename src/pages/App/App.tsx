@@ -37,6 +37,21 @@ export interface Mood {
 }
 
 
+const MOODQUERY = gql`
+query Usermoods( $token:String!){
+    usermoods(token:$token){
+      id
+      name
+      price
+      createdBy{
+        name
+        id
+        email
+      }
+      }            
+}`
+
+
 export default function App() {
   const [app, setApp] = React.useState<AppState>({
     user: '',
@@ -44,20 +59,12 @@ export default function App() {
     moods: []
   })
 
-  const MOODQUERY = gql`
-    query Usermoods( $token:String!){
-        usermoods(token:$token){
-          id
-          name
-          price
-          categories
-          }            
-    }`
   const [moodquery, { data, loading, error }] = useLazyQuery(MOODQUERY, {
     variables: {
       token: localStorage.getItem('token')
     }
   })
+  
   const nav = useNavigate()
   React.useEffect(() => {
     const token = localStorage.getItem('token')
@@ -71,8 +78,10 @@ export default function App() {
             setApp({
               ...app,
               moods: userMoods,
-              user:payload.user.name
+              user:userMoods.createdBy.name
             })
+          }).catch((err)=>{
+            console.log('Error fetching moods' , err)
           })
         }
         moodList()

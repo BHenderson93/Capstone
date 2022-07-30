@@ -27,7 +27,7 @@ export function FilterScroll({handleAddCategory, picked}:FilterScrollProps){
             <ul className="overflow-y-scroll overflow-x-hidden"style={{height:'40vh' , width:'100%'}}>
                 {YELPCATEGORIES.filter(cat=>cat.match(new RegExp(state.search, "i")))
                 .filter(cate=>!picked.includes(cate))
-                    .map(remaining=><YelpCat cat={remaining} clearSearch={clearSearch} handleAddCategory={handleAddCategory}/>)}
+                    .map((remaining,idx)=><YelpCat cat={remaining} key={idx}clearSearch={clearSearch} handleAddCategory={handleAddCategory}/>)}
             </ul>
         </div>
     )

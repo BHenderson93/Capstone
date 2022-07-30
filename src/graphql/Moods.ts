@@ -6,7 +6,7 @@ export const Mood = objectType({
         t.nonNull.int('id')
         t.nonNull.string('name')
         //Looks like I may need another table to store my categories.
-        t.list.string('category')
+        t.nonNull.string('categories')
         t.nonNull.int('price')
         t.field("createdBy", {
             type: "User",
@@ -19,22 +19,16 @@ export const Mood = objectType({
     }
 })
 
-/* export const Categories = objectType({
-    name:"Categories",
-    definition(t){
-        t.nonNull.list.nonNull.string
-    }
-}) */
-
 export const MoodQuery = extendType({
     type: "Query",
     definition(t) {
-        t.nonNull.list.nonNull.field("usermoods", {
+        t.list.field("usermoods", {
             type: "Mood",
             args: {
                 token: nonNull(stringArg())
             },
             resolve(parent, args, context) {
+                console.log('in usermoods')
                 const moodList = context.prisma.mood.findMany({
                     where: { createdById: context.user?.id }
                 })
@@ -51,7 +45,7 @@ export const MoodMutation = extendType({
             type: "Mood",
             args: {
                 name: nonNull(stringArg()),
-                categories: nonNull(list(nonNull(stringArg()))),
+                categories: nonNull(stringArg()),
                 price: nonNull(intArg()),
                 token: nonNull(stringArg())
             },
@@ -61,11 +55,11 @@ export const MoodMutation = extendType({
                 const { name, categories, price } = args
                 if (user) {
 
-                    const newMood = await context.prisma.mood.create({
+                    const newMood = context.prisma.mood.create({
                         data: {
                             name,
                             price,
-                            categories:categories,
+                            categories,
                             createdBy: { connect: { id: user.id } }}
                     })
                     return newMood
@@ -79,14 +73,14 @@ export const MoodMutation = extendType({
                 args: {
                     id: nonNull(intArg()),
                     name: nonNull(stringArg()),
-                    categories: nonNull(list(nonNull(stringArg()))),
+                    categories: nonNull(stringArg()),
                     price: nonNull(intArg()),
                     token: nonNull(stringArg())
                 },
                 async resolve(parent, args, context, info) {
                     const { user } = context
                     if (user) {
-                        const {id, name, price, categories:category} = args
+                        const {id, name, price, categories} = args
                         const moodRecord = await context.prisma.mood.findFirstOrThrow({
                             where: {
                                 AND: [
@@ -104,7 +98,7 @@ export const MoodMutation = extendType({
                                 data: {
                                     name,
                                     price,
-                                    categories:category,
+                                    categories,
                                     createdBy: { connect: { id: user.id } }}
                             })
                         } else {
