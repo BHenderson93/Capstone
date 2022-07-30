@@ -1,5 +1,4 @@
 import { extendType, nonNull, objectType, stringArg, intArg } from "nexus";
-import * as jwt from 'jsonwebtoken'
 
 export const User = objectType({
     name: "User",
@@ -8,7 +7,7 @@ export const User = objectType({
         t.nonNull.string("name")
         t.nonNull.string("email")
         t.nonNull.string("password")
-        t.nonNull.list.nonNull.field("moods", {
+        t.list.field("moods", {
             type: "Mood",
             resolve(parent, args, context) {
                 return context.prisma.mood.findMany({

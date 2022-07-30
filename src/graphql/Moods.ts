@@ -1,11 +1,12 @@
-import { extendType, nonNull, objectType, stringArg, intArg, idArg, arg, list } from "nexus"
+import { extendType, nonNull, objectType, stringArg, intArg,list } from "nexus"
 
 export const Mood = objectType({
     name: "Mood",
     definition(t) {
         t.nonNull.int('id')
         t.nonNull.string('name')
-        t.nonNull.list.nonNull.string('categories')
+        //Looks like I may need another table to store my categories.
+        t.list.string('category')
         t.nonNull.int('price')
         t.field("createdBy", {
             type: "User",
@@ -43,25 +44,14 @@ export const MoodQuery = extendType({
     }
 })
 
-interface Payload {
-    user: UserInfo,
-    iat: number
-}
-
-interface UserInfo {
-    id: number,
-    name: string,
-    email: string
-}
-
 export const MoodMutation = extendType({
     type: "Mutation",
     definition(t) {
-        t.nonNull.field("create", {
+        t.nonNull.field("createMood", {
             type: "Mood",
             args: {
                 name: nonNull(stringArg()),
-                categories: nonNull(list(nonNull('String'))),
+                categories: nonNull(list(nonNull(stringArg()))),
                 price: nonNull(intArg()),
                 token: nonNull(stringArg())
             },
@@ -70,13 +60,13 @@ export const MoodMutation = extendType({
                 console.log('Attempting create for ', user)
                 const { name, categories, price } = args
                 if (user) {
-                    const newMood = context.prisma.mood.create({
+
+                    const newMood = await context.prisma.mood.create({
                         data: {
                             name,
-                            categories,
                             price,
-                            createdBy: { connect: { id: user.id } }
-                        }
+                            categories:categories,
+                            createdBy: { connect: { id: user.id } }}
                     })
                     return newMood
                 } else {
@@ -84,18 +74,19 @@ export const MoodMutation = extendType({
                 }
             }
         }),
-        t.nonNull.field("update", {
+        t.field("updateMood", {
                 type: "Mood",
                 args: {
                     id: nonNull(intArg()),
                     name: nonNull(stringArg()),
-                    categories: list(nonNull('String')),
+                    categories: nonNull(list(nonNull(stringArg()))),
                     price: nonNull(intArg()),
                     token: nonNull(stringArg())
                 },
                 async resolve(parent, args, context, info) {
                     const { user } = context
                     if (user) {
+                        const {id, name, price, categories:category} = args
                         const moodRecord = await context.prisma.mood.findFirstOrThrow({
                             where: {
                                 AND: [
@@ -105,13 +96,16 @@ export const MoodMutation = extendType({
                             }
                         })
                         if (moodRecord) {
-                            return await context.prisma.mood.update({
-                                where: { id: args.id },
+                            const oldRecord = context.prisma.mood.delete({
+                                where:{id:args.id}
+                            })
+
+                            return context.prisma.mood.create({
                                 data: {
-                                    name: args.name,
-                                    categories: args.categories,
-                                    price: args.price
-                                }
+                                    name,
+                                    price,
+                                    categories:category,
+                                    createdBy: { connect: { id: user.id } }}
                             })
                         } else {
                             throw new Error("Cannot verify user as owner of that mood.")
@@ -122,7 +116,7 @@ export const MoodMutation = extendType({
                     }
                 }
         }),
-        t.field("delete", {
+        t.field("deleteMood", {
             type: "Mood",
             args: {
                 id: nonNull(intArg()),

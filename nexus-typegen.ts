@@ -37,7 +37,7 @@ export interface NexusGenObjects {
     user: NexusGenRootTypes['User']; // User!
   }
   Mood: { // root type
-    categories: string[]; // [String!]!
+    category?: Array<string | null> | null; // [String]
     id: number; // Int!
     name: string; // String!
     price: number; // Int!
@@ -72,7 +72,7 @@ export interface NexusGenFieldTypes {
     user: NexusGenRootTypes['User']; // User!
   }
   Mood: { // field return type
-    categories: string[]; // [String!]!
+    category: Array<string | null> | null; // [String]
     createdBy: NexusGenRootTypes['User'] | null; // User
     id: number; // Int!
     name: string; // String!
@@ -80,11 +80,11 @@ export interface NexusGenFieldTypes {
   }
   Mutation: { // field return type
     API_Call: NexusGenRootTypes['API']; // API!
-    create: NexusGenRootTypes['Mood']; // Mood!
-    delete: NexusGenRootTypes['Mood'] | null; // Mood
+    createMood: NexusGenRootTypes['Mood']; // Mood!
+    deleteMood: NexusGenRootTypes['Mood'] | null; // Mood
     login: NexusGenRootTypes['AuthPayload']; // AuthPayload!
     signup: NexusGenRootTypes['AuthPayload']; // AuthPayload!
-    update: NexusGenRootTypes['Mood']; // Mood!
+    updateMood: NexusGenRootTypes['Mood'] | null; // Mood
   }
   Query: { // field return type
     usermoods: NexusGenRootTypes['Mood'][]; // [Mood!]!
@@ -92,7 +92,7 @@ export interface NexusGenFieldTypes {
   User: { // field return type
     email: string; // String!
     id: number; // Int!
-    moods: NexusGenRootTypes['Mood'][]; // [Mood!]!
+    moods: Array<NexusGenRootTypes['Mood'] | null> | null; // [Mood]
     name: string; // String!
     password: string; // String!
   }
@@ -108,7 +108,7 @@ export interface NexusGenFieldTypeNames {
     user: 'User'
   }
   Mood: { // field return type name
-    categories: 'String'
+    category: 'String'
     createdBy: 'User'
     id: 'Int'
     name: 'String'
@@ -116,11 +116,11 @@ export interface NexusGenFieldTypeNames {
   }
   Mutation: { // field return type name
     API_Call: 'API'
-    create: 'Mood'
-    delete: 'Mood'
+    createMood: 'Mood'
+    deleteMood: 'Mood'
     login: 'AuthPayload'
     signup: 'AuthPayload'
-    update: 'Mood'
+    updateMood: 'Mood'
   }
   Query: { // field return type name
     usermoods: 'Mood'
@@ -139,13 +139,13 @@ export interface NexusGenArgTypes {
     API_Call: { // args
       query: string; // String!
     }
-    create: { // args
+    createMood: { // args
       categories: string[]; // [String!]!
       name: string; // String!
       price: number; // Int!
       token: string; // String!
     }
-    delete: { // args
+    deleteMood: { // args
       id: number; // Int!
       token: string; // String!
     }
@@ -158,8 +158,8 @@ export interface NexusGenArgTypes {
       name: string; // String!
       password: string; // String!
     }
-    update: { // args
-      categories?: string[] | null; // [String!]
+    updateMood: { // args
+      categories: string[]; // [String!]!
       id: number; // Int!
       name: string; // String!
       price: number; // Int!
