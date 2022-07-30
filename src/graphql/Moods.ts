@@ -89,7 +89,7 @@ export const MoodMutation = extendType({
                 args: {
                     id: nonNull(intArg()),
                     name: nonNull(stringArg()),
-                    categories: nonNull(list(nonNull('String'))),
+                    categories: list(nonNull('String')),
                     price: nonNull(intArg()),
                     token: nonNull(stringArg())
                 },

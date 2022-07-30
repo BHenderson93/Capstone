@@ -159,7 +159,7 @@ export interface NexusGenArgTypes {
       password: string; // String!
     }
     update: { // args
-      categories: string[]; // [String!]!
+      categories?: string[] | null; // [String!]
       id: number; // Int!
       name: string; // String!
       price: number; // Int!
