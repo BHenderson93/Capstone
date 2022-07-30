@@ -137,7 +137,7 @@ export default function MoodForm({ handleNewMood, initialState, handleUpdateMood
     }
 
     function handleRemoveFromCategories(cat):void{
-        const newCats = state.categories.filter(x=>x===cat)
+        const newCats = state.categories.filter(x=>x!==cat)
         setState({
             ...state,
             categories:newCats

@@ -15,13 +15,19 @@ export function FilterScroll({handleAddCategory, picked}:FilterScrollProps){
     const [state, setState]=React.useState<FilterScrollState>({
         search:''
     })
+
+    function clearSearch(){
+        setState({
+            search:''
+        })
+    }
     return(
         <div className="container filter-scroll" >
             <input type="text" name="search" value={state.search} onChange={e=>setState({...state, search:e.target.value})}/>
             <ul className="overflow-y-scroll overflow-x-hidden"style={{height:'40vh' , width:'100%'}}>
                 {YELPCATEGORIES.filter(cat=>cat.match(new RegExp(state.search, "i")))
                 .filter(cate=>!picked.includes(cate))
-                    .map(remaining=><YelpCat cat={remaining} handleAddCategory={handleAddCategory}/>)}
+                    .map(remaining=><YelpCat cat={remaining} clearSearch={clearSearch} handleAddCategory={handleAddCategory}/>)}
             </ul>
         </div>
     )
