@@ -37,6 +37,7 @@ export interface WelcomePageState{
         searchNotLatlong:boolean
         location:string
         mood:Mood
+        query:string
     }
 }
 
@@ -52,6 +53,7 @@ export default function WelcomePage({moods}) {
             searchNotLatlong:true,
             location:'seattle, wa',
             mood:moods[0],
+            query:''
         }
     })
 
@@ -65,52 +67,45 @@ export default function WelcomePage({moods}) {
 
     const [api, { data, loading, error }] = useMutation(API_CALL, {
         variables: {
-            query: state.search
+            query: state.apiQuery.query
         }
     })
-
-    async function handleSubmit(e) {
-        e.preventDefault()
-        try {
-            const response = await api()
-            const businesses = JSON.parse(response.data.API_Call.data)
-            console.log(businesses)
-            const newRatings = Array(businesses.businesses.length).fill(0)
-            setState({ ...state, restaurants: businesses.businesses , ratings:newRatings})
-
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
-    async function fetchRestaurants(query){
-        console.log('sending out this query ' ,query)
-        return api()
-    }
 
     async function handleSelectMood(MOOD){
         setState({
             ...state,
             apiQuery:{
                 ...state.apiQuery,
-                mood:MOOD
+                mood:MOOD,
+                query:`&location=${state.apiQuery.location}&categories=${MOOD.categories.split('*')[0]}`
             },
             step:state.step+1
         })
+    }
 
-        const {searchNotLatlong, location, mood} = state.apiQuery
-        const queryLocation = searchNotLatlong? `&location=${location}` : '123'
-        const queryCategories = `&categories=${mood.categories[0]}`
+    React.useEffect(()=>{
 
-        const restaurants = await fetchRestaurants(queryLocation+queryCategories)
-
-            console.log(restaurants)
+        const getApiData = async () =>{
+            const results = await api()
+            const restaurants = JSON.parse(results.data.API_Call.data)
+            console.log("API results are " , restaurants)
+            //const initialRatings = Array(restaurants).fill(0)
             setState({
                 ...state,
                 restaurants,
+                //ratings,
+                apiQuery:{
+                    ...state.apiQuery,
+                    query:''
+                },
                 step:state.step+1
             })
-    }
+        }
+        if(state.apiQuery.query){
+            getApiData()
+        }
+
+    }, [state.apiQuery.query])
 
     function handleLocationSubmit(){
         setState({
@@ -141,7 +136,8 @@ export default function WelcomePage({moods}) {
                 <h1>Loading...</h1>
                 </>
             ):(
-                <h1>results!</h1>
+                <h1>Results</h1>
+                //<BusinessCard setWelcomeState={setState} welcomeState={state}  />
             )
             }
         </main>

@@ -316,7 +316,7 @@ function YelpCategories(){
     const inUS = splitCats.filter(x=>(x.includes('US') || x.includes('All')))
     let newCats = []
     for (let i = 0 ; i <inUS.length ; i++){
-        newCats.push(inUS[i].slice(0,inUS[i].indexOf('(') -1).trim())
+        newCats.push(inUS[i].slice(0,inUS[i].indexOf('(')).trim())
     }
 
     for(let i = 50 ; i < newCats.length ; i+=50){

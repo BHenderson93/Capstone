@@ -24,8 +24,9 @@ export const API_Call = extendType({
             },
             // @ts-ignore
             async resolve(parent, args, context) {
-
+                console.log('my query from client side is ' , args.query)
                 const URL = `https://api.yelp.com/v3/businesses/search?term=delis&${args.query}&limit=2`
+                console.log('Sending API request to ' , URL)
                 const HEADERS = {
                     method: "GET",
                     headers: {

@@ -9,13 +9,13 @@ export interface BusinessCardState{
 }
 
 export default function BusinessCard({business,index, setWelcomeState , welcomeState}){
-    const [state,setState] = React.useState('')
+    const [state,setState] = React.useState('1')
 
-    function goNext(dir):void{
-        if((dir > 0 && index < welcomeState.ratings.length - 1) || (dir < 0 && index > 0) ){
+    function goNext(direction):void{
+        if((direction > 0 && index < welcomeState.ratings.length - 1) || (direction < 0 && index > 0) ){
             setWelcomeState({
                 ...welcomeState,
-                index:(index+dir)
+                index:(index+direction)
             })
         }else{
             console.log('End of list')
