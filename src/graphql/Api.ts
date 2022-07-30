@@ -25,8 +25,8 @@ export const API_Call = extendType({
             // @ts-ignore
             async resolve(parent, args, context) {
                 console.log('my query from client side is ' , args.query)
-                const URL = `https://api.yelp.com/v3/businesses/search?term=delis&${args.query}&limit=2`
-                console.log('Sending API request to ' , URL)
+                const URL = `https://api.yelp.com/v3/businesses/search?term=restaurants${args.query.toLowerCase()}&limit=2`
+                //console.log('Sending API request to ' , URL)
                 const HEADERS = {
                     method: "GET",
                     headers: {
@@ -34,8 +34,9 @@ export const API_Call = extendType({
                         "Authorization": `Bearer ${process.env.API_KEY}`,
                         'Accept-Language': 'en-US',
                     }
-                }                
-                console.log('args query' , args.query)
+                }           
+                   
+                //console.log('args query' , args.query)
                 const QLURL = `https://api.yelp.com/v3/graphql`
                 const QLHEADERS = {
                     method: "POST",
@@ -46,15 +47,15 @@ export const API_Call = extendType({
                     },
                     body:`${args.query}`
                 }
-
-                const testURL = `https://www.yelp.com/biz/zylberschteins-delicatessen-and-bakery-seattle-2?adjust_creative=H3CpHLxnx7i5nqIdbxEPrA&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=H3CpHLxnx7i5nqIdbxEPrA`
-
-                const testHeaders = 123
-                console.log('Attempting fetch from server')
+                console.log('Attempting fetch from server with ' , URL ,HEADERS)
                 const resp = await fetch(URL , HEADERS)
-                console.log('Got this response' , resp)
                 const response = await resp.json()
                 console.log('Got this resposne' , response)
+                const BUSINESSURL = `https://api.yelp.com/v3/businesses/${response.businesses[0].id}`
+
+                const businessSpecifics = await fetch(BUSINESSURL , HEADERS)
+                const bsRes = await businessSpecifics.json()
+                console.log('I got these business specifics ' , bsRes)
                 const data = await context.prisma.api.create({
                     data:{data : JSON.stringify(response)}
                 })

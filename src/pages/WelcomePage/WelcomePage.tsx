@@ -72,22 +72,24 @@ export default function WelcomePage({moods}) {
     })
 
     async function handleSelectMood(MOOD){
-        setState({
+        const cats = MOOD.categories.includes('*')? MOOD.categories.split('*')[0] : MOOD.categories
+        console.log(cats)
+         setState({
             ...state,
             apiQuery:{
                 ...state.apiQuery,
                 mood:MOOD,
-                query:`&location=${state.apiQuery.location}&categories=${MOOD.categories.split('*')[0]}`
+                query:`&location=${state.apiQuery.location}&categories=${cats}`
             },
             step:state.step+1
-        })
+        }) 
     }
 
     React.useEffect(()=>{
 
         const getApiData = async () =>{
             const results = await api()
-            const restaurants = JSON.parse(results.data.API_Call.data)
+            const restaurants = JSON.parse(results.data.API_Call.data).businesses
             console.log("API results are " , restaurants)
             //const initialRatings = Array(restaurants).fill(0)
             setState({
@@ -136,8 +138,11 @@ export default function WelcomePage({moods}) {
                 <h1>Loading...</h1>
                 </>
             ):(
+                <div className="container">
                 <h1>Results</h1>
-                //<BusinessCard setWelcomeState={setState} welcomeState={state}  />
+                <BusinessCard setWelcomeState={setState} welcomeState={state} index={1} business={state.restaurants[0]} />
+                </div>
+
             )
             }
         </main>

@@ -8,7 +8,7 @@ export interface BusinessCardState{
 
 }
 
-export default function BusinessCard({business,index, setWelcomeState , welcomeState}){
+export default function BusinessCard({business, index, setWelcomeState , welcomeState}){
     const [state,setState] = React.useState('1')
 
     function goNext(direction):void{
