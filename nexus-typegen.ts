@@ -37,7 +37,7 @@ export interface NexusGenObjects {
     user: NexusGenRootTypes['User']; // User!
   }
   Mood: { // root type
-    categories: string; // String!
+    categories: string[]; // [String!]!
     id: number; // Int!
     name: string; // String!
     price: number; // Int!
@@ -72,7 +72,7 @@ export interface NexusGenFieldTypes {
     user: NexusGenRootTypes['User']; // User!
   }
   Mood: { // field return type
-    categories: string; // String!
+    categories: string[]; // [String!]!
     createdBy: NexusGenRootTypes['User'] | null; // User
     id: number; // Int!
     name: string; // String!
@@ -140,7 +140,7 @@ export interface NexusGenArgTypes {
       query: string; // String!
     }
     create: { // args
-      categories: string; // String!
+      categories: string[]; // [String!]!
       name: string; // String!
       price: number; // Int!
       token: string; // String!
@@ -159,7 +159,7 @@ export interface NexusGenArgTypes {
       password: string; // String!
     }
     update: { // args
-      categories: string; // String!
+      categories: string[]; // [String!]!
       id: number; // Int!
       name: string; // String!
       price: number; // Int!

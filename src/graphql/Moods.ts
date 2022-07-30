@@ -1,11 +1,11 @@
-import { extendType, nonNull, objectType, stringArg, intArg, idArg, arg } from "nexus"
+import { extendType, nonNull, objectType, stringArg, intArg, idArg, arg, list } from "nexus"
 
 export const Mood = objectType({
     name: "Mood",
     definition(t) {
         t.nonNull.int('id')
         t.nonNull.string('name')
-        t.nonNull.string('categories')
+        t.nonNull.list.nonNull.string('categories')
         t.nonNull.int('price')
         t.field("createdBy", {
             type: "User",
@@ -17,6 +17,13 @@ export const Mood = objectType({
         })
     }
 })
+
+/* export const Categories = objectType({
+    name:"Categories",
+    definition(t){
+        t.nonNull.list.nonNull.string
+    }
+}) */
 
 export const MoodQuery = extendType({
     type: "Query",
@@ -54,7 +61,7 @@ export const MoodMutation = extendType({
             type: "Mood",
             args: {
                 name: nonNull(stringArg()),
-                categories: nonNull(stringArg()),
+                categories: nonNull(list(nonNull('String'))),
                 price: nonNull(intArg()),
                 token: nonNull(stringArg())
             },
@@ -82,7 +89,7 @@ export const MoodMutation = extendType({
                 args: {
                     id: nonNull(intArg()),
                     name: nonNull(stringArg()),
-                    categories: nonNull(stringArg()),
+                    categories: nonNull(list(nonNull('String'))),
                     price: nonNull(intArg()),
                     token: nonNull(stringArg())
                 },
