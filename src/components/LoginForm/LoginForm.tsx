@@ -7,29 +7,29 @@ interface LoginProps {
     setApp: React.Dispatch<React.SetStateAction<any>>
 }
 
+const LOGIN = gql`
+mutation login( $email:String!, $password:String!){
+    login(email:$email , password:$password){
+        token,
+        user{
+            email,
+            name,
+            moods{
+                id
+                name
+                categories
+                price
+            }
+        }
+    }            
+}`
+
 export default function LoginForm({ app, setApp }: LoginProps) {
     const [state, setState] = React.useState({
         email: '',
         password: '',
         valid: true
     })
-
-    const LOGIN = gql`
-        mutation login( $email:String!, $password:String!){
-            login(email:$email , password:$password){
-                token,
-                user{
-                    email,
-                    name,
-                    moods{
-                        id
-                        name
-                        categories
-                        price
-                    }
-                }
-            }            
-        }`
 
     const [login, { data, loading, error }] = useMutation(LOGIN , {
         variables:{

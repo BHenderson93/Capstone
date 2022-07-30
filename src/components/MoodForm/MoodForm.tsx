@@ -2,6 +2,33 @@ import * as React from 'react'
 import {gql, useMutation} from '@apollo/client'
 import {InitialState} from '../../pages/MoodsPage/MoodsPage'
 
+
+const NEW_MOOD = gql`
+mutation Create($name: String!, $categories: String!, $price: Int!, $token: String!) {
+  create(name: $name, categories: $categories, price: $price, token: $token) {
+    id
+    name
+    categories
+    price
+    createdBy{
+        name
+    }
+  }
+}
+`
+
+
+const UPDATE_MOOD = gql`
+mutation Update($categories: String!, $id: Int!, $name: String!, $price: Int!, $token: String!){
+    update(categories:$categories , id:$id , name:$name , price:$price , token:$token){
+        id
+        name
+        categories
+        price
+    }            
+}
+`
+
 export default function MoodForm({handleNewMood, initialState, handleUpdateMood, refresh}){
     const {id, name, categories, price} = initialState
 
@@ -39,20 +66,6 @@ export default function MoodForm({handleNewMood, initialState, handleUpdateMood,
          }
     }
 
-    const NEW_MOOD = gql`
-    mutation Create($name: String!, $categories: String!, $price: Int!, $token: String!) {
-      create(name: $name, categories: $categories, price: $price, token: $token) {
-        id
-        name
-        categories
-        price
-        createdBy{
-            name
-        }
-      }
-    }
-    `
-
     const [newMood , {data:newMoodData}] = useMutation(NEW_MOOD , {
         variables:{
             name:state.name,
@@ -61,17 +74,6 @@ export default function MoodForm({handleNewMood, initialState, handleUpdateMood,
             token:localStorage.getItem('token')
         }
     })
-
-    const UPDATE_MOOD = gql`
-        mutation Update($categories: String!, $id: Int!, $name: String!, $price: Int!, $token: String!){
-            update(categories:$categories , id:$id , name:$name , price:$price , token:$token){
-                id
-                name
-                categories
-                price
-            }            
-        }
-    `
 
     const [updateMood , {data:updateMoodData}] = useMutation(UPDATE_MOOD , {
         variables:{
@@ -108,6 +110,7 @@ export default function MoodForm({handleNewMood, initialState, handleUpdateMood,
             })
         }
     }
+    
     return(
     <form action="" onSubmit={handleSubmit}>
         <label htmlFor="name">What is this mood called? </label>

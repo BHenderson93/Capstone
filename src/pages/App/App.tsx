@@ -23,7 +23,18 @@ import MoodsPage from "../MoodsPage/MoodsPage";
 import Layout from "../../components/Layout/Layout";
 
 //Other
-import {AppState} from '../../interfaces/App'
+export interface AppState {
+  user: string
+  reload: boolean
+  moods: Mood[]
+}
+
+export interface Mood {
+  id?: number
+  name?: string
+  categories?: string
+  price?: number
+}
 
 
 export default function App() {

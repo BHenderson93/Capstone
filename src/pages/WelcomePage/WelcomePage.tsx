@@ -28,6 +28,10 @@ export interface business{
     distance?:number
 }
 
+export interface WelcomePageState{
+    
+}
+
 export default function WelcomePage() {
     const [state, setState] = React.useState<WelcomePageProps>({
         search: "latitude=37.786882&longitude=-122.399972",
