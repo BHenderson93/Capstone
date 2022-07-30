@@ -1,4 +1,4 @@
-const YelpCategories:string[] = [
+export const YELPCATEGORIES = [
 'Afghan','African','Senegalese',
 'SouthAfrican','American','American',
 'Andalusian','Arabic','ArabPizza',
@@ -149,5 +149,4 @@ const YelpCategories:string[] = [
 'SerboCroatian',
 'SignatureCuisine',
 'Singaporean'
-]
-module.exports = YelpCategories
+].sort()

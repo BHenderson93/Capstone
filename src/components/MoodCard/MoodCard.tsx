@@ -31,13 +31,12 @@ export default function MoodCard({mood, handleMoodEdit , app , setApp}){
     }
 
     return (
-    <li className="flex flex-row nowrap justify-between align-center">
+    <li className="flex flex-row nowrap justify-between align-center border">
         <h3>{mood.name}, {mood.categories}</h3>
-        <div>
+        <div className="flex flex-row nowrap justify-between align-center">
             <button onClick={()=>{handleMoodEdit(mood)}}>Edit</button>
             <button onClick={handleDelete}>Delete</button>
         </div>
-
     </li>
     )
 }

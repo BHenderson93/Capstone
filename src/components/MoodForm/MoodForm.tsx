@@ -1,7 +1,7 @@
 import * as React from 'react'
-import {gql, useMutation} from '@apollo/client'
-import {InitialState} from '../../pages/MoodsPage/MoodsPage'
-
+import { gql, useMutation } from '@apollo/client'
+import { InitialState } from '../../pages/MoodsPage/MoodsPage'
+import { FilterScroll } from '../FilterScoll/FilterScroll'
 
 const NEW_MOOD = gql`
 mutation Create($name: String!, $categories: String!, $price: Int!, $token: String!) {
@@ -17,7 +17,6 @@ mutation Create($name: String!, $categories: String!, $price: Int!, $token: Stri
 }
 `
 
-
 const UPDATE_MOOD = gql`
 mutation Update($categories: String!, $id: Int!, $name: String!, $price: Int!, $token: String!){
     update(categories:$categories , id:$id , name:$name , price:$price , token:$token){
@@ -29,111 +28,114 @@ mutation Update($categories: String!, $id: Int!, $name: String!, $price: Int!, $
 }
 `
 
-export interface MoodFormProps{
-    handleNewMood: ({})=>void
+export interface MoodFormProps {
+    handleNewMood: ({ }) => void
     initialState: InitialState
-    handleUpdateMood:({})=>void
-    refresh:boolean
+    handleUpdateMood: ({ }) => void
+    refresh: boolean
 }
 
-export interface MoodFormState{
-    id:number
-    name:string
-    categories:string
-    price:number
+export interface MoodFormState {
+    id: number
+    name: string
+    categories: string
+    price: number
 }
 
-export default function MoodForm({handleNewMood, initialState, handleUpdateMood, refresh}:MoodFormProps){
-    const {id, name, categories, price} = initialState
+export default function MoodForm({ handleNewMood, initialState, handleUpdateMood, refresh }: MoodFormProps) {
+    const { id, name, categories, price } = initialState
 
-    const [state, setState]=React.useState<InitialState>({
-        id:id,
-        name:name,
-        categories:categories,
-        price:price
+    const [state, setState] = React.useState<InitialState>({
+        id: id,
+        name: name,
+        categories: categories,
+        price: price
     })
 
-    React.useEffect(()=>{
+    React.useEffect(() => {
         setState({
-            id:id,
-            name:name,
-            categories:categories,
-            price:price,
+            id: id,
+            name: name,
+            categories: categories,
+            price: price,
         })
     }, [refresh])
 
-    function changeName(e){
-        if(e.target.value.length < 25){
-            setState({...state, name:e.target.value})
+    function changeName(e) {
+        if (e.target.value.length < 25) {
+            setState({ ...state, name: e.target.value })
         }
     }
 
-    function changeCategories(e){
-        if(e.target.value.length < 25){
-            setState({...state, categories:e.target.value})
+    function changeCategories(e) {
+        if (e.target.value.length < 25) {
+            setState({ ...state, categories: e.target.value })
         }
     }
 
-    function changePrice(e){
-        if(e.target.value < 6 && e.target.value > 0){
-            setState({...state , price:Number(e.target.value)})
-         }
+    function changePrice(e) {
+        if (e.target.value < 6 && e.target.value > 0) {
+            setState({ ...state, price: Number(e.target.value) })
+        }
     }
 
-    const [newMood , {data:newMoodData}] = useMutation(NEW_MOOD , {
-        variables:{
-            name:state.name,
-            categories:state.categories,
-            price:state.price,
-            token:localStorage.getItem('token')
+    const [newMood, { data: newMoodData }] = useMutation(NEW_MOOD, {
+        variables: {
+            name: state.name,
+            categories: state.categories,
+            price: state.price,
+            token: localStorage.getItem('token')
         }
     })
 
-    const [updateMood , {data:updateMoodData}] = useMutation(UPDATE_MOOD , {
-        variables:{
-            categories:state.categories,
+    const [updateMood, { data: updateMoodData }] = useMutation(UPDATE_MOOD, {
+        variables: {
+            categories: state.categories,
             id: state.id,
             name: state.name,
             price: state.price,
-            token:localStorage.getItem('token')
+            token: localStorage.getItem('token')
         }
     })
 
-    async function handleSubmit(e){
+    async function handleSubmit(e) {
         e.preventDefault()
-        if(state.id){
-            updateMood().then((res)=>{
+        if (state.id) {
+            updateMood().then((res) => {
                 console.log(res)
                 handleUpdateMood(res.data.update)
-            }).catch((err)=>{
+            }).catch((err) => {
                 console.log(err)
             })
-        }else{
+        } else {
 
-            newMood().then((res)=>{
-                const {id, name, categories, price} = res.data.create
+            newMood().then((res) => {
+                const { id, name, categories, price } = res.data.create
                 const addMood = {
-                    id:id,
-                    name:name,
-                    categories:categories,
-                    price:price
+                    id: id,
+                    name: name,
+                    categories: categories,
+                    price: price
                 }
                 handleNewMood(addMood)
-            }).catch((err)=>{
+            }).catch((err) => {
                 console.log(err)
             })
         }
     }
-    
-    return(
-    <form action="" onSubmit={handleSubmit}>
-        <label htmlFor="name">What is this mood called? </label>
-        <input type="text" name="name" placeholder="i.e. Mama Mia! Pasta, baby, pasta!" onChange={changeName} value={state.name}/>
-        <label htmlFor="categories">What style of food fits this mood?</label>
-        <input type="text" name="categories" id="" placeholder="i.e. Italian " onChange={changeCategories} value={state.categories}/>
-        <label htmlFor="price">How ritzy? (1-5 in dollar signs)</label>
-        <input type="number" name="price" id="" placeholder="Ex: 3" onChange={changePrice} value={state.price}/>
-        <button type="submit" className="btn" >Submit!</button>
-    </form>
+
+    return (
+        <div className="container">
+            <form action="" onSubmit={handleSubmit}>
+                <label htmlFor="name">What is this mood called? </label>
+                <input type="text" name="name" placeholder="i.e. Mama Mia! Pasta, baby, pasta!" onChange={changeName} value={state.name} />
+                <label htmlFor="categories">What style of food fits this mood?</label>
+                <input type="text" name="categories" id="" placeholder="i.e. Italian " onChange={changeCategories} value={state.categories} />
+                <label htmlFor="price">How ritzy? (1-5 in dollar signs)</label>
+                <input type="number" name="price" id="" placeholder="Ex: 3" onChange={changePrice} value={state.price} />
+                <button type="submit" className="btn" >Submit!</button>
+            </form>
+            <FilterScroll />
+        </div>
     )
 }
