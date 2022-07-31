@@ -1,5 +1,5 @@
 import * as React from 'react'
-import MoodCard from '../MoodCard/MoodCard'
+import {MoodCard} from '../MoodCard/MoodCard'
 import { AppState, Mood } from '../../pages/App/App'
 
 export interface MoodListProps {

@@ -3,9 +3,8 @@ import { useMutation, gql } from '@apollo/client'
 import BusinessCard from '../../components/BusinessCard/BusinessCard'
 import { Mood } from '../App/App'
 import { useNavigate } from 'react-router-dom'
-
-
-
+import { WelcomeSearch } from '../../components/WelcomeSearch/WelcomeSearch'
+import { WelcomeMoodSelect } from '../../components/WelcomeMoodSelect/WelcomeMoodSelect'
 const API_CALL = gql`
 mutation API_Call($location:String! , $categories:String!) {
     API_Call(location:$location, categories:$categories ) {
@@ -13,7 +12,6 @@ mutation API_Call($location:String! , $categories:String!) {
     }
 }
 `
-
 
 export interface WelcomePageProps {
     moods: string[]
@@ -71,15 +69,13 @@ export default function WelcomePage({ moods }) {
             query: false
         }
     })
+
     const nav = useNavigate()
     React.useEffect(()=>{
-
         if(moods.length === 0){
             nav('/moods')
         }
-
     }, [])
-
 
     const [api, { data, loading, error }] = useMutation(API_CALL, {
         variables: {
@@ -88,7 +84,7 @@ export default function WelcomePage({ moods }) {
         }
     })
 
-    async function handleSelectMood(MOOD) {
+    async function handleSelectMood(MOOD:Mood) {
         setState({
             ...state,
             apiQuery: {
@@ -187,28 +183,10 @@ export default function WelcomePage({ moods }) {
     return (
         <div className="container">
             {state.step === 1 ? (
-                <>
-                { moods.length === 0? 
-                    <h1>Sorry, I don't think you've made any moods yet. Set one up in 'Edit Moods' then come on back!</h1>
-                    :
-                    <form action="" onSubmit={handleLocationSubmit} className="container-medium">
-                        <h1 className="text-5xl whitespace-nowrap text-center min-w-min p-5">Welcome! Let's find you somewhere to eat...</h1>
-                        <input type="search" className="text-center" value={state.search} onChange={(e) => setState({ ...state, search: e.target.value })} placeholder="Where are you? For example, 'seattle, wa' or 'new york'." />
-                        <br />
-                            {state.search.length < 3 ? <button type="submit" className="btn flex items-center justify-center py-5 w-full bg-slate-900 text-white font-medium uppercase rounded hover:bg-green-700 transition duration-150 ease-in-out">Please input location</button>: <button type="submit" className="btn flex items-center justify-center py-5 w-full bg-green-600 text-white font-medium uppercase rounded hover:bg-green-500 transition duration-150 ease-in-out">Click me when ready!</button>}
-                    </form>
-                    }
-                </>
+                <WelcomeSearch handleLocationSubmit={handleLocationSubmit} welcomePageState={state} setWelcomePageState={setState} moods={moods}/>
             ) : state.step === 2 ? (
                 <>
-                    {moods.length === 0 ?
-                        <h1>Sorry, I don't think you've made any moods yet. Set one up in 'Edit Moods' then come on back!</h1>
-                        :
-                        <ul>
-                            <h1>Which mood are you in today? Or click "Edit Moods" up top to make or change a mood.</h1>
-                            {moods.map(mood => <li><button onClick={() => { handleSelectMood(mood) }}>{mood.name}</button> </li>)}
-                        </ul>}
-
+                <WelcomeMoodSelect moods={moods} handleSelectMood={handleSelectMood} />
                 </>
             ) : state.step === 3 ? (
                 <>
