@@ -25,7 +25,7 @@ export function FilterScroll({handleAddCategory, picked}:FilterScrollProps){
         <div className="filter-scroll" >
             <h1>Select categories</h1>
             <input type="text" name="search" placeholder="Start typing here..." value={state.search} onChange={e=>setState({...state, search:e.target.value})}/>
-            <ul className="overflow-y-scroll overflow-x-hidden"style={{height:'40vh' , width:'100%'}}>
+            <ul className="overflow-y-scroll overflow-x-hidden border border-black h-full p-5">
                 {YELPCATEGORIES.filter(cat=>cat.match(new RegExp(state.search, "i")))
                 .filter(cate=>!picked.includes(cate))
                     .map((remaining,idx)=><YelpCat cat={remaining} key={idx}clearSearch={clearSearch} handleAddCategory={handleAddCategory}/>)}

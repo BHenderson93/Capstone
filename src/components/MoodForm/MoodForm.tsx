@@ -64,14 +64,8 @@ export default function MoodForm({ handleNewMood, initialState, handleUpdateMood
     }, [refresh])
 
     function changeName(e) {
-        if (e.target.value.length < 25) {
+        if (e.target.value.length < 50) {
             setState({ ...state, name: e.target.value })
-        }
-    }
-
-    function changeCategories(e) {
-        if (e.target.value.length < 25) {
-            setState({ ...state, categories: e.target.value })
         }
     }
 

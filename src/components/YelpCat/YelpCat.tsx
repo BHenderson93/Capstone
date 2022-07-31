@@ -23,7 +23,7 @@ export function YelpCat( {cat , handleAddCategory, clearSearch, handleRemoveFrom
     }
 
     return(
-        <li className="border shadow-lg p-3 w-full" onClick={handleClick}>
+        <li className="border shadow-lg p-3 w-full hover:bg-slate-900 hover:text-white" onClick={handleClick}>
             {cat}
         </li>
     )
