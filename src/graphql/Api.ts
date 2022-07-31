@@ -25,8 +25,8 @@ export const API_Call = extendType({
             async resolve(parent, args, context) {
                 console.log('my query from client side is ', args)
 
-                const cats = args.categories.split('*')
-                const limit = 40
+                const cats = args.categories.replace('*' , ',')
+                const limit = 4
                 const HEADERS = {
                     method: "GET",
                     headers: {
@@ -36,35 +36,38 @@ export const API_Call = extendType({
                     }
                 }
 
-                const URL = `https://api.yelp.com/v3/businesses/search?term=${cats[0].toLowerCase()}&location=${args.location}&limit=${limit}`
+                const URL = `https://api.yelp.com/v3/businesses/search?term=${cats.toLowerCase()}&location=${args.location}&limit=${limit}`
                 console.log('Attempting fetch from server with ', URL, HEADERS)
                 const resp = await fetch(URL, HEADERS)
                 const response = await resp.json()
                 console.log('Got this response', response)
 
-/*                 let restList = []
-                for (let i = 0; i < response.businesses.length; i++) {
-                    const BUSINESSURL = `https://api.yelp.com/v3/businesses/${response.businesses[i].id}`
-                    const businessSpecifics = await fetch(BUSINESSURL, HEADERS)
-                    const { name, photos, rating, price, display_phone, location } = await businessSpecifics.json()
-                    restList.push({
-                        name,
-                        photos,
-                        rating,
-                        price,
-                        display_phone,
-                        location
-                    })
-                } */
-                if(response){
-                    const data = await context.prisma.api.create({
-                        data: { data: JSON.stringify(response.businesses) }
-                    })
-                    return data
-                }else{
-                    throw new Error("Bad Yelp Fetch")
-                }
                 
+                if(response){
+                    let restList = []
+                    for (let i = 0; i < response.businesses.length; i++) {
+                        const BUSINESSURL = `https://api.yelp.com/v3/businesses/${response.businesses[i].id}`
+                        const businessSpecifics = await fetch(BUSINESSURL, HEADERS)
+                        const res = await businessSpecifics.json()
+                        const { name, photos, rating, price, display_phone, location } = res
+                        console.log('biz spec res is' , res)
+                        restList.push(JSON.stringify({
+                            name,
+                            photos,
+                            rating,
+                            price,
+                            display_phone,
+                            location
+                        }))
+                        console.log(name)
+                    }
+                        const data = await context.prisma.api.create({
+                            data: { data: restList.join('*') }
+                        })
+                        return data
+                }else{
+                    throw new Error("No yelp response!")
+                } 
             }
         })
     },

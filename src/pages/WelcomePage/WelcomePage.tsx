@@ -90,7 +90,9 @@ export default function WelcomePage({moods}) {
 
         const getApiData = async () =>{
             const results = await api()
-            const restaurants = JSON.parse(results.data.API_Call.data)
+            console.log(results)
+            const businessList = results.data.API_Call.data.split('*')
+            let restaurants = businessList .map(x=>JSON.parse(x))
             console.log("API results are " , restaurants)
             //const initialRatings = Array(restaurants).fill(0)
             setState({

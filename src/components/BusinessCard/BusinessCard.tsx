@@ -35,7 +35,7 @@ export default function BusinessCard({business, index, setWelcomeState , welcome
     return(
         <div className="max-w-sm rounded overflow-hidden shadow-lg flex flex-col justify-between items-center drop-shadow-2xl bg-gray-200 p-8 border border-1 border-gray-300 ">
                 <h1>{business.name}</h1>
-                <img src={business.image_url} alt="" className="card-img " />
+                <img src={business.photos[2]} alt="" className="card-img " />
                 <form action="" onSubmit={handleSubmit}>
                     <input type="number" name="rating" id="" onChange={(e)=>{setState(e.target.value)}}/>
                     <button type="submit">Rate!</button>
