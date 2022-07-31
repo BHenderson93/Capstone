@@ -17,7 +17,7 @@ import './App.css'
 import HomePage from '../HomePage/HomePage'
 import SavedPage from "../SavedPage/SavedPage"
 import LoginForm from '../../components/LoginForm/LoginForm'
-import SignupPage from "../SignupPage/SignupPage";
+import SignupForm from '../../components/SignupForm/SignupForm'
 import WelcomePage from "../WelcomePage/WelcomePage"
 import MoodsPage from "../MoodsPage/MoodsPage";
 import Layout from "../../components/Layout/Layout";
@@ -116,7 +116,7 @@ export default function App() {
             <Route path="/login"
               element={<LoginForm setApp={setApp} app={app} />} />
             <Route path="/signup"
-              element={<SignupPage setApp={setApp} app={app} />}
+              element={<SignupForm setApp={setApp} app={app} />}
             />
             <Route path="/*"
               element={<Navigate to='/' />} />
