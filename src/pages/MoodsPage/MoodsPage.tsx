@@ -92,7 +92,7 @@ export default function MoodsPage({ app , setApp , moods}:MoodsPageProps){
     return(
 
         <div className="container-medium-row align-start page-fill">
-            <MoodList moods={moods} handleMoodEdit={handleMoodEdit} app={app} setApp={setApp}/>
+            <MoodList moods={moods.filter(x=>x.id!==state.initialState.id)} handleMoodEdit={handleMoodEdit} app={app} setApp={setApp}/>
             <MoodForm handleNewMood={handleNewMood} handleUpdateMood={handleUpdateMood} initialState={state.initialState} refresh={state.refresh}/>  
         </div>
 
