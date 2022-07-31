@@ -12,14 +12,17 @@ export interface BusinessCardState {
 export default function BusinessCard({ business, setRating }) {
 
     return (
-        <div className=" rounded shadow-lg flex flex-col justify-between items-center drop-shadow-2xl bg-gray-200 p-8 border border-1 border-gray-300 ">
+        <div className="container-medium flex flex-col jusitfy-around items-center select-none">
             <h1>{business.name}</h1>
-            <Carousel imgList={business.photos} />
-            <h2>How good does this place look?</h2>
             <div>
-                <button onClick={()=>{setRating(0)}}>It doesn't.</button>
-                <button onClick={()=>{setRating(1)}}>Not bad.</button>
-                <button onClick={()=>{setRating(2)}}>I want it!</button>
+            <Carousel imgList={business.photos} />
+            </div>
+            
+            <h2 className="italic bold text-2xl">Thoughts?</h2>
+            <div className="flex flex-row nowrap w-full gap-6">
+                <button className="btn flex items-center justify-center py-5 bg-red-800 text-white uppercase rounded hover:bg-red-500 transition duration-150 ease-in-out" onClick={()=>{setRating(0)}}>It doesn't.</button>
+                <button className="btn flex items-center justify-center py-5 bg-slate-900 text-white uppercase rounded hover:bg-slate-700 transition duration-150 ease-in-out" onClick={()=>{setRating(1)}}>Not bad.</button>
+                <button className="btn flex items-center justify-center py-5 bg-green-700 text-white uppercase rounded hover:bg-green-500 transition duration-150 ease-in-out" onClick={()=>{setRating(2)}}>I want it!</button>
             </div>
 
         </div>

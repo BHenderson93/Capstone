@@ -33,7 +33,7 @@ export function MoodCard({ mood, handleMoodEdit, app, setApp }) {
     }
 
     return (
-        <li className="flex flex-row nowrap p-6 justify-between align-center border hover:bg-slate-900 hover:text-white group transition duration-150">
+        <li className="flex flex-row nowrap p-6 justify-between align-center border hover:bg-slate-900 hover:text-white group transition duration-250">
 
             {handleMoodEdit ? 
             <>
@@ -42,8 +42,8 @@ export function MoodCard({ mood, handleMoodEdit, app, setApp }) {
                     <h3 className="hidden text-center group-hover:block">{mood.categories.split('*').join(', ')}</h3>
                 </div>
                 <div className="flex flex-row nowrap justify-center items-center w-6/12">
-                    <button type="submit" className="btn h-12 flex items-center justify-center mr-10 py-5 bg-slate-900 text-white font-medium uppercase rounded group-hover:bg-green-700 hover:!bg-green-500 transition duration-150 ease-in-out" onClick={() => { handleMoodEdit(mood) }}>Edit</button>
-                    <button type="submit" className="btn h-12 flex items-center justify-center py-5 w-3/12 bg-red-600 text-white font-medium uppercase rounded group-hover:bg-red-600 hover:!bg-red-500 transition duration-150 ease-in-out" onClick={handleDelete}>Delete</button>
+                    <button type="submit" className="btn h-12 flex items-center justify-center mr-10 py-5 bg-slate-900 text-white font-medium uppercase rounded group-hover:bg-green-700 hover:!bg-green-500 transition duration-250 ease-in-out" onClick={() => { handleMoodEdit(mood) }}>Edit</button>
+                    <button type="submit" className="btn h-12 flex items-center justify-center py-5 w-3/12 bg-red-600 text-white font-medium uppercase rounded group-hover:bg-red-600 hover:!bg-red-500 transition duration-250 ease-in-out" onClick={handleDelete}>Delete</button>
                 </div>
             </> :
                 <div className="overflow-hidden flex flex-col nowrap align-center justify-center w-full ">

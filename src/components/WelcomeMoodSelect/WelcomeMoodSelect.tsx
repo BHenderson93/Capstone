@@ -16,8 +16,7 @@ export function WelcomeMoodSelect({ moods, handleSelectMood }: WelcomeMoodSelect
                 :
                 <>
                     <h1>Which mood are you in today? Or click "Edit Moods" up top to make or change a mood.</h1>
-                    <div className="container-medium">
-
+                    <div className="container-medium overflow-y-scroll overflow-x-hidden">
                         {moods.map(mood => <button className="w-full" onClick={() => { handleSelectMood(mood) }}><MoodCard mood={mood} handleMoodEdit={null} app={null} setApp={null} /></button>)}
                     </div>
                 </>
