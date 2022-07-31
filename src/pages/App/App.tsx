@@ -1,16 +1,7 @@
 //React
 import * as React from "react";
-import * as ReactDOM from "react-dom";
-import { Routes, Route, useNavigate, Navigate } from 'react-router-dom'
-import {
-  ApolloClient,
-  InMemoryCache,
-  ApolloProvider,
-  useQuery,
-  useLazyQuery,
-  gql,
-  useMutation
-} from "@apollo/client";
+import { Routes, Route, Navigate } from 'react-router-dom'
+import {useLazyQuery, gql} from "@apollo/client";
 
 // Pages and components
 import './App.css'
@@ -66,7 +57,6 @@ export default function App() {
     }
   })
 
-  const nav = useNavigate()
   React.useEffect(() => {
     const token = localStorage.getItem('token')
     const moodList = async () => {
@@ -87,12 +77,10 @@ export default function App() {
         console.log('Error fetching moods', err)
       })
     }
-
     if (token) {
       moodList()
       }
-  }
-    , [])
+  }, [])
 
   return (
 
@@ -116,8 +104,7 @@ export default function App() {
             <Route path="/login"
               element={<LoginForm setApp={setApp} app={app} />} />
             <Route path="/signup"
-              element={<SignupForm setApp={setApp} app={app} />}
-            />
+              element={<SignupForm setApp={setApp} app={app} />}/>
             <Route path="/*"
               element={<Navigate to='/' />} />
           </Routes>
