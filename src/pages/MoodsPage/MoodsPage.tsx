@@ -83,7 +83,7 @@ export default function MoodsPage({ app , setApp , moods}:MoodsPageProps){
                 id: null,
                 name:'',
                 categories:[],
-                price:2
+                price:null
             },
             refresh:!state.refresh
         })
