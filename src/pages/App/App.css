@@ -52,6 +52,17 @@ main{
   border: 1px solid black;
 }
 
+.container-medium-row{
+  min-height: 25vh;
+  min-width: 40vw;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: center;
+  padding:2vw;
+  border: 1px solid black;
+}
+
 .error{
   font-style:italic;
   color:red;
