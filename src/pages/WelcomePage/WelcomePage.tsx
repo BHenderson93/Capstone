@@ -58,8 +58,8 @@ export default function WelcomePage({moods}) {
     })
 
     const API_CALL = gql`
-        mutation API_Call($query: String!) {
-            API_Call(query: $query) {
+        mutation API_Call($location:String! , $categories:String!) {
+            API_Call(location:$location, categories:$categories ) {
                 data
             }
         }
@@ -67,7 +67,8 @@ export default function WelcomePage({moods}) {
 
     const [api, { data, loading, error }] = useMutation(API_CALL, {
         variables: {
-            query: state.apiQuery.query
+            location: state.apiQuery.location,
+            categories: state.apiQuery.mood.categories
         }
     })
 
@@ -89,7 +90,7 @@ export default function WelcomePage({moods}) {
 
         const getApiData = async () =>{
             const results = await api()
-            const restaurants = JSON.parse(results.data.API_Call.data).businesses
+            const restaurants = JSON.parse(results.data.API_Call.data)
             console.log("API results are " , restaurants)
             //const initialRatings = Array(restaurants).fill(0)
             setState({

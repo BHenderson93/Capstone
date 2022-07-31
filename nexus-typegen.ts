@@ -29,8 +29,9 @@ export interface NexusGenScalars {
 
 export interface NexusGenObjects {
   API: { // root type
+    categories: string; // String!
     data?: string | null; // String
-    query: string; // String!
+    location: string; // String!
   }
   AuthPayload: { // root type
     token: string; // String!
@@ -64,8 +65,9 @@ export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars
 
 export interface NexusGenFieldTypes {
   API: { // field return type
+    categories: string; // String!
     data: string | null; // String
-    query: string; // String!
+    location: string; // String!
   }
   AuthPayload: { // field return type
     token: string; // String!
@@ -100,8 +102,9 @@ export interface NexusGenFieldTypes {
 
 export interface NexusGenFieldTypeNames {
   API: { // field return type name
+    categories: 'String'
     data: 'String'
-    query: 'String'
+    location: 'String'
   }
   AuthPayload: { // field return type name
     token: 'String'
@@ -137,7 +140,8 @@ export interface NexusGenFieldTypeNames {
 export interface NexusGenArgTypes {
   Mutation: {
     API_Call: { // args
-      query: string; // String!
+      categories: string; // String!
+      location: string; // String!
     }
     createMood: { // args
       categories: string; // String!
