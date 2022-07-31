@@ -47,7 +47,7 @@ export default function WelcomePage({moods}) {
         search: "",
         restaurants: [],
         ratings:[],
-        index:0,
+        index:1,
         step:1,
         apiQuery:{
             searchNotLatlong:true,
@@ -141,11 +141,7 @@ export default function WelcomePage({moods}) {
                 <h1>Loading...</h1>
                 </>
             ):(
-                <div className="container">
-                <h1>Results</h1>
-                <BusinessCard setWelcomeState={setState} welcomeState={state} index={1} business={state.restaurants[0]} />
-                </div>
-
+                <BusinessCard setWelcomeState={setState} welcomeState={state} index={0} business={state.restaurants[state.index]} />
             )
             }
         </main>
