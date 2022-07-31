@@ -195,7 +195,7 @@ export default function WelcomePage({ moods }) {
                         <h1 className="text-5xl whitespace-nowrap text-center min-w-min p-5">Welcome! Let's find you somewhere to eat...</h1>
                         <input type="search" className="text-center" value={state.search} onChange={(e) => setState({ ...state, search: e.target.value })} placeholder="Where are you? For example, 'seattle, wa' or 'new york'." />
                         <br />
-                            <button type="submit" className="btn flex items-center justify-center py-5 w-full bg-slate-900 text-white font-medium uppercase rounded hover:bg-green-700 transition duration-150 ease-in-out">{state.search.length < 3 ? `Please input location`: `Click me when ready!`}</button>
+                            {state.search.length < 3 ? <button type="submit" className="btn flex items-center justify-center py-5 w-full bg-slate-900 text-white font-medium uppercase rounded hover:bg-green-700 transition duration-150 ease-in-out">Please input location</button>: <button type="submit" className="btn flex items-center justify-center py-5 w-full bg-green-600 text-white font-medium uppercase rounded hover:bg-green-500 transition duration-150 ease-in-out">Click me when ready!</button>}
                     </form>
                     }
                 </>
