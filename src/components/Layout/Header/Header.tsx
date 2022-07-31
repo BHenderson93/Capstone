@@ -20,7 +20,7 @@ export default function Header({ app , setApp }: HeaderProps) {
         {app.user ? (<>
           <h1 className="">Hi, {app.user}!</h1>
           <nav className="flex flex-row justify-around">
-              <Link to="/" >Home</Link>
+              {app.moods.length === 0 ? null : <Link to="/" >Find Food!</Link>}
               <Link to="/favorites" >Favorites</Link>
               <Link to="/moods" >Edit Moods</Link>
           </nav>

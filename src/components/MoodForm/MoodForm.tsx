@@ -106,6 +106,12 @@ export default function MoodForm({ handleNewMood, initialState, handleUpdateMood
             updateMood().then((res) => {
                 console.log(res)
                 handleUpdateMood(res.data.updateMood)
+                setState({
+                    id:0,
+                    name:'',
+                    categories:[],
+                    price:2
+                })
             }).catch((err) => {
                 console.log(err)
             })
@@ -125,6 +131,12 @@ export default function MoodForm({ handleNewMood, initialState, handleUpdateMood
                     price: price
                 }
                 handleNewMood(addMood)
+                setState({
+                    id:0,
+                    name:'',
+                    categories:[],
+                    price:2
+                })
             }).catch((err) => {
                 console.log(err)
             })

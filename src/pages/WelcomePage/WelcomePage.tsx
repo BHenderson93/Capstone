@@ -2,6 +2,7 @@ import * as React from 'react'
 import { useMutation, gql } from '@apollo/client'
 import BusinessCard from '../../components/BusinessCard/BusinessCard'
 import { Mood } from '../App/App'
+import { useNavigate } from 'react-router-dom'
 
 export interface WelcomePageProps {
     moods: string[]
@@ -59,6 +60,14 @@ export default function WelcomePage({ moods }) {
             query: ''
         }
     })
+    const nav = useNavigate()
+    React.useEffect(()=>{
+
+        if(moods.length === 0){
+            nav('/moods')
+        }
+
+    }, [])
 
     const API_CALL = gql`
         mutation API_Call($location:String! , $categories:String!) {
@@ -171,31 +180,48 @@ export default function WelcomePage({ moods }) {
     return (
         <div className="container">
             {state.step === 1 ? (
-                <div className="container">
-                    <h1 className="text-5xl whitespace-nowrap text-center min-w-min p-5">Welcome! Let's find you somewhere to eat...</h1>
-                    <form action="" onSubmit={handleLocationSubmit}>
-                        <input type="search" value={state.search} onChange={(e) => setState({ ...state, search: e.target.value })} placeholder="Where are you? (ex: seattle, wa)" />
-                        <button type="submit" className="btn ">Submit Search!</button>
+                <>
+                { moods.length === 0? 
+                    <h1>Sorry, I don't think you've made any moods yet. Set one up in 'Edit Moods' then come on back!</h1>
+                    :
+                    <form action="" onSubmit={handleLocationSubmit} className="container-medium">
+                        <h1 className="text-5xl whitespace-nowrap text-center min-w-min p-5">Welcome! Let's find you somewhere to eat...</h1>
+                        <input type="search" className="text-center" value={state.search} onChange={(e) => setState({ ...state, search: e.target.value })} placeholder="Where are you? For example, 'seattle, wa' or 'new york'." />
+                        <br />
+                            <button type="submit" className="btn flex items-center justify-center py-5 w-full bg-slate-900 text-white font-medium uppercase rounded hover:bg-green-700 transition duration-150 ease-in-out">{state.search.length < 3 ? `Please input location`: `Click me when ready!`}</button>
                     </form>
-                </div>
+                    }
+                </>
             ) : state.step === 2 ? (
                 <>
-                    <h1>Which mood are you in today? Or click "Edit Moods" up top to make or change a mood.</h1>
-                    <ul>
-                        {moods.map(mood => <li><button onClick={() => { handleSelectMood(mood) }}>{mood.name}</button> </li>)}
-                    </ul>
+                    {moods.length === 0 ?
+                        <h1>Sorry, I don't think you've made any moods yet. Set one up in 'Edit Moods' then come on back!</h1>
+                        :
+                        <ul>
+                            <h1>Which mood are you in today? Or click "Edit Moods" up top to make or change a mood.</h1>
+                            {moods.map(mood => <li><button onClick={() => { handleSelectMood(mood) }}>{mood.name}</button> </li>)}
+                        </ul>}
+
                 </>
             ) : state.step === 3 ? (
                 <>
                     <h1>Loading...</h1>
                 </>
             ) : state.step === 4 ? (
-                <BusinessCard setRating={setRating} business={state.restaurants[state.index]} />
-            ) : state.step === 5 ? (selectWinner()
+                <>
+                    <BusinessCard setRating={setRating} business={state.restaurants[state.index]} />
+                </>
+
+            ) : state.step === 5 ? (
+                <>
+                    {selectWinner()}
+                </>
 
             ) : (
-                //@ts-ignore
-                <h1>So Sorry... I couldn't find any results for {state.apiQuery.mood.categories.replaceAll('*', ', ')} in {state.search}</h1>
+                <>
+                    {/*@ts-ignore*/}
+                    <h1>So Sorry... I couldn't find any results for {state.apiQuery.mood.categories.replaceAll('*', ', ')} in {state.search}</h1>
+                </>
             )
             }
         </div>
