@@ -11,6 +11,7 @@ export default function Carousel({ imgList }) {
 
     return (
         <div className="overflow-hidden object-fit" style={{ height: '25vw', width: '25vw', margin: '1vw' }}>
+            <h3>Click the image!</h3>
             <img src={imgList[state.idx]} onClick={() => { handleClick() }} alt="" />
         </div>
     );

@@ -47,7 +47,7 @@ export default function WelcomePage({moods}) {
         search: "",
         restaurants: [],
         ratings:[],
-        index:1,
+        index:0,
         step:1,
         apiQuery:{
             searchNotLatlong:true,
@@ -120,6 +120,49 @@ export default function WelcomePage({moods}) {
         })
     }
 
+    function setRating(num){
+        if(state.index === state.restaurants.length - 1){
+            setState({
+                ...state,
+                ratings:[...state.ratings, num],
+                step: state.step+1
+            })
+        }else{
+            setState({
+                ...state,
+                ratings:[...state.ratings, num],
+                index: state.index+1,
+            })
+        }
+    }
+
+    function selectWinner(){
+        let all:any = []
+
+        for(let i = 0 ; i < state.ratings.length;i++){
+            all.push([state.ratings[i] , state.restaurants[i]])
+        }
+
+        const top = all.filter(x=>x[0] === 2)
+        const mid = all.filter(x=>x[0] === 1)
+        const bot = all.filter(x=>x[0] === 0)
+
+        let winner
+        if(top){
+            winner = top[Math.floor(Math.random()*top.length)][1]
+        }else if (mid){
+            winner = mid[Math.floor(Math.random()*mid.length)][1]
+        }else{
+            winner = bot[Math.floor(Math.random()*bot.length)][1]
+        }
+        console.log('AAAAND THE WINNER IS ' , winner)
+
+        return (<div>
+            <h1>Results! Tonight, try out...</h1>
+            <h1>{winner.name}</h1>
+            </div>)
+    }
+
     return (
         <main className="page">
             {state.step === 1?(
@@ -140,9 +183,11 @@ export default function WelcomePage({moods}) {
                 <>
                 <h1>Loading...</h1>
                 </>
-            ):(
-                <BusinessCard setWelcomeState={setState} welcomeState={state} index={0} business={state.restaurants[state.index]} />
-            )
+            ): state.step === 4?(
+                <BusinessCard setRating={setRating} business={state.restaurants[state.index]} />
+            ):state.step === 5?(selectWinner()
+                
+            ):null
             }
         </main>
     )
