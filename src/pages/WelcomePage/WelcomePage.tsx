@@ -40,7 +40,6 @@ export interface WelcomePageState{
         query:string
     }
 }
-
 //latitude=37.786882&longitude=-122.399972"
 export default function WelcomePage({moods}) {
     const [state, setState] = React.useState<WelcomePageState>({
