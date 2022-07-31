@@ -4,6 +4,17 @@ import BusinessCard from '../../components/BusinessCard/BusinessCard'
 import { Mood } from '../App/App'
 import { useNavigate } from 'react-router-dom'
 
+
+
+const API_CALL = gql`
+mutation API_Call($location:String! , $categories:String!) {
+    API_Call(location:$location, categories:$categories ) {
+        data
+    }
+}
+`
+
+
 export interface WelcomePageProps {
     moods: string[]
 }
@@ -37,7 +48,7 @@ export interface WelcomePageState {
         searchNotLatlong: boolean
         location: string
         mood: Mood
-        query: string
+        query: boolean
     }
 }
 
@@ -57,7 +68,7 @@ export default function WelcomePage({ moods }) {
                 categories: 'steakhouses',
                 price: 2
             },
-            query: ''
+            query: false
         }
     })
     const nav = useNavigate()
@@ -69,13 +80,6 @@ export default function WelcomePage({ moods }) {
 
     }, [])
 
-    const API_CALL = gql`
-        mutation API_Call($location:String! , $categories:String!) {
-            API_Call(location:$location, categories:$categories ) {
-                data
-            }
-        }
-    `
 
     const [api, { data, loading, error }] = useMutation(API_CALL, {
         variables: {
@@ -90,11 +94,14 @@ export default function WelcomePage({ moods }) {
             apiQuery: {
                 ...state.apiQuery,
                 mood: MOOD,
-                query: 'true'
+                query: true
             },
             step: state.step + 1
         })
 
+    }
+
+    React.useEffect(()=>{
         const getApiData = async () => {
             const results = await api()
             console.log(results)
@@ -109,7 +116,7 @@ export default function WelcomePage({ moods }) {
                     //ratings,
                     apiQuery: {
                         ...state.apiQuery,
-                        query: ''
+                        query: false
                     },
                     step: state.step + 1
                 })
@@ -121,10 +128,10 @@ export default function WelcomePage({ moods }) {
                 console.log('SO SORRY - No results for that search in that location. Try again!')
             }
         }
-        if (state.apiQuery.query) {
-            getApiData()
+        if(state.apiQuery.query){
+            getApiData() 
         }
-    }
+    }, [state.apiQuery.query])
 
     function handleLocationSubmit() {
         setState({

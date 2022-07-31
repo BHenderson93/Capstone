@@ -90,12 +90,11 @@ export default function MoodsPage({ app , setApp , moods}:MoodsPageProps){
     }
     //console.log("Moods page moods " , app.moods)
     return(
-    <main>
-        <h1>Moods</h1>
-        <div className="container">
-        <MoodList moods={moods} handleMoodEdit={handleMoodEdit} app={app} setApp={setApp}/>
-        <MoodForm handleNewMood={handleNewMood} handleUpdateMood={handleUpdateMood} initialState={state.initialState} refresh={state.refresh}/>  
+
+        <div className="container-medium-row">
+            <MoodList moods={moods} handleMoodEdit={handleMoodEdit} app={app} setApp={setApp}/>
+            <MoodForm handleNewMood={handleNewMood} handleUpdateMood={handleUpdateMood} initialState={state.initialState} refresh={state.refresh}/>  
         </div>
-    </main>
+
     )
 }

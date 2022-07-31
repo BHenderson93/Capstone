@@ -107,16 +107,16 @@ export default function MoodForm({ handleNewMood, initialState, handleUpdateMood
                 console.log(res)
                 handleUpdateMood(res.data.updateMood)
                 setState({
-                    id:0,
-                    name:'',
-                    categories:[],
-                    price:2
+                    id: 0,
+                    name: '',
+                    categories: [],
+                    price: 2
                 })
             }).catch((err) => {
                 console.log(err)
             })
         } else {
-            console.log('Attempting mood add sendind ' , {
+            console.log('Attempting mood add sendind ', {
                 name: state.name,
                 categories: state.categories.join('*'),
                 price: state.price,
@@ -132,10 +132,10 @@ export default function MoodForm({ handleNewMood, initialState, handleUpdateMood
                 }
                 handleNewMood(addMood)
                 setState({
-                    id:0,
-                    name:'',
-                    categories:[],
-                    price:2
+                    id: 0,
+                    name: '',
+                    categories: [],
+                    price: 2
                 })
             }).catch((err) => {
                 console.log(err)
@@ -143,45 +143,45 @@ export default function MoodForm({ handleNewMood, initialState, handleUpdateMood
         }
     }
 
-    function handleAddCategory(cat):void{
+    function handleAddCategory(cat): void {
 
-        if(state.categories.length < 10){
+        if (state.categories.length < 10) {
             setState({
                 ...state,
-                categories:[...state.categories , cat]
+                categories: [...state.categories, cat]
             })
-        }else{
+        } else {
             console.log('Too many cats!')
         }
     }
 
-    function handleRemoveFromCategories(cat):void{
-        const newCats = state.categories.filter(x=>x!==cat)
+    function handleRemoveFromCategories(cat): void {
+        const newCats = state.categories.filter(x => x !== cat)
         setState({
             ...state,
-            categories:newCats
+            categories: newCats
         })
     }
 
     return (
-        <div className="container">
+        <div className="container-medium-row">
             <div className="container flex flex-col nowrap">
-            <form action="" onSubmit={handleSubmit}>
-                <label htmlFor="name">What is this mood called? </label>
-                <input type="text" name="name" placeholder="i.e. Mama Mia! Pasta, baby, pasta!" onChange={changeName} value={state.name} />
-                <label htmlFor="price">How ritzy? (1-5 in dollar signs)</label>
-                <input type="number" name="price" id="" placeholder="Ex: 3" onChange={changePrice} value={state.price} />
-                <button type="submit" className="btn" >Submit!</button>
-            </form>
-            <ul>
-                {state.categories.length === 10 ? <p className="error">Max categories reached!</p> : null}
-                {state.categories.map((cat,idx)=><YelpCat cat={cat} key={idx}handleRemoveFromCategories={handleRemoveFromCategories}/>)
+                <form action="" onSubmit={handleSubmit}>
+                    <label htmlFor="name">What is this mood called? </label>
+                    <input type="text" name="name" placeholder="i.e. Mama Mia! Pasta, baby, pasta!" onChange={changeName} value={state.name} />
+                    <label htmlFor="price">How ritzy? (1-5 in dollar signs)</label>
+                    <input type="number" name="price" id="" placeholder="Ex: 3" onChange={changePrice} value={state.price} />
+                    <button type="submit" className="btn" >Submit!</button>
+                </form>
+                <ul>
+                    {state.categories.length === 10 ? <p className="error">Max categories reached!</p> : null}
+                    {state.categories.map((cat, idx) => <YelpCat cat={cat} key={idx} handleRemoveFromCategories={handleRemoveFromCategories} />)
 
-                }
-            </ul>
+                    }
+                </ul>
             </div>
 
-            <FilterScroll handleAddCategory={handleAddCategory} picked={state.categories}/>
+            <FilterScroll handleAddCategory={handleAddCategory} picked={state.categories} />  
         </div>
     )
 }

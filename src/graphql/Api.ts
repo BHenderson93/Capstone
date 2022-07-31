@@ -25,7 +25,7 @@ export const API_Call = extendType({
             async resolve(parent, args, context) {
                 console.log('my query from client side is ', args)
 
-                const cats = args.categories.replaceAll(' ' , '%20').split('*')
+                const cats: string[] = args.categories.replaceAll(' ' , '%20').split('*')
 
                 const limit = 1
                 const HEADERS = {
