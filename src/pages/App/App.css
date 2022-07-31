@@ -1,7 +1,4 @@
-button{
-  width:100%;
-  margin-top: 1vh;
-}
+
 
 footer{
   position:fixed;
@@ -30,6 +27,10 @@ main{
 }
 
 /* CLASSES BEGIN HERE */
+.btn{
+  width:100%;
+  margin-top: 1vh;
+}
 
 .container{
   min-height: 70vh;
@@ -40,24 +41,27 @@ main{
   align-items: center;
 }
 
+.page-fill{
+  height: 85vh;
+  width:100vw;
+}
+
 .container-medium{
   min-height: 25vh;
   min-width: 40vw;
   display: flex;
   flex-flow: column nowrap;
-  justify-content: center;
-  align-items: center;
   padding:2vw;
   border: 1px solid black;
 }
 
 .container-medium-row{
   min-height: 25vh;
+  max-height: 85vh;
   min-width: 40vw;
+  max-width:100vw;
   display: flex;
   flex-flow: row nowrap;
-  justify-content: center;
-  align-items: center;
   padding:2vw;
   border: 1px solid black;
 }

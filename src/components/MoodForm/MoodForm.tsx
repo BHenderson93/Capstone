@@ -41,7 +41,7 @@ export interface MoodFormState {
     id: number
     name: string
     categories: string[]
-    price: number
+    price: number | null
 }
 
 export default function MoodForm({ handleNewMood, initialState, handleUpdateMood, refresh }: MoodFormProps) {
@@ -76,7 +76,7 @@ export default function MoodForm({ handleNewMood, initialState, handleUpdateMood
     }
 
     function changePrice(e) {
-        if (e.target.value < 6 && e.target.value > 0) {
+        if (e.target.value < 5 && e.target.value > 0) {
             setState({ ...state, price: Number(e.target.value) })
         }
     }
@@ -165,22 +165,38 @@ export default function MoodForm({ handleNewMood, initialState, handleUpdateMood
 
     return (
         <div className="container-medium-row">
-            <div className="container flex flex-col nowrap">
+            <div className="flex flex-col nowrap mr-4">
                 <form action="" onSubmit={handleSubmit}>
-                    <label htmlFor="name">What is this mood called? </label>
+                    <label htmlFor="name">What is this mood called?</label>
                     <input type="text" name="name" placeholder="i.e. Mama Mia! Pasta, baby, pasta!" onChange={changeName} value={state.name} />
-                    <label htmlFor="price">How ritzy? (1-5 in dollar signs)</label>
-                    <input type="number" name="price" id="" placeholder="Ex: 3" onChange={changePrice} value={state.price} />
-                    <button type="submit" className="btn" >Submit!</button>
+                    <label htmlFor="price">How ritzy? (1-4)</label>
+                    {state.price?
+                    <input type="number" name="price" id="" onChange={changePrice} value={state.price} />
+                    :
+                    <input type="number" name="price" id="" onChange={changePrice} placeholder="Price 1-4, (4 is most expensive)"/>
+                    }
+                     
+                    {state.name.length < 3 ? 
+                    <div className="btn flex items-center justify-center py-5 w-full bg-gray-400 text-white font-medium uppercase rounded transition duration-150 ease-in-out" >Name this mood</div>
+                    :
+                    !state.price?
+                        <div className="btn flex items-center justify-center py-5 w-full bg-gray-400 text-white font-medium uppercase rounded transition duration-150 ease-in-out" >How pricey?</div>
+                    :
+                    state.categories.length === 0 ?
+                    <div className="btn flex items-center justify-center py-5 w-full bg-gray-400 text-white font-medium uppercase rounded transition duration-150 ease-in-out" >Select some categories</div>
+                    :
+                    <button type="submit" className="btn flex items-center justify-center py-5 w-full bg-slate-900 text-white font-medium uppercase rounded hover:bg-green-700 transition duration-150 ease-in-out" >Submit!</button>
+                }
+
                 </form>
-                <ul>
+                <br />
+                <ul className="overflow-scroll overflow-x-hidden">
+                    <h1>Categories selected: </h1>
                     {state.categories.length === 10 ? <p className="error">Max categories reached!</p> : null}
                     {state.categories.map((cat, idx) => <YelpCat cat={cat} key={idx} handleRemoveFromCategories={handleRemoveFromCategories} />)
-
                     }
                 </ul>
             </div>
-
             <FilterScroll handleAddCategory={handleAddCategory} picked={state.categories} />  
         </div>
     )

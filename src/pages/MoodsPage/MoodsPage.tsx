@@ -15,7 +15,7 @@ export interface InitialState{
     id:number | null
     name:string
     categories:string[]
-    price:number
+    price:number | null
 }
 
 export interface MoodsPageProps{
@@ -31,7 +31,7 @@ export default function MoodsPage({ app , setApp , moods}:MoodsPageProps){
             id: null,
             name:'',
             categories:[],
-            price:2
+            price: null
         },
         refresh:false
     })
@@ -91,7 +91,7 @@ export default function MoodsPage({ app , setApp , moods}:MoodsPageProps){
     //console.log("Moods page moods " , app.moods)
     return(
 
-        <div className="container-medium-row">
+        <div className="container-medium-row align-start page-fill">
             <MoodList moods={moods} handleMoodEdit={handleMoodEdit} app={app} setApp={setApp}/>
             <MoodForm handleNewMood={handleNewMood} handleUpdateMood={handleUpdateMood} initialState={state.initialState} refresh={state.refresh}/>  
         </div>
