@@ -16,9 +16,8 @@ export default function Header({ app , setApp }: HeaderProps) {
     localStorage.removeItem('token')
     setApp({...app , user:''})
   }
-  return (<>
-        {app.user ? (
-        <header className="bg-sky-600">
+  return (<header className="bg-slate-900 text-white bold">
+        {app.user ? (<>
           <h1 className="">Hi, {app.user}!</h1>
           <nav className="flex flex-row justify-around">
               <Link to="/" >Home</Link>
@@ -26,17 +25,15 @@ export default function Header({ app , setApp }: HeaderProps) {
               <Link to="/moods" >Edit Moods</Link>
           </nav>
           <button onClick={logout}>Log Out</button>
-        </header>
+          </>
         ) : (
-          <header className="bg-sky-600">
             <nav className="flex flex-row justify-around">
                 <Link to="/" >Home</Link>
                 <Link to="/login" >Login</Link>
                 <Link to="/signup" >Signup</Link>
             </nav>
-          </header>
         )
-        }  
-    </>
+        }
+        </header> 
   )
 }

@@ -12,8 +12,8 @@ interface LayoutProps{
 export default function Layout({children , app , setApp}: LayoutProps) {
     return (
         <>
-        <Header app={app} setApp={setApp}/>
-        <main>{children}</main>
+        <Header app={app} setApp={setApp} />
+        <main className="">{children}</main>
         <Footer />
         </>
     );

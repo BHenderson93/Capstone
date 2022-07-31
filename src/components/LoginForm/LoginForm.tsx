@@ -53,8 +53,7 @@ export default function LoginForm({ app, setApp }: LoginProps) {
     }
 
     return (
-        <div className="container">
-            <form action="" onSubmit={handleSubmit} id="form">
+        <form action="" onSubmit={handleSubmit} id="form" className="container-medium">
 
                 <label htmlFor="email">Email: </label>
                 <input type="email" name="email" key="email" onChange={handleChange} placeholder="Ex: Type.Email.Here@HayYu.person" value={state.email} required />
@@ -64,8 +63,7 @@ export default function LoginForm({ app, setApp }: LoginProps) {
                 <input type="password" name="password" key="password" onChange={handleChange} placeholder="Password" value={state.password} required />
                 {state.valid ? <br /> : <p className="error">Incorrect password! Try again...</p>}
 
-                <button type="submit" className={'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded'}>Submit!</button>
+                <button type="submit"className="btn flex items-center justify-center py-5 w-full bg-slate-900 text-white font-medium uppercase rounded hover:bg-green-700 transition duration-150 ease-in-out">Login!</button>
             </form>
-        </div>
     )
 }

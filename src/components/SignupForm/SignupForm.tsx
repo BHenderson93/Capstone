@@ -4,19 +4,19 @@ import { AppState } from '../../pages/App/App'
 
 
 
-interface SignupFormProps{
+interface SignupFormProps {
     setApp: React.Dispatch<React.SetStateAction<any>>,
     app: AppState
 }
 
-interface SignupFormState{
-    name:string,
-    email:string,
-    password:string,
-    confirm:string
+interface SignupFormState {
+    name: string,
+    email: string,
+    password: string,
+    confirm: string
 }
 
-export default function SignupForm({setApp , app}: SignupFormProps) {
+export default function SignupForm({ setApp, app }: SignupFormProps) {
 
     const [state, setState] = React.useState<SignupFormState>({
         name: '',
@@ -37,8 +37,8 @@ export default function SignupForm({setApp , app}: SignupFormProps) {
         }
     `
 
-    const [signup, { data, loading, error }] = useMutation(SIGNUP , {
-        variables:{
+    const [signup, { data, loading, error }] = useMutation(SIGNUP, {
+        variables: {
             name: state.name,
             email: state.email,
             password: state.password
@@ -52,14 +52,14 @@ export default function SignupForm({setApp , app}: SignupFormProps) {
         if (state.password !== state.confirm) {
             console.log('Passwords do not match.')
             return null
-        }else{
+        } else {
             const response = await signup()
-            console.log("Got this data back after signup " , response.data)
+            console.log("Got this data back after signup ", response.data)
             const token = response.data.signup.token
             const user = response.data.signup.user.name
 
-            localStorage.setItem('token' , token)
-            setApp({...app , user:user})
+            localStorage.setItem('token', token)
+            setApp({ ...app, user: user })
             return null
         }
     }
@@ -70,14 +70,14 @@ export default function SignupForm({setApp , app}: SignupFormProps) {
     }
 
     return (
-        <div className="container">
-            <form action="" onSubmit={handleSubmit} id="form">
+            <form action="" onSubmit={handleSubmit} id="form" className="container-medium">
+                <h1 className="text-3xl italic bold whitespace-nowrap text-center min-w-min p-5">Signup and Find Check Out Awesome Local Restaurants!</h1>
                 <label htmlFor="name">Full Name: </label>
                 <input type="text" name="name" key="name" onChange={handleChange} placeholder="Ex: Hay Yu" value={state.name} required />
                 {(state.name.length < 3 && state.name.length !== 0) ? <p className="error">Name must be at least 3 characters.</p> : <br />}
 
                 <label htmlFor="email">Email: </label>
-                <input type="email" name="email" key="email" onChange={handleChange} placeholder="Ex: Type.Email.Here@HayYu.person" value={state.email} required />
+                <input type="email" name="email" key="email" onChange={handleChange} placeholder="HayYu.person@TypeEmail.Here" value={state.email} required />
                 {(state.email.length === 0 || (state.email.includes('@') && state.email.includes('.'))) ? <br /> : <p className="error">Please enter a valid email.</p>}
 
                 <label htmlFor="password">Password: </label>
@@ -85,11 +85,10 @@ export default function SignupForm({setApp , app}: SignupFormProps) {
                 {(state.password.length < 5 && state.password.length !== 0) ? <p className="error">Password must be at least 5 characters.</p> : <br />}
 
                 <label htmlFor="confirm">Confirm password: </label>
-                <input type="password" name="confirm" key="confirm" onChange={handleChange} placeholder="Password" value={state.confirm} required />
+                <input type="password" name="confirm" key="confirm" onChange={handleChange} placeholder="Confirm" value={state.confirm} required />
                 {state.confirm !== state.password && state.confirm.length !== 0 ? <p className="error">Password confirmation must match.</p> : <br />}
 
-                <button type="submit" className={'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded'}>Submit!</button>
+                <button type="submit" className="btn flex items-center justify-center py-5 w-full bg-slate-900 text-white font-medium uppercase rounded hover:bg-green-700 transition duration-150 ease-in-out">Sign Up!</button>
             </form>
-        </div>
     )
 }

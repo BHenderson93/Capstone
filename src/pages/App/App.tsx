@@ -16,7 +16,7 @@ import {
 import './App.css'
 import HomePage from '../HomePage/HomePage'
 import SavedPage from "../SavedPage/SavedPage"
-import LoginPage from "../LoginPage/LoginPage";
+import LoginForm from '../../components/LoginForm/LoginForm'
 import SignupPage from "../SignupPage/SignupPage";
 import WelcomePage from "../WelcomePage/WelcomePage"
 import MoodsPage from "../MoodsPage/MoodsPage";
@@ -114,7 +114,7 @@ export default function App() {
             <Route path="/"
               element={<HomePage />} />
             <Route path="/login"
-              element={<LoginPage setApp={setApp} app={app} />} />
+              element={<LoginForm setApp={setApp} app={app} />} />
             <Route path="/signup"
               element={<SignupPage setApp={setApp} app={app} />}
             />
