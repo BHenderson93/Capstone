@@ -51,7 +51,12 @@ export default function WelcomePage({moods}) {
         apiQuery:{
             searchNotLatlong:true,
             location:'seattle, wa',
-            mood:moods[0],
+            mood:{
+                id:0,
+                name:'Click edit moods to make your first mood!',
+                categories:'steakhouses',
+                price:2
+            },
             query:''
         }
     })
@@ -72,7 +77,6 @@ export default function WelcomePage({moods}) {
     })
 
     async function handleSelectMood(MOOD){
-
          setState({
             ...state,
             apiQuery:{
@@ -82,9 +86,6 @@ export default function WelcomePage({moods}) {
             },
             step:state.step+1
         }) 
-    }
-
-    React.useEffect(()=>{
 
         const getApiData = async () =>{
             const results = await api()
@@ -115,9 +116,8 @@ export default function WelcomePage({moods}) {
         if(state.apiQuery.query){
             getApiData()
         }
-
-    }, [state.apiQuery.query])
-
+    }
+    
     function handleLocationSubmit(){
         setState({
             ...state,

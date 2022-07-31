@@ -65,31 +65,34 @@ export default function App() {
       token: localStorage.getItem('token')
     }
   })
-  
+
   const nav = useNavigate()
   React.useEffect(() => {
     const token = localStorage.getItem('token')
-    if (token) {
+    const moodList = async () => {
+      //console.log('Updating mood list...')
+      //@ts-ignore
       const payload = JSON.parse(window.atob(token.split('.')[1]))
-        const moodList = async () => {
-          //console.log('Updating mood list...')
-          moodquery().then((res) => {
-            console.log("res is" ,res)
-            const userMoods = res.data.usermoods
-            console.log('usermoods are ' , userMoods)
-            setApp({
-              ...app,
-              moods: userMoods,
-              user:userMoods[0]?.createdBy.name
-            })
-          }).catch((err)=>{
-            console.log('Error fetching moods' , err)
-          })
-        }
-        moodList()
-        console.log('should have just updated mood list')
+      moodquery().then((res) => {
+        console.log("res is", res)
+        const userMoods = res.data.usermoods
+        console.log('usermoods are ', userMoods)
+        console.log('payload.user.name is ' , payload.user.name)
+        setApp({
+          ...app,
+          moods: userMoods,
+          user:payload.user.name
+        })
+      }).catch((err) => {
+        console.log('Error fetching moods', err)
+      })
+    }
+
+    if (token) {
+      moodList()
       }
-  }, [app.user])
+  }
+    , [])
 
   return (
 
@@ -102,7 +105,7 @@ export default function App() {
             <Route path="/favorites"
               element={<SavedPage />} />
             <Route path="/moods"
-              element={<MoodsPage app={app} setApp={setApp} moods={app.moods}/>} />
+              element={<MoodsPage app={app} setApp={setApp} moods={app.moods} />} />
             <Route path="/*"
               element={<Navigate to='/welcome' />} />
           </Routes>
