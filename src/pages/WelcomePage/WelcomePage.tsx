@@ -1,8 +1,7 @@
 import * as React from 'react'
 import { useMutation, gql } from '@apollo/client'
 import BusinessCard from '../../components/BusinessCard/BusinessCard'
-import { appendFile } from 'fs'
-import { AppState, Mood } from '../App/App'
+import { Mood } from '../App/App'
 
 export interface WelcomePageProps {
     moods: string[]
@@ -40,7 +39,7 @@ export interface WelcomePageState {
         query: string
     }
 }
-//latitude=37.786882&longitude=-122.399972"
+
 export default function WelcomePage({ moods }) {
     const [state, setState] = React.useState<WelcomePageState>({
         search: "",
