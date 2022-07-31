@@ -72,14 +72,13 @@ export default function WelcomePage({moods}) {
     })
 
     async function handleSelectMood(MOOD){
-        const cats = MOOD.categories.includes('*')? MOOD.categories.split('*')[0] : MOOD.categories
-        console.log(cats)
+
          setState({
             ...state,
             apiQuery:{
                 ...state.apiQuery,
                 mood:MOOD,
-                query:`&location=${state.apiQuery.location}&categories=${cats}`
+                query:'true'
             },
             step:state.step+1
         }) 
@@ -90,20 +89,28 @@ export default function WelcomePage({moods}) {
         const getApiData = async () =>{
             const results = await api()
             console.log(results)
-            const businessList = results.data.API_Call.data.split('*')
-            let restaurants = businessList .map(x=>JSON.parse(x))
-            console.log("API results are " , restaurants)
-            //const initialRatings = Array(restaurants).fill(0)
-            setState({
-                ...state,
-                restaurants,
-                //ratings,
-                apiQuery:{
-                    ...state.apiQuery,
-                    query:''
-                },
-                step:state.step+1
-            })
+            if(results.data.API_Call.data){
+                const businessList = results.data.API_Call.data.split('*')
+                let restaurants = businessList.map(x=>JSON.parse(x))
+                console.log("API results are " , restaurants)
+                //const initialRatings = Array(restaurants).fill(0)
+                setState({
+                    ...state,
+                    restaurants,
+                    //ratings,
+                    apiQuery:{
+                        ...state.apiQuery,
+                        query:''
+                    },
+                    step:state.step+1
+                })
+            }else{
+                setState({
+                    ...state,
+                    step:0
+                })
+                console.log('SO SORRY - No results for that search in that location. Try again!')
+            }
         }
         if(state.apiQuery.query){
             getApiData()
@@ -186,7 +193,10 @@ export default function WelcomePage({moods}) {
                 <BusinessCard setRating={setRating} business={state.restaurants[state.index]} />
             ):state.step === 5?(selectWinner()
                 
-            ):null
+            ):(
+                //@ts-ignore
+                <h1>So Sorry... I couldn't find any results for {state.apiQuery.mood.categories.replaceAll('*' , ', ')} in {state.search}</h1>
+            )
             }
         </main>
     )

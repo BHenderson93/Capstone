@@ -25,8 +25,9 @@ export const API_Call = extendType({
             async resolve(parent, args, context) {
                 console.log('my query from client side is ', args)
 
-                const cats = args.categories.replace('*' , ',')
-                const limit = 4
+                const cats = args.categories.replaceAll(' ' , '%20').split('*')
+
+                const limit = 1
                 const HEADERS = {
                     method: "GET",
                     headers: {
@@ -35,18 +36,23 @@ export const API_Call = extendType({
                         'Accept-Language': 'en-US',
                     }
                 }
+                let responseList = []
+                for(let cat of cats){
+                    const URL = `https://api.yelp.com/v3/businesses/search?term=${cat.toLowerCase()}&location=${args.location}&limit=${limit}`
+                    console.log('Attempting fetch from server with ', URL, HEADERS)
+                    const resp = await fetch(URL, HEADERS)
+                    const response = await resp.json()
+                    //console.log('Got this response', response)
+                    responseList.push(response.businesses[0])
+                }
+                console.log('My response list is ' , responseList)
 
-                const URL = `https://api.yelp.com/v3/businesses/search?term=${cats.toLowerCase()}&location=${args.location}&limit=${limit}`
-                console.log('Attempting fetch from server with ', URL, HEADERS)
-                const resp = await fetch(URL, HEADERS)
-                const response = await resp.json()
-                console.log('Got this response', response)
-
-                
-                if(response){
+                if(responseList){
+                    console.log('starting  fetch for business specifics')
                     let restList = []
-                    for (let i = 0; i < response.businesses.length; i++) {
-                        const BUSINESSURL = `https://api.yelp.com/v3/businesses/${response.businesses[i].id}`
+                    for (let i = 0; i < responseList.length; i++) {
+                        const BUSINESSURL = `https://api.yelp.com/v3/businesses/${responseList[i].id}`
+                        console.log('biz url is ' , BUSINESSURL)
                         const businessSpecifics = await fetch(BUSINESSURL, HEADERS)
                         const res = await businessSpecifics.json()
                         const { name, photos, rating, price, display_phone, location } = res
