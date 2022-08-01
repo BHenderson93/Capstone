@@ -1,4 +1,5 @@
 import { objectType, interfaceType, extendType, nonNull, stringArg } from "nexus";
+import { resolve } from "path";
 require('dotenv').config()
 
 export const API = objectType({
@@ -38,7 +39,7 @@ export const API_Call = extendType({
                 }
                 let responseList = []
                 for(let cat of cats){
-                    const URL = `https://api.yelp.com/v3/businesses/search?term=${cat.toLowerCase()}&location=${args.location}&limit=${limit}`
+                    const URL = `https://api.yelp.com/v3/businesses/search?term=${cat.toLowerCase()}&location=${args.location.trim().replace(' ' , '%20')}&limit=${limit}`
                     console.log('Attempting fetch from server with ', URL, HEADERS)
                     const resp = await fetch(URL, HEADERS)
                     const response = await resp.json()
@@ -51,21 +52,23 @@ export const API_Call = extendType({
                     console.log('starting  fetch for business specifics')
                     let restList = []
                     for (let i = 0; i < responseList.length; i++) {
-                        const BUSINESSURL = `https://api.yelp.com/v3/businesses/${responseList[i].id}`
-                        console.log('biz url is ' , BUSINESSURL)
-                        const businessSpecifics = await fetch(BUSINESSURL, HEADERS)
-                        const res = await businessSpecifics.json()
-                        const { name, photos, rating, price, display_phone, location } = res
-                        console.log('biz spec res is' , res)
-                        restList.push(JSON.stringify({
-                            name,
-                            photos,
-                            rating,
-                            price,
-                            display_phone,
-                            location
-                        }))
-                        console.log(name)
+                        if(responseList[i]){
+                            const BUSINESSURL = `https://api.yelp.com/v3/businesses/${responseList[i].id}`
+                            console.log('biz url is ' , BUSINESSURL)
+                            const businessSpecifics = await fetch(BUSINESSURL, HEADERS)
+                            const res = await businessSpecifics.json()
+                            const { name, photos, rating, price, display_phone, location } = res
+                            console.log('biz spec res is' , res)
+                            restList.push(JSON.stringify({
+                                name,
+                                photos,
+                                rating,
+                                price,
+                                display_phone,
+                                location
+                            }))
+                            console.log(name)
+                        }
                     }
                         const data = await context.prisma.api.create({
                             data: { data: restList.join('*') }

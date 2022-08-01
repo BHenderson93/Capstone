@@ -64,11 +64,11 @@ export function WinnerDisplay({ welcomePage }: WinnerDisplayProps) {
                         <h1 className="italic text-3xl bold">{name}</h1>
                         <Carousel imgList={photos} />
                         <div className="w-1/2 flex flex-col justify-center items-left">
-                            <h1 className="text-xl">Rating: {rating}</h1>
-                            <h1 className="text-xl">Price: {price}</h1>
-                            <h1 className="text-xl">Need a reservation? <br />{display_phone}</h1>
-                            <h1 className="text-xl">Ready to go? <br />
-                                {location.display_address.join(', ')}</h1>
+                            {rating && <h1 className="text-xl">Rating: {rating}</h1>}
+                            {price && <h1 className="text-xl">Price: {price}</h1>}
+                            {display_phone && <h1 className="text-xl">Need a reservation? <br />{display_phone}</h1>}
+                            {location.display_address && <h1 className="text-xl">Ready to go? <br />
+                                {location.display_address.join(', ')}</h1>}
                         </div>
                     </div>
                     :
