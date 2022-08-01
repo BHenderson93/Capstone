@@ -3,7 +3,8 @@ import Carousel from '../Carousel/Carousel'
 import { Business, WelcomePageState } from '../../pages/WelcomePage/WelcomePage'
 
 export interface WinnerDisplayProps {
-    welcomePage?: WelcomePageState
+    welcomePage: WelcomePageState
+    moreConfetti:(num)=>void
     business?: Business
 }
 
@@ -11,7 +12,7 @@ export interface WinnerDisplayState {
     winner: Business
 }
 
-export function WinnerDisplay({ welcomePage, business }: WinnerDisplayProps) {
+export function WinnerDisplay({ welcomePage, business , moreConfetti}: WinnerDisplayProps) {
     const [state, setState] = React.useState<WinnerDisplayState>({
         winner: {
             name: '',
@@ -69,11 +70,17 @@ export function WinnerDisplay({ welcomePage, business }: WinnerDisplayProps) {
             {state.winner ?
                 <div>
                     <br />
-                    <h1 className="italic text-6xl bold">WINNER!</h1>
+                    <h1 className="italic text-6xl bold text-center min-w-full">WINNER!</h1>
                     <br />
-                    <div className="container-medium flex flex-col jusitfy-around items-center select-none">
+                    <div className="container-medium flex flex-col jusitfy-around items-center">
                         <div className="flex flex-col items-center">
                             <h1 className="italic text-3xl bold">{name}</h1>
+                            <button className="btn flex items-center justify-center py-5 w-full bg-slate-900 text-white font-medium uppercase rounded hover:bg-blue-600 transition duration-150 ease-in-out text-xl" onClick={()=>{moreConfetti(200)}}>🥳</button>
+                            {welcomePage.confetti && welcomePage.confetti !== 3500?
+                            <button className="btn flex items-center justify-center py-5 w-full bg-red-700 text-white font-medium uppercase rounded hover:bg-red-500 transition duration-150 ease-in-out" onClick={()=>{moreConfetti(-200)}}>Too much? (You're at {welcomePage.confetti} confetti's)</button>
+                        :
+                        null}
+                            
                             <Carousel imgList={photos} />
                             <div className="w-1/2 flex flex-col justify-center items-left">
                                 {rating && <h1 className="text-xl">Rating: {rating}</h1>}
@@ -84,10 +91,13 @@ export function WinnerDisplay({ welcomePage, business }: WinnerDisplayProps) {
                             </div>
                         </div>
                     </div>
+                    <br />
+            <br />
                 </div>
                 :
                 <h1>No Winner!</h1>
             }
+
         </>
     )
 }

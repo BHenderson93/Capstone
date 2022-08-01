@@ -6,6 +6,8 @@ import { useNavigate } from 'react-router-dom'
 import { WelcomeSearch } from '../../components/WelcomeSearch/WelcomeSearch'
 import { WelcomeMoodSelect } from '../../components/WelcomeMoodSelect/WelcomeMoodSelect'
 import { WinnerDisplay } from '../../components/WinnerDisplay/WinnerDisplay'
+import useWindowSize from 'react-use/lib/useWindowSize'
+import Confetti from 'react-confetti'
 
 const API_CALL = gql`
 mutation API_Call($location:String! , $categories:String!) {
@@ -45,6 +47,7 @@ export interface WelcomePageState {
     ratings: number[]
     index: number
     step: number
+    confetti:number
     apiQuery: {
         searchNotLatlong: boolean
         location: string
@@ -60,6 +63,7 @@ export default function WelcomePage({ moods }) {
         ratings: [],
         index: 0,
         step: 1,
+        confetti: 0,
         apiQuery: {
             searchNotLatlong: true,
             location: 'seattle, wa',
@@ -157,6 +161,46 @@ export default function WelcomePage({ moods }) {
         }
     }
 
+    React.useEffect(()=>{
+        if(state.step === 5){
+            setState({
+                ...state,
+                confetti:3500
+            })
+        
+        setTimeout(()=>{
+                setState({
+                    ...state,
+                    confetti:0
+                })
+            }, 2500)
+        }
+    } , [state.step])
+
+    async function moreConfetti(num){
+        if (num > 0){
+            setState({
+                ...state,
+                confetti:state.confetti+num
+            })
+        }else{
+            if(state.confetti < 200){
+                setState({
+                    ...state,
+                    confetti:0
+                })
+            }else{
+                setState({
+                    ...state,
+                    confetti:state.confetti+num
+                })
+            }
+        }
+
+    }
+
+    const {width, height}=useWindowSize()
+
     return (
         <div className="container">
             {state.step === 1 ? (
@@ -175,10 +219,10 @@ export default function WelcomePage({ moods }) {
                 </>
 
             ) : state.step === 5 ? (
-                <>
-                <WinnerDisplay welcomePage={state}/>
-                </>
-
+                <div className="flex flex-col items-center">
+                <Confetti style={{position:'fixed' , top:'0' , left:'0'}} numberOfPieces={state.confetti} width={width} height={height}/>
+                <WinnerDisplay welcomePage={state} moreConfetti={moreConfetti}/>
+                </div>
             ) : (
                 <>
                     {/*@ts-ignore*/}
