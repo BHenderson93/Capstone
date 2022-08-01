@@ -13,8 +13,11 @@ import {
 const container = document.getElementById('root')
 const root = RDC.createRoot(container!)
 
+const port = process.env.PORT
+
 const client = new ApolloClient({
-  uri: `http://localhost:3000`,
+  //uri: `http://localhost:${port}`,
+  uri: `https://moodiefoodie.herokuapp.com/${port}`,
   cache: new InMemoryCache()
 });
 
