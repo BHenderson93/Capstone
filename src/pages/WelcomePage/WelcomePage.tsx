@@ -107,11 +107,12 @@ export default function WelcomePage({ moods }) {
 
     React.useEffect(() => {
         const getApiData = async () => {
+            console.log('beginning fetch from api..')
             const results = await api()
             console.log(results)
             if (results.data.API_Call.data) {
                 const businessList = results.data.API_Call.data.split('*')
-                let restaurants = businessList.map(x => JSON.parse(x))
+                let restaurants = businessList.map(x => JSON.parse(x))[0]
                 console.log("API results are ", restaurants)
                 //const initialRatings = Array(restaurants).fill(0)
                 setState({

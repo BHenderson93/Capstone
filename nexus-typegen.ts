@@ -29,9 +29,9 @@ export interface NexusGenScalars {
 
 export interface NexusGenObjects {
   API: { // root type
-    categories: string; // String!
+    categories?: string | null; // String
     data?: string | null; // String
-    location: string; // String!
+    location?: string | null; // String
   }
   AuthPayload: { // root type
     token: string; // String!
@@ -65,9 +65,9 @@ export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars
 
 export interface NexusGenFieldTypes {
   API: { // field return type
-    categories: string; // String!
+    categories: string | null; // String
     data: string | null; // String
-    location: string; // String!
+    location: string | null; // String
   }
   AuthPayload: { // field return type
     token: string; // String!

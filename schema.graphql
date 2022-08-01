@@ -3,9 +3,9 @@
 
 
 type API {
-  categories: String!
+  categories: String
   data: String
-  location: String!
+  location: String
 }
 
 type AuthPayload {
