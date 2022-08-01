@@ -1,5 +1,4 @@
 import * as React from 'react'
-import { FaArrowLeft, FaArrowRight } from 'react-icons/fa'
 import Carousel from '../Carousel/Carousel'
 export interface BusinessCardProps {
 

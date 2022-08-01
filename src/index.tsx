@@ -6,9 +6,6 @@ import {
   ApolloClient,
   InMemoryCache,
   ApolloProvider,
-  useQuery,
-  gql,
-  useMutation
 } from "@apollo/client";
 const container = document.getElementById('root')
 const root = RDC.createRoot(container!)
@@ -17,9 +14,11 @@ const port = process.env.PORT
 
 const client = new ApolloClient({
   //uri: `http://localhost:3000`,
-  uri: `https://moodiefoodie.herokuapp.com/${port}`,
+  uri: `https://server-moodiefoodie.herokuapp.com/`,
   cache: new InMemoryCache()
 });
+
+
 
 root.render(
   <React.StrictMode>
@@ -29,3 +28,4 @@ root.render(
   </React.StrictMode>,
 );
 
+//Fingers crossed!

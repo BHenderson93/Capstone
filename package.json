@@ -2,6 +2,7 @@
   "name": "capstone",
   "version": "0.1.0",
   "private": true,
+  "main": "src/server.ts",
   "dependencies": {
     "@apollo/client": "^3.6.9",
     "@prisma/client": "^4.1.0",
