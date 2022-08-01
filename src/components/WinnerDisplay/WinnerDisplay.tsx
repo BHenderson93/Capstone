@@ -66,7 +66,7 @@ export function WinnerDisplay({ welcomePage, business , moreConfetti}: WinnerDis
 
     }, [])
 
-    const { name, photos, rating, price, display_phone, location } = state.winner
+    const { name, photos, rating, price, display_phone, location, url} = state.winner
 
     return (
         <>
@@ -77,7 +77,7 @@ export function WinnerDisplay({ welcomePage, business , moreConfetti}: WinnerDis
                     <br />
                     <div className="container-medium flex flex-col jusitfy-around items-center">
                         <div className="flex flex-col items-center">
-                            <h1 className="italic text-3xl bold">{name}</h1>
+                            <h1 className="italic text-3xl bold min-w-full text-center">{name}</h1>
                             <button className="btn flex items-center justify-center py-5 w-full bg-slate-900 text-white font-medium uppercase rounded hover:bg-blue-600 transition duration-150 ease-in-out text-5xl" onClick={()=>{moreConfetti(200)}}>🥳</button>
                             {welcomePage.confetti && welcomePage.confetti !== 3500?
                             <button className="btn flex items-center justify-center py-5 w-full bg-red-700 text-white font-medium uppercase rounded hover:bg-red-500 transition duration-150 ease-in-out" onClick={()=>{moreConfetti(-200)}}>Too much? (You're at {welcomePage.confetti} confetti's)</button>
@@ -91,6 +91,7 @@ export function WinnerDisplay({ welcomePage, business , moreConfetti}: WinnerDis
                                 {display_phone && <h1 className="text-xl">Need a reservation? <br />{display_phone}</h1>}
                                 {location.display_address ? <h1 className="text-xl">Ready to go? <br />
                                     {location.display_address.join(', ')}</h1> : null}
+                                {url? <button className="btn flex items-center justify-center py-5 w-full bg-blue-600 text-white font-medium uppercase rounded hover:bg-green-500 transition duration-150 ease-in-out" onClick={()=>{window.open(url , '_blank')}}>Need more info? Click me!</button>: null}
                             </div>
                         </div>
                     </div>
