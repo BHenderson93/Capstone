@@ -35,7 +35,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "tsc": "tsc",
+    "tsc": "./node_modules/typescript/bin/tsc",
     "postinstall": "npm run tsc",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -69,5 +69,5 @@
     "ts-node": "^10.9.1",
     "ts-node-dev": "^2.0.0"
   },
-  "engines": { "node": "18.0.0" }
+  "engines": { "node": "18.0.0", "npm":"8.6.0" }
 }
