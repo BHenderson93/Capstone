@@ -13,6 +13,7 @@ export interface WinnerDisplayState {
 }
 
 export function WinnerDisplay({ welcomePage, business , moreConfetti}: WinnerDisplayProps) {
+    console.log('Winner displaying' , business, welcomePage)
     const [state, setState] = React.useState<WinnerDisplayState>({
         winner: {
             name: '',
@@ -28,6 +29,7 @@ export function WinnerDisplay({ welcomePage, business , moreConfetti}: WinnerDis
 
     React.useEffect(() => {
         if (welcomePage) {
+            console.log('found welcome page for winner')
             let all: any = []
 
             for (let i = 0; i < welcomePage.ratings.length; i++) {
@@ -37,7 +39,7 @@ export function WinnerDisplay({ welcomePage, business , moreConfetti}: WinnerDis
             const top = all.filter(x => x[0] === 2)
             const mid = all.filter(x => x[0] === 1)
             const bot = all.filter(x => x[0] === 0)
-
+            console.log('made it through filter')
             let winner
             if (top) {
                 winner = top[Math.floor(Math.random() * top.length)][1]
@@ -54,6 +56,7 @@ export function WinnerDisplay({ welcomePage, business , moreConfetti}: WinnerDis
             })
         } else {
             if (business) {
+                console.log('no welcome page')
                 setState({
                     ...state,
                     winner: business

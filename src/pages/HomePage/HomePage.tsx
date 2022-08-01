@@ -9,7 +9,7 @@ export interface HomePageState {
 
 }
 
-export default function HomePage(){
+export default function HomePage({app, setApp}){
     const nav = useNavigate()
     function navTo(url){
         nav(url)

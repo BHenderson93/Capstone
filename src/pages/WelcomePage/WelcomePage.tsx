@@ -177,7 +177,7 @@ export default function WelcomePage({ moods }) {
         }
     } , [state.step])
 
-    async function moreConfetti(num){
+    function moreConfetti(num){
         if (num > 0){
             setState({
                 ...state,

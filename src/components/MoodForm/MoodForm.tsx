@@ -128,6 +128,7 @@ export default function MoodForm({ handleNewMood, initialState, handleUpdateMood
             })
             newMood().then((res) => {
                 const { id, name, categories, price } = res.data.createMood
+                console.log('got this data back after mood creation', res.data.createMood)
                 const addMood = {
                     id: id,
                     name: name,

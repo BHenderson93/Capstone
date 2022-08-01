@@ -25,6 +25,10 @@ export default function SignupForm({ setApp, app }: SignupFormProps) {
         confirm: '',
     })
 
+    React.useEffect(()=>{
+        localStorage.removeItem('token')
+    },[])
+
     const SIGNUP = gql`
         mutation signup($name:String! , $email:String!, $password:String!){
             signup(name:$name , email:$email , password:$password){
@@ -51,16 +55,15 @@ export default function SignupForm({ setApp, app }: SignupFormProps) {
 
         if (state.password !== state.confirm) {
             console.log('Passwords do not match.')
-            return null
         } else {
             const response = await signup()
             console.log("Got this data back after signup ", response.data)
             const token = response.data.signup.token
             const user = response.data.signup.user.name
-
-            localStorage.setItem('token', token)
-            setApp({ ...app, user: user })
-            return null
+            if(user){
+                localStorage.setItem('token', token)
+                setApp({ ...app, user: user })
+            }
         }
     }
 

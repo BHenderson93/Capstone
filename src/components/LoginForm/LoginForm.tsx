@@ -25,6 +25,10 @@ export default function LoginForm({ app, setApp }: LoginProps) {
         valid: true
     })
 
+    React.useEffect(()=>{
+        localStorage.removeItem('token')
+    },[])
+
     const [login, { data, loading, error }] = useMutation(LOGIN , {
         variables:{
             email: state.email,
@@ -36,7 +40,7 @@ export default function LoginForm({ app, setApp }: LoginProps) {
         e.preventDefault()
         try{
             const response = await login()
-            console.log("Got this data back after signup ", response.data)
+            console.log("Got this data back after login", response.data)
             const token = response.data.login.token
             const user = response.data.login.user.name
             localStorage.setItem('token', token)

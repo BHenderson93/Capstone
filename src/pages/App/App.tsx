@@ -80,7 +80,7 @@ export default function App() {
     if (token) {
       moodList()
       }
-  }, [])
+  }, [app.user])
 
   return (
 
@@ -100,7 +100,7 @@ export default function App() {
         ) : (
           <Routes>
             <Route path="/"
-              element={<HomePage />} />
+              element={<HomePage app={app} setApp={setApp}/>} />
             <Route path="/login"
               element={<LoginForm setApp={setApp} app={app} />} />
             <Route path="/signup"
