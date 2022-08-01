@@ -89,7 +89,7 @@ export default function MoodForm({ handleNewMood, initialState, handleUpdateMood
         variables: {
             name: state.name,
             categories: state.categories.join('*'),
-            price: state.price,
+            price: Number(state.price),
             token: localStorage.getItem('token')
         }
     })
@@ -99,7 +99,7 @@ export default function MoodForm({ handleNewMood, initialState, handleUpdateMood
             categories: state.categories.join('*'),
             id: state.id,
             name: state.name,
-            price: state.price,
+            price: Number(state.price),
             token: localStorage.getItem('token')
         }
     })
