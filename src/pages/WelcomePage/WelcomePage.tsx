@@ -8,6 +8,7 @@ import { WelcomeMoodSelect } from '../../components/WelcomeMoodSelect/WelcomeMoo
 import { WinnerDisplay } from '../../components/WinnerDisplay/WinnerDisplay'
 import useWindowSize from 'react-use/lib/useWindowSize'
 import Confetti from 'react-confetti'
+import {Loading} from '../../components/Loading/Loading'
 
 const API_CALL = gql`
 mutation API_Call($location:String! , $categories:String!) {
@@ -212,7 +213,9 @@ export default function WelcomePage({ moods }) {
                 </>
             ) : state.step === 3 ? (
                 <>
-                    <h1>Loading...</h1>
+                <h1 className="text-3xl whitespace-nowrap min-w-full text-center mb-50" >Consulting Chef Marco for suggestions - hold tight!</h1>
+                <br />
+                    <Loading />
                 </>
             ) : state.step === 4 ? (
                 <>

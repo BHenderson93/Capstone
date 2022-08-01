@@ -23,7 +23,7 @@ export const API_Call = extendType({
         
                 const dataToReturn = new Promise <[]> ((resolve,reject)=>{
                     const cats: string[] = args.categories.replaceAll(' ', '%20').split('*')
-                    const limit = Math.floor( 20 / cats.length)
+                    const limit = Math.floor( 30 / cats.length)
                     const HEADERS = {
                         method: "GET",
                         headers: {
@@ -60,7 +60,7 @@ export const API_Call = extendType({
                     })
                 })
 
-                const returnVal = new Promise<any> ((resolve,rejuect)=>{
+                const returnVal = new Promise<any> ((resolve,reject)=>{
                     dataToReturn.then(async (data:any)=>{
                     const ret = JSON.stringify(data.map((promise:any)=>promise.value))
                     const returnVal = await context.prisma.api.create({
