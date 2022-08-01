@@ -15,7 +15,7 @@ export interface InitialState{
     id:number | null
     name:string
     categories:string[]
-    price:number | null
+    price:number
 }
 
 export interface MoodsPageProps{
@@ -31,7 +31,7 @@ export default function MoodsPage({ app , setApp , moods}:MoodsPageProps){
             id: null,
             name:'',
             categories:[],
-            price: null
+            price: 1
         },
         refresh:false
     })
@@ -83,7 +83,7 @@ export default function MoodsPage({ app , setApp , moods}:MoodsPageProps){
                 id: null,
                 name:'',
                 categories:[],
-                price:null
+                price:1
             },
             refresh:!state.refresh
         })

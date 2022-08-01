@@ -38,16 +38,16 @@ export interface MoodFormProps {
 }
 
 export interface MoodFormState {
-    id: number
+    id: number | null
     name: string
     categories: string[]
-    price: number | null
+    price: number | string
 }
 
 export default function MoodForm({ handleNewMood, initialState, handleUpdateMood, refresh }: MoodFormProps) {
     const { id, name, categories, price } = initialState
 
-    const [state, setState] = React.useState<InitialState>({
+    const [state, setState] = React.useState<MoodFormState>({
         id: id,
         name: name,
         categories: categories,
@@ -70,9 +70,19 @@ export default function MoodForm({ handleNewMood, initialState, handleUpdateMood
     }
 
     function changePrice(e) {
-        if (e.target.value < 5 && e.target.value > 0) {
-            setState({ ...state, price: Number(e.target.value) })
-        }
+        if(e.target.value.length === 0){
+            //console.log('in top')
+            setState({
+                ...state, price: ''
+            })
+        }else if (e.target.value < 1){
+            setState({ ...state, price: 1  })
+        }else if (e.target.value > 4){
+            setState({ ...state, price: 4 })
+        }else if (Number(e.target.value) < 5 && Number(e.target.value) > 0){
+            //console.log('in bot')
+            setState({ ...state, price: e.target.value })
+        } 
     }
 
     const [newMood, { data: newMoodData }] = useMutation(NEW_MOOD, {
@@ -163,13 +173,9 @@ export default function MoodForm({ handleNewMood, initialState, handleUpdateMood
                 <form action="" onSubmit={handleSubmit}>
                     <label htmlFor="name">What is this mood called?</label>
                     <input type="text" name="name" placeholder="i.e. Mama Mia! Pasta, baby, pasta!" onChange={changeName} value={state.name} />
-                    <label htmlFor="price">How ritzy? (1-4)</label>
-                    {state.price?
-                    <input type="number" name="price" id="" onChange={changePrice} value={state.price} />
-                    :
-                    <input type="number" name="price" id="" onChange={changePrice} placeholder="Price 1-4, (4 is most expensive)"/>
-                    }
-                     
+                    <label htmlFor="price">How ritzy? (1-4)</label> 
+                    <input type="number" name="price" id="" placeholder="Price 1-4, (4 is most expensive)" onChange={changePrice} value={state.price} />
+
                     {state.name.length < 3 ? 
                     <div className="btn flex items-center justify-center py-5 w-full bg-gray-400 text-white font-medium uppercase rounded transition duration-150 ease-in-out" >Name this mood</div>
                     :

@@ -24,6 +24,7 @@ export interface Business {
     alias?: string
     name?: string
     image_url?: string
+    photos?: string[]
     is_closed?: boolean
     url?: string
     review_count?: number
@@ -31,8 +32,8 @@ export interface Business {
     rating?: number
     coordinates?: object
     transactions?: []
-    price?: string
-    location?: object
+    price?: string | number
+    location?: any
     phone?: string
     display_phone?: string
     distance?: number
