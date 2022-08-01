@@ -8,7 +8,6 @@ interface WelcomeMoodSelectProps {
 }
 
 export function WelcomeMoodSelect({ moods, handleSelectMood }: WelcomeMoodSelectProps) {
-
     return (
         <>
             {moods.length === 0 ?

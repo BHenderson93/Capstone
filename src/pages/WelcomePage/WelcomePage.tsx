@@ -5,6 +5,8 @@ import { Mood } from '../App/App'
 import { useNavigate } from 'react-router-dom'
 import { WelcomeSearch } from '../../components/WelcomeSearch/WelcomeSearch'
 import { WelcomeMoodSelect } from '../../components/WelcomeMoodSelect/WelcomeMoodSelect'
+import { WinnerDisplay } from '../../components/WinnerDisplay/WinnerDisplay'
+
 const API_CALL = gql`
 mutation API_Call($location:String! , $categories:String!) {
     API_Call(location:$location, categories:$categories ) {
@@ -17,7 +19,7 @@ export interface WelcomePageProps {
     moods: string[]
 }
 
-export interface business {
+export interface Business {
     id?: string
     alias?: string
     name?: string
@@ -38,7 +40,7 @@ export interface business {
 
 export interface WelcomePageState {
     search: string
-    restaurants: any
+    restaurants: Business[]
     ratings: number[]
     index: number
     step: number
@@ -71,6 +73,7 @@ export default function WelcomePage({ moods }) {
     })
 
     const nav = useNavigate()
+
     React.useEffect(()=>{
         if(moods.length === 0){
             nav('/moods')
@@ -153,33 +156,6 @@ export default function WelcomePage({ moods }) {
         }
     }
 
-    function selectWinner() {
-        let all: any = []
-
-        for (let i = 0; i < state.ratings.length; i++) {
-            all.push([state.ratings[i], state.restaurants[i]])
-        }
-
-        const top = all.filter(x => x[0] === 2)
-        const mid = all.filter(x => x[0] === 1)
-        const bot = all.filter(x => x[0] === 0)
-
-        let winner
-        if (top) {
-            winner = top[Math.floor(Math.random() * top.length)][1]
-        } else if (mid) {
-            winner = mid[Math.floor(Math.random() * mid.length)][1]
-        } else {
-            winner = bot[Math.floor(Math.random() * bot.length)][1]
-        }
-        console.log('AAAAND THE WINNER IS ', winner)
-
-        return (<div>
-            <h1>Results! Tonight, try out...</h1>
-            <h1>{winner.name}</h1>
-        </div>)
-    }
-
     return (
         <div className="container">
             {state.step === 1 ? (
@@ -199,7 +175,7 @@ export default function WelcomePage({ moods }) {
 
             ) : state.step === 5 ? (
                 <>
-                    {selectWinner()}
+                <WinnerDisplay welcomePage={state}/>
                 </>
 
             ) : (

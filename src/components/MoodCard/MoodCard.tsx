@@ -10,7 +10,6 @@ mutation DeleteMood($id: Int!, $token: String!){
 }
 `
 
-
 export function MoodCard({ mood, handleMoodEdit, app, setApp }) {
     //console.log(mood)
 
