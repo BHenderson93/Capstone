@@ -39,11 +39,11 @@ export function WinnerDisplay({ welcomePage, business , moreConfetti}: WinnerDis
             const top = all.filter(x => x[0] === 2)
             const mid = all.filter(x => x[0] === 1)
             const bot = all.filter(x => x[0] === 0)
-            console.log('made it through filter')
+            console.log('made it through filter with','t', top,'m', mid,'b', bot)
             let winner
-            if (top) {
+            if (top.length) {
                 winner = top[Math.floor(Math.random() * top.length)][1]
-            } else if (mid) {
+            } else if (mid.length) {
                 winner = mid[Math.floor(Math.random() * mid.length)][1]
             } else {
                 winner = bot[Math.floor(Math.random() * bot.length)][1]
