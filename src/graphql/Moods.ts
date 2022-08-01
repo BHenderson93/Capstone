@@ -113,9 +113,10 @@ export const MoodMutation = extendType({
                 token: nonNull(stringArg())
             },
             async resolve(parent, args, context, info) {
-                console.log('In delete resolver')
+                
                 const { user } = context
                 if (user) {
+                    console.log('In delete resolver checking for' , args, user.id)
                     const record = await context.prisma.mood.findMany({
                         where: {
                             AND: [
@@ -124,8 +125,8 @@ export const MoodMutation = extendType({
                             ]
                         }
                     })
-
-                if(record){
+                    console.log('Found this record' , record)
+                if(record.length){
                     return await context.prisma.mood.delete({
                         where:{id:args.id}
                     })

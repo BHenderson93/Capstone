@@ -23,12 +23,11 @@ export function MoodCard({ mood, handleMoodEdit, app, setApp }) {
     async function handleDelete() {
         console.log('Someone clicked delete')
         const deleted = await deleteMood()
-
         setApp({
             ...app,
             moods: app.moods.filter(x => x.id !== deleted.data.deleteMood.id)
         })
-        console.log(deleted)
+        console.log('I have deleted ' , deleted)
     }
 
     return (

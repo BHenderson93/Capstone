@@ -4,9 +4,9 @@ br{
 }
 
 footer{
-  position:fixed;
-  bottom:0;
-  width:100vw;
+  width:100%;
+  max-width:100vw;
+  min-width:98vw;
   min-height: 5vh;
 }
 
@@ -45,6 +45,8 @@ main{
   flex-flow: column nowrap;
   justify-content: center;
   align-items: center;
+  max-width:99vw;
+  overflow-x:hidden;
 }
 
 .page-fill{
@@ -65,7 +67,7 @@ main{
   min-height: 25vh;
   max-height: 85vh;
   min-width: 40vw;
-  max-width:100vw;
+  max-width:90vw;
   display: flex;
   flex-flow: row nowrap;
   padding:2vw;

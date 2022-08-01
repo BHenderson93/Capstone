@@ -47,7 +47,7 @@ export interface WelcomePageState {
     ratings: number[]
     index: number
     step: number
-    confetti:number
+    confetti: number
     apiQuery: {
         searchNotLatlong: boolean
         location: string
@@ -79,8 +79,8 @@ export default function WelcomePage({ moods }) {
 
     const nav = useNavigate()
 
-    React.useEffect(()=>{
-        if(moods.length === 0){
+    React.useEffect(() => {
+        if (moods.length === 0) {
             nav('/moods')
         }
     }, [])
@@ -92,7 +92,7 @@ export default function WelcomePage({ moods }) {
         }
     })
 
-    async function handleSelectMood(MOOD:Mood) {
+    async function handleSelectMood(MOOD: Mood) {
         setState({
             ...state,
             apiQuery: {
@@ -105,7 +105,7 @@ export default function WelcomePage({ moods }) {
 
     }
 
-    React.useEffect(()=>{
+    React.useEffect(() => {
         const getApiData = async () => {
             const results = await api()
             console.log(results)
@@ -132,8 +132,8 @@ export default function WelcomePage({ moods }) {
                 console.log('SO SORRY - No results for that search in that location. Try again!')
             }
         }
-        if(state.apiQuery.query){
-            getApiData() 
+        if (state.apiQuery.query) {
+            getApiData()
         }
     }, [state.apiQuery.query])
 
@@ -161,53 +161,53 @@ export default function WelcomePage({ moods }) {
         }
     }
 
-    React.useEffect(()=>{
-        if(state.step === 5){
+    React.useEffect(() => {
+        if (state.step === 5) {
             setState({
                 ...state,
-                confetti:3500
+                confetti: 3500
             })
-        
-        setTimeout(()=>{
+
+            setTimeout(() => {
                 setState({
                     ...state,
-                    confetti:0
+                    confetti: 0
                 })
             }, 2500)
         }
-    } , [state.step])
+    }, [state.step])
 
-    function moreConfetti(num){
-        if (num > 0){
+    function moreConfetti(num) {
+        if (num > 0) {
             setState({
                 ...state,
-                confetti:state.confetti+num
+                confetti: state.confetti + num
             })
-        }else{
-            if(state.confetti < 200){
+        } else {
+            if (state.confetti < 200) {
                 setState({
                     ...state,
-                    confetti:0
+                    confetti: 0
                 })
-            }else{
+            } else {
                 setState({
                     ...state,
-                    confetti:state.confetti+num
+                    confetti: state.confetti + num
                 })
             }
         }
 
     }
 
-    const {width, height}=useWindowSize()
+    const { width, height } = useWindowSize()
 
     return (
         <div className="container">
             {state.step === 1 ? (
-                <WelcomeSearch handleLocationSubmit={handleLocationSubmit} welcomePageState={state} setWelcomePageState={setState} moods={moods}/>
+                <WelcomeSearch handleLocationSubmit={handleLocationSubmit} welcomePageState={state} setWelcomePageState={setState} moods={moods} />
             ) : state.step === 2 ? (
                 <>
-                <WelcomeMoodSelect moods={moods} handleSelectMood={handleSelectMood} />
+                    <WelcomeMoodSelect moods={moods} handleSelectMood={handleSelectMood} />
                 </>
             ) : state.step === 3 ? (
                 <>
@@ -219,10 +219,11 @@ export default function WelcomePage({ moods }) {
                 </>
 
             ) : state.step === 5 ? (
-                <div className="flex flex-col items-center">
-                <Confetti style={{position:'fixed' , top:'0' , left:'0'}} numberOfPieces={state.confetti} width={width} height={height}/>
-                <WinnerDisplay welcomePage={state} moreConfetti={moreConfetti}/>
-                </div>
+
+                    <div className="flex flex-col items-center">
+                        <Confetti style={{position:'fixed' , top:'0' , left:'0'}}numberOfPieces={state.confetti} width={width} height={height} />
+                        <WinnerDisplay welcomePage={state} moreConfetti={moreConfetti} />
+                    </div>
             ) : (
                 <>
                     {/*@ts-ignore*/}

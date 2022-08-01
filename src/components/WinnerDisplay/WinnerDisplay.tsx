@@ -78,7 +78,7 @@ export function WinnerDisplay({ welcomePage, business , moreConfetti}: WinnerDis
                     <div className="container-medium flex flex-col jusitfy-around items-center">
                         <div className="flex flex-col items-center">
                             <h1 className="italic text-3xl bold">{name}</h1>
-                            <button className="btn flex items-center justify-center py-5 w-full bg-slate-900 text-white font-medium uppercase rounded hover:bg-blue-600 transition duration-150 ease-in-out text-xl" onClick={()=>{moreConfetti(200)}}>🥳</button>
+                            <button className="btn flex items-center justify-center py-5 w-full bg-slate-900 text-white font-medium uppercase rounded hover:bg-blue-600 transition duration-150 ease-in-out text-5xl" onClick={()=>{moreConfetti(200)}}>🥳</button>
                             {welcomePage.confetti && welcomePage.confetti !== 3500?
                             <button className="btn flex items-center justify-center py-5 w-full bg-red-700 text-white font-medium uppercase rounded hover:bg-red-500 transition duration-150 ease-in-out" onClick={()=>{moreConfetti(-200)}}>Too much? (You're at {welcomePage.confetti} confetti's)</button>
                         :
