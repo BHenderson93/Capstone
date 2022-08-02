@@ -181,12 +181,12 @@ export default function MoodForm({ handleNewMood, initialState, handleUpdateMood
     }
 
     return (
-        <div className="flex flex-row min-h-full min-w-full">
+        <div className="flex flex-row min-h-full min-w-full container-medium border-sharp m-10 justify-start items-top">
             <div className="flex flex-col nowrap mr-4">
                 <form action="" onSubmit={handleSubmit}>
-                    <label htmlFor="name">What is this mood called?</label>
+                    <label htmlFor="name" className="text-lg">What is this mood called?</label>
                     <input type="text" name="name" placeholder="i.e. Mama Mia! Pasta, baby, pasta!" onChange={changeName} value={state.name} />
-                    <label htmlFor="price">How ritzy? (1-4)</label> 
+                    <label htmlFor="price" className="text-lg">How ritzy? (1-4)</label> 
                     <input type="number" name="price" id="" placeholder="Price 1-4, (4 is most expensive)" onChange={changePrice} value={state.price} />
 
                     {state.name.length < 3 ? 
@@ -204,7 +204,7 @@ export default function MoodForm({ handleNewMood, initialState, handleUpdateMood
                 </form>
                 <br />
                 <ul className="overflow-scroll overflow-x-hidden">
-                    <h1>Categories selected: </h1>
+                    <h1 className="text-lg">Categories selected: </h1>
                     {state.categories.length === 10 ? <p className="error">Max categories reached!</p> : null}
                     {state.categories.map((cat, idx) => <YelpCat cat={cat} key={idx} handleRemoveFromCategories={handleRemoveFromCategories} />)
                     }

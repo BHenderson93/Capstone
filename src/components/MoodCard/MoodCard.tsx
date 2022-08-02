@@ -38,6 +38,7 @@ export function MoodCard({ mood, handleMoodEdit, app, setApp }) {
                 <div className="overflow-hidden flex flex-col nowrap align-center justify-center w-6/12 ">
                     <h3 className="text-center bold text-xl">{mood.name}</h3>
                     <h3 className="hidden text-center group-hover:block">{mood.categories.split('*').join(', ')}</h3>
+                    <h3 className="hidden text-center group-hover:block">{mood.price===1?'$':mood.price===2?'$$':mood.price===3?'$$$':'$$$$'}</h3>
                 </div>
                 <div className="flex flex-row nowrap justify-center items-center w-6/12">
                     <button type="submit" className="btn h-12 flex items-center justify-center mr-10 py-5 bg-slate-900 text-white font-medium uppercase rounded group-hover:bg-green-700 hover:!bg-green-500 transition duration-250 ease-in-out" onClick={() => { handleMoodEdit(mood) }}>Edit</button>
