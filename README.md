@@ -3,12 +3,12 @@ is an app that helps users pick what to eat. After signing up and logging in, us
 
 
 # Technologies Used
-## React.js
-## TypeScript
-## Tailwind
-## GraphQL - Apollo Server, Nexus, Prisma
-## PostgreSQL
-## Heroku
+### React.js
+### TypeScript
+### Tailwind
+### GraphQL - Apollo Server, Nexus, Prisma
+### PostgreSQL
+### Heroku
 
 # Planning
     AAU - I don't know what I want to eat and I want some help finding restaurants I'd like.
