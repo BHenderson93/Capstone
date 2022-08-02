@@ -6,6 +6,7 @@ is an app that helps users pick what to eat. After signing up and logging in, us
 ### React.js
 ### TypeScript
 ### Tailwind
+### Yelp Fusion API
 ### GraphQL - Apollo Server, Nexus, Prisma
 ### PostgreSQL
 ### Heroku
