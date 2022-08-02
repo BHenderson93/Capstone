@@ -11,10 +11,10 @@ interface LayoutProps{
 
 export default function Layout({children , app , setApp}: LayoutProps) {
     return (
-        <>
+        <div className="buffer">
         <Header app={app} setApp={setApp} />
-        <main className="">{children}</main>
+        <main>{children}</main>
         <Footer />
-        </>
+        </div>
     );
   }

@@ -4,7 +4,6 @@ import { Routes, Route, Navigate } from 'react-router-dom'
 import {useLazyQuery, gql} from "@apollo/client";
 
 // Pages and components
-import './App.css'
 import HomePage from '../HomePage/HomePage'
 import SavedPage from "../SavedPage/SavedPage"
 import LoginForm from '../../components/LoginForm/LoginForm'

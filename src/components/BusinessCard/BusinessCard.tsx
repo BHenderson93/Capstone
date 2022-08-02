@@ -11,11 +11,9 @@ export interface BusinessCardState {
 export default function BusinessCard({ business, setRating }) {
 
     return (
-        <div className="container-medium flex flex-col jusitfy-around items-center select-none">
-            <h1 className="italic bold text-4xl">{business.name}</h1>
-            <div>
+        <div className="container-long overflow-scroll borderzz mt-10 flex flex-col jusitfy-around items-center select-none">
+            <h1 className="italic bold text-2xl whitespace-nowrap">{business.name}</h1>
             <Carousel imgList={business.photos} />
-            </div>
             <h2 className="italic bold text-2xl">Thoughts?</h2>
             <div className="flex flex-row nowrap w-full gap-6">
                 <button className="btn flex items-center justify-center py-5 bg-red-800 text-white uppercase rounded hover:bg-red-500 transition duration-150 ease-in-out" onClick={()=>{setRating(0)}}>Nah...</button>

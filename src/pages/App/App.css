@@ -4,9 +4,12 @@ br{
 }
 body{
   background:#e2e8f0;
+  overflow-x:hidden;
 }
 
 footer{
+  position:fixed;
+  bottom:0;
   width:100%;
   max-width:100vw;
   min-width:98vw;
@@ -15,6 +18,8 @@ footer{
 
 header{
   min-height: 10vh;
+  position:fixed;
+  top:0;
 }
 
 input{
@@ -33,7 +38,6 @@ main{
   min-height: 85vh;
   min-width:95vw;
   max-width:100vw;
-  overflow: hidden;
 }
 
 /* CLASSES BEGIN HERE */
@@ -43,16 +47,20 @@ main{
 }
 
 .container{
-  background: #94a3b8;
   border-radius:1vw;
   min-height: 70vh;
   min-width: 40vh;
-  display: flex;
-  flex-flow: column nowrap;
-  justify-content: center;
   align-items: center;
   max-width:99vw;
   overflow-x:hidden;
+}
+
+.container-long{
+  background:#e2e8f0;
+  border-radius:1vw;
+  min-width: 40vh;
+  max-width:99vw;
+  padding:2vw;
 }
 
 .page-fill{
@@ -68,6 +76,13 @@ main{
   max-width:90vw;
   padding:5vw;
 
+}
+
+.container-stiff{
+  padding:5vw;
+  background:#e2e8f0;
+  height:75vh;
+  width:60vw;
 }
 
 .borderzz{
@@ -88,4 +103,17 @@ main{
 .page{
   max-height: 80vh;
   max-width:100vw;
+}
+
+.big-input{
+  height:15vh;
+  font-size:8vh;
+}
+
+.header-btn{
+  height:7vh;
+}
+
+.buffer{
+  margin:15vh 0;
 }

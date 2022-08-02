@@ -1,6 +1,7 @@
 import * as React from 'react';
 import * as RDC from 'react-dom/client';
 import App from './pages/App/App';
+import './pages/App/App.css'
 import { BrowserRouter as Router } from 'react-router-dom';
 import {
   ApolloClient,

@@ -8,7 +8,7 @@ import { WelcomeMoodSelect } from '../../components/WelcomeMoodSelect/WelcomeMoo
 import { WinnerDisplay } from '../../components/WinnerDisplay/WinnerDisplay'
 import useWindowSize from 'react-use/lib/useWindowSize'
 import Confetti from 'react-confetti'
-import {Loading} from '../../components/Loading/Loading'
+import { Loading } from '../../components/Loading/Loading'
 
 const API_CALL = gql`
 mutation API_Call($location:String! , $categories:String!) {
@@ -210,7 +210,7 @@ export default function WelcomePage({ moods }) {
     const { width, height } = useWindowSize()
 
     return (
-        <div >
+        <>
             {state.step === 1 ? (
                 <WelcomeSearch handleLocationSubmit={handleLocationSubmit} welcomePageState={state} setWelcomePageState={setState} moods={moods} />
             ) : state.step === 2 ? (
@@ -218,22 +218,14 @@ export default function WelcomePage({ moods }) {
                     <WelcomeMoodSelect moods={moods} handleSelectMood={handleSelectMood} />
                 </>
             ) : state.step === 3 ? (
-                <>
-                <h1 className="text-3xl whitespace-nowrap min-w-full text-center mb-50" >Consulting Chef Marco for suggestions - hold tight!</h1>
-                <br />
-                    <Loading />
-                </>
+                <Loading />
             ) : state.step === 4 ? (
-                <>
                     <BusinessCard setRating={setRating} business={state.restaurants[state.index]} />
-                </>
-
             ) : state.step === 5 ? (
-
-                    <div className="flex flex-col items-center">
-                        <Confetti style={{position:'fixed' , top:'0' , left:'0'}}numberOfPieces={state.confetti} width={width} height={height} />
-                        <WinnerDisplay welcomePage={state} moreConfetti={moreConfetti} />
-                    </div>
+                <div className="flex flex-col items-center">
+                    <Confetti style={{ position: 'fixed', top: '0', left: '0' }} numberOfPieces={state.confetti} width={width} height={height} />
+                    <WinnerDisplay welcomePage={state} moreConfetti={moreConfetti} />
+                </div>
             ) : (
                 <>
                     {/*@ts-ignore*/}
@@ -241,6 +233,6 @@ export default function WelcomePage({ moods }) {
                 </>
             )
             }
-        </div>
+        </>
     )
 }
