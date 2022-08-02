@@ -46,6 +46,12 @@ export default function SignupForm({ setApp, app }: SignupFormProps) {
             name: state.name,
             email: state.email,
             password: state.password
+        },
+        context: {
+            headers: {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*"
+            }
         }
     })
 
@@ -73,8 +79,8 @@ export default function SignupForm({ setApp, app }: SignupFormProps) {
     }
 
     return (
-            <form action="" onSubmit={handleSubmit} id="form" className="container-medium">
-                <h1 className="text-3xl italic bold whitespace-nowrap text-center min-w-min p-5">Signup and Find Check Out Awesome Local Restaurants!</h1>
+            <form action="" onSubmit={handleSubmit} id="form" className="container-medium borderzz">
+                <h1 className="text-3xl italic bold whitespace-nowrap text-center min-w-min p-5">Signup and Find Awesome Local Restaurants!</h1>
                 <label htmlFor="name">Full Name: </label>
                 <input type="text" name="name" key="name" onChange={handleChange} placeholder="Ex: Hay Yu" value={state.name} required />
                 {(state.name.length < 3 && state.name.length !== 0) ? <p className="error">Name must be at least 3 characters.</p> : <br />}

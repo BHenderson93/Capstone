@@ -15,7 +15,7 @@ export default function HomePage({app, setApp}){
         nav(url)
     }
         return (
-            <div className="container">
+            <div className="container w-3/4">
                 <h1 className="text-5xl whitespace-nowrap text-center min-w-min p-5">Looking to explore local restauarants, but not sure which?
                     <br /> You've come to the right place!</h1>
                 <div className="flex flex-row nowrap justify-center items-center">

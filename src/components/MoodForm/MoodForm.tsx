@@ -91,6 +91,12 @@ export default function MoodForm({ handleNewMood, initialState, handleUpdateMood
             categories: state.categories.join('*'),
             price: Number(state.price),
             token: localStorage.getItem('token')
+        },
+        context: {
+            headers: {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*"
+            }
         }
     })
 
@@ -101,6 +107,12 @@ export default function MoodForm({ handleNewMood, initialState, handleUpdateMood
             name: state.name,
             price: Number(state.price),
             token: localStorage.getItem('token')
+        },
+        context: {
+            headers: {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*"
+            }
         }
     })
 
@@ -169,7 +181,7 @@ export default function MoodForm({ handleNewMood, initialState, handleUpdateMood
     }
 
     return (
-        <div className="container-medium-row">
+        <div className="flex flex-row min-h-full min-w-full">
             <div className="flex flex-col nowrap mr-4">
                 <form action="" onSubmit={handleSubmit}>
                     <label htmlFor="name">What is this mood called?</label>

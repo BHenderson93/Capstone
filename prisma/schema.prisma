@@ -24,10 +24,10 @@ model Api {
 }
 
 model Mood {
-  id          Int      @id @default(autoincrement())
+  id          Int    @id @default(autoincrement())
   name        String
   categories  String
   price       Int
-  createdBy   User     @relation(fields: [createdById], references: [id])
+  createdBy   User   @relation(fields: [createdById], references: [id])
   createdById Int
 }

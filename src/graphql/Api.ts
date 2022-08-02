@@ -1,5 +1,6 @@
 import { objectType, interfaceType, extendType, nonNull, stringArg } from "nexus";
 require('dotenv').config()
+import axios from 'axios'
 
 export const API = objectType({
     name: "API",
@@ -23,7 +24,7 @@ export const API_Call = extendType({
         
                 const dataToReturn = new Promise <[]> ((resolve,reject)=>{
                     const cats: string[] = args.categories.replaceAll(' ', '%20').split('*')
-                    const limit = Math.floor( 30 / cats.length)
+                    const limit = Math.ceil( 3/ cats.length)
                     const HEADERS = {
                         method: "GET",
                         headers: {
@@ -41,28 +42,28 @@ export const API_Call = extendType({
                         urlList.push(URL)
                     }
 
-                    Promise.allSettled(urlList.map((url) => fetch(url, HEADERS))).then((resList: any) => {
-
-                        Promise.allSettled(resList.map((categoryRes: any) => categoryRes.value.json())).then((categValJSON) => {
+                    Promise.allSettled(urlList.map((url) => axios(url, HEADERS))).then((resList: any) => {
+                        console.log('axios response is ', resList[0])
                             let categListUrls: string[] = []
-                            categValJSON.map((categ: any) => categ.value.businesses.map((biz: any) => {
+                            resList.map((categ: any) => categ.value.data.businesses.map((biz: any) => {
                                 categListUrls.push(`https://api.yelp.com/v3/businesses/${biz.id}`)
                             }))
 
-                            Promise.allSettled(categListUrls.map((url) => fetch(url, HEADERS))).then((specificResponses) => {
+                            Promise.allSettled(categListUrls.map((url) => axios(url, HEADERS))).then((specificResponses:any) => {
 
-                                Promise.allSettled(specificResponses.map((bizRes: any) => bizRes.value.json())).then(async (bizJSON: any) => {
+                                console.log('specific responses are' , specificResponses)
                                     //Important to filter out all the error returns
-                                    resolve(bizJSON.filter((item:any)=>!item.value.error))
+                                    console.log('example response value data is ' , specificResponses[0].value.data)
+                                    resolve(specificResponses.filter((item:any)=>item.value.status === 200).map((item:any)=>item.value.data))
                                 })
                             })
                         })
-                    })
-                })
 
-                const returnVal = new Promise<any> ((resolve,reject)=>{
+                const returnValue = new Promise<any> ((resolve,reject)=>{
                     dataToReturn.then(async (data:any)=>{
-                    const ret = JSON.stringify(data.map((promise:any)=>promise.value))
+                        console.log('data to go to json is ' , data)
+                    const ret = JSON.stringify(data)
+                    console.log('stringy json is ' , ret)
                     const returnVal = await context.prisma.api.create({
                         data: { data: ret }
                     })
@@ -70,7 +71,7 @@ export const API_Call = extendType({
                 })
             })
 
-            return await returnVal
+            return await returnValue
             }
         })
     },

@@ -90,6 +90,12 @@ export default function WelcomePage({ moods }) {
         variables: {
             location: state.apiQuery.location,
             categories: state.apiQuery.mood.categories
+        },
+        context: {
+            headers: {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*"
+            }
         }
     })
 
@@ -204,7 +210,7 @@ export default function WelcomePage({ moods }) {
     const { width, height } = useWindowSize()
 
     return (
-        <div className="container">
+        <div >
             {state.step === 1 ? (
                 <WelcomeSearch handleLocationSubmit={handleLocationSubmit} welcomePageState={state} setWelcomePageState={setState} moods={moods} />
             ) : state.step === 2 ? (

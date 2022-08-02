@@ -31,7 +31,7 @@ export function MoodCard({ mood, handleMoodEdit, app, setApp }) {
     }
 
     return (
-        <li className="flex flex-row nowrap p-6 justify-between align-center border hover:bg-slate-900 hover:text-white group transition duration-250">
+        <li className="flex flex-row min-w-full bg-slate-400 rounded nowrap p-6 justify-between align-center border hover:bg-slate-900 hover:text-white group transition duration-250">
 
             {handleMoodEdit ? 
             <>
