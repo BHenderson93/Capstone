@@ -1,5 +1,5 @@
 # Moodie Foodie...
-    is an app that helps users pick what to eat. After signing up and logging in, users create custom moods that list food categories they like and how much they'd like to spend. Then, they input their location and pick which mood they'd like to use, and they're presented with a list of relevant restaurants. The user gives ratings to each restaurant and, at the end, the computer calculates the winner and presents it.
+### is an app that helps users pick what to eat. After signing up and logging in, users create custom moods that list food categories they ### ### like and how much they'd like to spend. Then, they input their location and pick which mood they'd like to use, and they're presented with ### a list of relevant restaurants. The user gives ratings to each restaurant and, at the end, the computer calculates the winner and presents it.
 
 
 # Technologies Used
