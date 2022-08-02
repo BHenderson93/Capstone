@@ -5,7 +5,8 @@ is an app that helps users pick what to eat. After signing up and logging in, us
 # Technologies Used
 ## React.js
 ## TypeScript
-## Apollo GraphQL - Nexus, Prisma
+## Tailwind
+## GraphQL - Apollo Server, Nexus, Prisma
 ## PostgreSQL
 ## Heroku
 

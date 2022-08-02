@@ -17,13 +17,13 @@ export const API_Call = extendType({
             args: {
                 location: nonNull(stringArg()),
                 categories: nonNull(stringArg()),
-                price:nonNull(stringArg())
+                price: nonNull(stringArg())
             },
             async resolve(parent, args, context) {
-        
-                const dataToReturn = new Promise <[]> ((resolve,reject)=>{
+
+                const dataToReturn = new Promise<[]>((resolve, reject) => {
                     const cats: string[] = args.categories.replaceAll(' ', '%20').split('*')
-                    const limit = Math.ceil( 20 / cats.length)
+                    const limit = Math.ceil(20 / cats.length)
                     const HEADERS = {
                         method: "GET",
                         headers: {
@@ -32,7 +32,6 @@ export const API_Call = extendType({
                             'Accept-Language': 'en-US',
                         }
                     }
-                    //console.log('my args are ' ,args)
                     let urlList = []
                     for (let cat of cats) {
 
@@ -41,45 +40,39 @@ export const API_Call = extendType({
                     }
 
                     Promise.allSettled(urlList.map((url) => axios(url, HEADERS))).then((resList: any) => {
-                       // console.log('axios response is ', resList[0])
-                            let categListUrls: string[] = []
-                            resList.map((categ: any) => categ.value.data.businesses.map((biz: any) => {
-                                categListUrls.push(`https://api.yelp.com/v3/businesses/${biz.id}`)
-                            }))
+                        let categListUrls: string[] = []
+                        resList.map((categ: any) => categ.value.data.businesses.map((biz: any) => {
+                            categListUrls.push(`https://api.yelp.com/v3/businesses/${biz.id}`)
+                        }))
 
-                            Promise.allSettled(categListUrls.map((url) => axios(url, HEADERS))).then((specificResponses:any) => {
+                        Promise.allSettled(categListUrls.map((url) => axios(url, HEADERS))).then((specificResponses: any) => {
 
-                                //console.log('specific responses are' , specificResponses)
-                                if(specificResponses.length ===0){
-                                    resolve([])
-                                }else{
-                                    //Important to filter out all the error returns
-                                    //console.log('example response value data is ' , specificResponses[0]?.value?.data)
-                                    resolve(specificResponses.filter((item:any)=>item.value?.status === 200).map((item:any)=>item.value.data))
-                                }
-
-                                })
-                            })
+                            if (specificResponses.length === 0) {
+                                resolve([])
+                            } else {
+                                //Important to filter out all the error returns
+                                //console.log(specificResponses)
+                                resolve(specificResponses.filter((item1: any) => item1.value !== undefined).filter((item: any) => item.value.status === 200).map((item: any) => item.value.data))
+                            }
                         })
+                    })
+                })
 
-                const returnValue = new Promise<any> ((resolve,reject)=>{
-                    dataToReturn.then(async (data:any)=>{
-                        console.log('data to go to json is ' , data)
-                        if(data.length===0){
+                const returnValue = new Promise<any>((resolve, reject) => {
+                    dataToReturn.then(async (data: any) => {
+                        if (data.length === 0) {
                             resolve('No responses.')
-                        }else{
+                        } else {
                             const ret = JSON.stringify(data)
-                            console.log('stringy json is ' , ret)
                             const returnVal = await context.prisma.api.create({
                                 data: { data: ret }
 
                             })
                             resolve(returnVal)
                         }
-                        })
-            })
-
-            return await returnValue
+                    })
+                })
+                return await returnValue
             }
         })
     },
