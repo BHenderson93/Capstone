@@ -37,7 +37,6 @@ export const API_Call = extendType({
                     for (let cat of cats) {
 
                         const URL = `https://api.yelp.com/v3/businesses/search?term=${cat.toLowerCase()}&location=${args.location.trim().replace(' ', '%20')}&price=${args.price}&limit=${limit}`
-
                         urlList.push(URL)
                     }
 
