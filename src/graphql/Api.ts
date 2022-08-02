@@ -5,8 +5,6 @@ import axios from 'axios'
 export const API = objectType({
     name: "API",
     definition(t) {
-        t.string('location')
-        t.string('categories')
         t.string('data')
     }
 })
@@ -18,7 +16,8 @@ export const API_Call = extendType({
             type: API,
             args: {
                 location: nonNull(stringArg()),
-                categories: nonNull(stringArg())
+                categories: nonNull(stringArg()),
+                price:nonNull(stringArg())
             },
             async resolve(parent, args, context) {
         
@@ -33,11 +32,11 @@ export const API_Call = extendType({
                             'Accept-Language': 'en-US',
                         }
                     }
-
+                    console.log('my args are ' ,args)
                     let urlList = []
                     for (let cat of cats) {
 
-                        const URL = `https://api.yelp.com/v3/businesses/search?term=${cat.toLowerCase()}&location=${args.location.trim().replace(' ', '%20')}&limit=${limit}`
+                        const URL = `https://api.yelp.com/v3/businesses/search?term=${cat.toLowerCase()}&location=${args.location.trim().replace(' ', '%20')}&price=${args.price}&limit=${limit}`
 
                         urlList.push(URL)
                     }
@@ -52,9 +51,14 @@ export const API_Call = extendType({
                             Promise.allSettled(categListUrls.map((url) => axios(url, HEADERS))).then((specificResponses:any) => {
 
                                 console.log('specific responses are' , specificResponses)
+                                if(specificResponses.length ===0){
+                                    resolve([])
+                                }else{
                                     //Important to filter out all the error returns
                                     console.log('example response value data is ' , specificResponses[0].value.data)
                                     resolve(specificResponses.filter((item:any)=>item.value.status === 200).map((item:any)=>item.value.data))
+                                }
+
                                 })
                             })
                         })
@@ -62,13 +66,18 @@ export const API_Call = extendType({
                 const returnValue = new Promise<any> ((resolve,reject)=>{
                     dataToReturn.then(async (data:any)=>{
                         console.log('data to go to json is ' , data)
-                    const ret = JSON.stringify(data)
-                    console.log('stringy json is ' , ret)
-                    const returnVal = await context.prisma.api.create({
-                        data: { data: ret }
-                    })
-                    resolve(returnVal)
-                })
+                        if(data.length===0){
+                            resolve('No responses.')
+                        }else{
+                            const ret = JSON.stringify(data)
+                            console.log('stringy json is ' , ret)
+                            const returnVal = await context.prisma.api.create({
+                                data: { data: ret }
+
+                            })
+                            resolve(returnVal)
+                        }
+                        })
             })
 
             return await returnValue

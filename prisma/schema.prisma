@@ -19,8 +19,8 @@ model User {
 }
 
 model Api {
-  id   Int    @id @default(autoincrement())
-  data String
+  id         Int    @id @default(autoincrement())
+  data       String
 }
 
 model Mood {

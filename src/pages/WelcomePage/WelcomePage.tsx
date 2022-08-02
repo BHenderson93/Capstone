@@ -11,8 +11,8 @@ import Confetti from 'react-confetti'
 import { Loading } from '../../components/Loading/Loading'
 
 const API_CALL = gql`
-mutation API_Call($location:String! , $categories:String!) {
-    API_Call(location:$location, categories:$categories ) {
+mutation API_Call($location:String! , $categories:String!, $price:String!) {
+    API_Call(location:$location, categories:$categories, price:$price) {
         data
     }
 }
@@ -89,7 +89,8 @@ export default function WelcomePage({ moods }) {
     const [api, { data, loading, error }] = useMutation(API_CALL, {
         variables: {
             location: state.apiQuery.location,
-            categories: state.apiQuery.mood.categories
+            categories: state.apiQuery.mood.categories,
+            price: String(state.apiQuery.mood.price)
         },
         context: {
             headers: {
@@ -114,9 +115,18 @@ export default function WelcomePage({ moods }) {
 
     React.useEffect(() => {
         const getApiData = async () => {
+            let inter = setTimeout(()=>{
+                setState({
+                    ...state,
+                    step:0,
+                    confetti:20,
+                })
+            },8000)
+
             console.log('beginning fetch from api..')
             const results = await api()
             console.log(results)
+            clearInterval(inter)
             if (results.data.API_Call.data) {
                 const businessList = results.data.API_Call.data.split('*')
                 let restaurants = businessList.map(x => JSON.parse(x))[0]
@@ -135,7 +145,8 @@ export default function WelcomePage({ moods }) {
             } else {
                 setState({
                     ...state,
-                    step: 0
+                    step: 0,
+                    confetti:20,
                 })
                 console.log('SO SORRY - No results for that search in that location. Try again!')
             }
@@ -227,10 +238,11 @@ export default function WelcomePage({ moods }) {
                     <WinnerDisplay welcomePage={state} moreConfetti={moreConfetti} />
                 </div>
             ) : (
-                <>
+                <div className="min-w-full flex flex-col items-center">
+                    <Confetti style={{ position: 'fixed', top: '0', left: '0' }} numberOfPieces={state.confetti} width={width} height={height} />
                     {/*@ts-ignore*/}
-                    <h1>So Sorry... I couldn't find any results for {state.apiQuery.mood.categories.replaceAll('*', ', ')} in {state.search}</h1>
-                </>
+                    <h1 className="text-3xl w-6/12 ">Awhhhhh.... Nothing was found for {state.apiQuery.mood.categories.replaceAll('*', ', ')} in {state.search}...</h1>
+                </div>
             )
             }
         </>

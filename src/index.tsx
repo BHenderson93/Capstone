@@ -14,8 +14,8 @@ const root = RDC.createRoot(container!)
 const port = process.env.PORT
 
 const client = new ApolloClient({
-  //uri: `http://localhost:3000`,
-  uri: `https://server-moodiefoodie.herokuapp.com/`,
+  uri: `http://localhost:3000`,
+  //uri: `https://server-moodiefoodie.herokuapp.com/`,
   cache: new InMemoryCache()
 });
 

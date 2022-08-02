@@ -3,9 +3,7 @@
 
 
 type API {
-  categories: String
   data: String
-  location: String
 }
 
 type AuthPayload {
@@ -22,7 +20,7 @@ type Mood {
 }
 
 type Mutation {
-  API_Call(categories: String!, location: String!): API!
+  API_Call(categories: String!, location: String!, price: String!): API!
   createMood(categories: String!, name: String!, price: Int!, token: String!): Mood!
   deleteMood(id: Int!, token: String!): Mood
   login(email: String!, password: String!): AuthPayload!
